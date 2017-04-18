@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.pbtd.mobile.MainActivity">
+
+    <RelativeLayout
+        android:id="@+id/rl_top"
+        android:layout_width="match_parent"
+        android:layout_height="39dp"
+        >
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="21dp"
+            android:src="@mipmap/logo_china_mobile"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="9dp"
+            />
+
+        <ImageView
+            android:id="@+id/iv_history"
+            android:layout_width="19dp"
+            android:layout_height="19dp"
+            android:src="@mipmap/play_history"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="19dp"
+            android:layout_marginTop="10dp"
+            />
+
+        <RelativeLayout
+            android:id="@+id/rl_search"
+            android:layout_width="175dp"
+            android:layout_height="29dp"
+            android:layout_toLeftOf="@id/iv_history"
+            android:layout_marginRight="14dp"
+            android:gravity="center_vertical"
+            android:background="@drawable/shape_search"
+            android:layout_centerVertical="true"
+            >
+            <ImageView
+                android:id="@+id/iv_search"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_marginLeft="9dp"
+                android:src="@mipmap/search"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/iv_search"
+                android:layout_marginLeft="9dp"
+                android:text="搜你想的"
+                android:textSize="12sp"
+                android:textColor="@color/gray_text"
+                />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/view_divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/divide_line"
+        android:layout_below="@id/rl_top"
+        />
+
+    
+</RelativeLayout>
