@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/sd_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            fresco:failureImage="@mipmap/ic_launcher"
+            />
+
+        <TextView
+            android:id="@+id/tv_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textColor="@color/white"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginBottom="10dp"
+            />
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:id="@+id/ll_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="会员"
+            android:textSize="12sp"
+            android:textColor="@color/second_black"
+            android:background="@drawable/shape_gray"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingTop="9dp"
+            android:paddingBottom="9dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="内地"
+            android:textSize="12sp"
+            android:textColor="@color/second_black"
+            android:background="@drawable/shape_gray"
+            android:layout_marginLeft="19dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingTop="9dp"
+            android:paddingBottom="9dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="韩剧"
+            android:textSize="12sp"
+            android:textColor="@color/second_black"
+            android:background="@drawable/shape_gray"
+            android:layout_marginLeft="19dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingTop="9dp"
+            android:paddingBottom="9dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="英美剧"
+            android:textSize="12sp"
+            android:textColor="@color/second_black"
+            android:background="@drawable/shape_gray"
+            android:layout_marginLeft="19dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingTop="9dp"
+            android:paddingBottom="9dp"
+            />
+    </LinearLayout>
+
+</LinearLayout>

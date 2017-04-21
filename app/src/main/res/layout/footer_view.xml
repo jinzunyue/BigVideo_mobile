@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="7.5dp"
+        android:background="@color/divide_line" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="109dp"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="11sp"
+            android:textColor="@color/gray_text"
+            android:text="可以根据个人喜好，自由调整首页栏目顺序啦~"
+            android:layout_marginTop="25dp"
+            />
+
+        <Button
+            android:id="@+id/btn_adjust"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="调整栏目顺序"
+            android:textSize="15sp"
+            android:textColor="@color/bule_text"
+            android:background="@drawable/shape_blue"
+            android:layout_marginTop="10dp"
+            />
+    </LinearLayout>
+</LinearLayout>
