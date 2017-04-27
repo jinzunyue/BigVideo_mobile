@@ -1,7 +1,5 @@
 package com.pbtd.mobile.network;
 
-import com.pbtd.mobile.Constants;
-
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -12,19 +10,19 @@ public class RetrofitUtil {
     private static RetrofitUtil mRetrofitUtil;
     private Retrofit retrofit;
 
-    private RetrofitUtil(boolean isUser) {
+    private RetrofitUtil(String url) {
         retrofit = new Retrofit.Builder()
-                .baseUrl(isUser?Constants.BASE_USER_SERVER:Constants.BASE_VIDEO_SERVER)
+                .baseUrl(url)
                 .addConverterFactory(GsonConverterFactory.create())
 //                .addCallAdapterFactory()
                 .build();
     }
 
-    public static RetrofitUtil getInstance (boolean isUser) {
+    public static RetrofitUtil getInstance (String url) {
         if (mRetrofitUtil == null) {
             synchronized (RetrofitUtil.class) {
                 if (mRetrofitUtil == null)
-                    mRetrofitUtil = new RetrofitUtil(isUser);
+                    mRetrofitUtil = new RetrofitUtil(url);
             }
         }
 

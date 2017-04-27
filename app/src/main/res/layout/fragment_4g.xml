@@ -1,12 +1,172 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.pbtd.mobile.widget.PagerSlidingTabStrip
+        android:id="@+id/indicator"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        app:pstsSelectTextColor="@color/white"
+        app:pstsIndicatorColor="@color/white"
+        app:pstsIndicatorHeight="1dp"
+        app:pstsDividerColor="@android:color/transparent"
+        app:pstsUnderlineColor="@android:color/transparent"
+        android:background="@color/bule_text"
+        />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="169dp"/>
+
+    <include layout="@layout/divider_line" />
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="流量"
-        android:textSize="30sp"
+        android:layout_width="match_parent"
+        android:layout_height="47dp"
+        android:text="会员订购区"
+        android:textSize="15sp"
+        android:textColor="@color/black"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
         />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/divide_line" />
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="86dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingLeft="45dp"
+        >
+        <LinearLayout
+            android:id="@+id/ll_vip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+            <ImageView
+                android:layout_width="43dp"
+                android:layout_height="43dp"
+                android:src="@mipmap/vip"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="包月会员"
+                android:textSize="11sp"
+                android:textColor="@color/black"
+                android:layout_marginTop="5dp"
+                />
+        </LinearLayout>
+    </LinearLayout>
+
+    <include layout="@layout/divider_line" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="47dp"
+        android:text="流量订购区"
+        android:textSize="15sp"
+        android:textColor="@color/black"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/divide_line" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="86dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        >
+        <LinearLayout
+            android:id="@+id/plus_4g"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            >
+            <ImageView
+                android:layout_width="43dp"
+                android:layout_height="43dp"
+                android:src="@mipmap/plus_4g"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="流量加油包"
+                android:textSize="11sp"
+                android:textColor="@color/black"
+                android:layout_marginTop="5dp"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/quick_4g"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            >
+            <ImageView
+                android:layout_width="43dp"
+                android:layout_height="43dp"
+                android:src="@mipmap/quick_4g"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="流量闪充包"
+                android:textSize="11sp"
+                android:textColor="@color/black"
+                android:layout_marginTop="5dp"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/more"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            >
+            <ImageView
+                android:layout_width="43dp"
+                android:layout_height="43dp"
+                android:src="@mipmap/more_business"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="更多"
+                android:textSize="11sp"
+                android:textColor="@color/black"
+                android:layout_marginTop="5dp"
+                />
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/divide_line" />
 </LinearLayout>

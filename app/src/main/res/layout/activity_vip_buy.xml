@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        >
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:src="@mipmap/back"
+            android:paddingLeft="11dp"
+            android:paddingRight="23dp"
+            android:paddingBottom="13dp"
+            android:paddingTop="13dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="会员订购"
+            android:textSize="18sp"
+            android:textColor="@color/bule_text"
+            android:layout_centerInParent="true"
+            />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/divide_line" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="69dp"
+        android:paddingLeft="13dp"
+        >
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="43dp"
+            android:layout_height="43dp"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/vip"
+            />
+
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="包月会员"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:layout_toRightOf="@id/icon"
+            android:layout_marginLeft="13dp"
+            android:layout_marginTop="13dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="资费 10元/月"
+            android:textSize="12sp"
+            android:textColor="@color/black"
+            android:layout_toRightOf="@id/icon"
+            android:layout_below="@id/text"
+            android:layout_marginLeft="13dp"
+            android:layout_marginTop="5dp"
+            />
+    </RelativeLayout>
+
+    <include layout="@layout/divider_line" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="47dp"
+        >
+
+        <View
+            android:layout_width="4dp"
+            android:layout_height="21dp"
+            android:background="@drawable/shape_verticla_blue"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="业务描述"
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="25dp"
+            />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/divide_line" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="19dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:textSize="14sp"
+        android:textColor="@color/gray_text"
+        android:text="  开通会员即可享受会员观影特权（特殊节目除外），新用户订购立即生效。"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+    
+    <Button
+        android:id="@+id/btn_buy"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="@color/bule_text"
+        android:text="立即订购"
+        android:textSize="17sp"
+        android:textColor="@color/white"
+        android:gravity="center"
+        />
+</LinearLayout>

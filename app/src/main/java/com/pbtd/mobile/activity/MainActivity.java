@@ -9,14 +9,13 @@ import android.widget.TabHost;
 import android.widget.TextView;
 
 import com.pbtd.mobile.R;
-import com.pbtd.mobile.activity.BaseActivity;
 import com.pbtd.mobile.fragment.FourGFragment;
 import com.pbtd.mobile.fragment.LiveVideoFragment;
 import com.pbtd.mobile.fragment.MainFragment;
 import com.pbtd.mobile.fragment.MyFragment;
 import com.pbtd.mobile.fragment.VIPFragment;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity{
 
     private FragmentTabHost mTabHost;
     private Class mFragmentArray[] = {MainFragment.class,LiveVideoFragment.class,VIPFragment.class,FourGFragment.class,MyFragment.class};
@@ -61,6 +60,5 @@ public class MainActivity extends BaseActivity {
 
         return view;
     }
-
 
 }

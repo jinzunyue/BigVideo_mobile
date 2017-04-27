@@ -2,65 +2,69 @@ package com.pbtd.mobile.activity;
 
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.view.KeyEvent;
+import android.widget.ImageView;
+import android.widget.MediaController;
+import android.widget.RelativeLayout;
+import android.widget.VideoView;
 
 import com.pbtd.mobile.R;
-import com.pbtd.mobile.UIUtil;
-import com.pbtd.mobile.widget.YSMediaPlayer;
+import com.pbtd.mobile.model.PlayInfoModel;
+import com.pbtd.mobile.presenter.play.PlayContract;
+import com.pbtd.mobile.presenter.play.PlayPresenter;
 
-public class PlayActivity extends AppCompatActivity {
+public class PlayActivity extends BaseActivity implements PlayContract.View{
 
-    private YSMediaPlayer mVideoView;
-    private static final String TEST_URL = "http://vod.dispatcher.gitv.boss12580.com/gitv/388694800/388694800/2.m3u8";
+    public static final String PRODUCT_CODE = "PRODUCT_CODE";
+
+    private String mProduct_code = "";
+    private PlayPresenter mPresenter;
+    private VideoView videoView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
 
-        LinearLayout ll_root = (LinearLayout) findViewById(R.id.ll_root);
+        mProduct_code = getIntent().getStringExtra(PRODUCT_CODE);
+        mPresenter = new PlayPresenter(this, this);
+        mPresenter.getPlayInfo(mProduct_code);
+        initVideoView();
+    }
 
-        String play_url = getIntent().getStringExtra("video_id");
+    private void initVideoView() {
+        ImageView imageview = (ImageView) findViewById(R.id.imageview);
 
-        mVideoView = new YSMediaPlayer(this);
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, UIUtil.convertDpToPixel(this, 210));
-        ll_root.addView(mVideoView, layoutParams);
-        mVideoView.setPlayUrl(TEST_URL);
-        mVideoView.setPlayName("测试视频");
-        mVideoView.start();
-        mVideoView.getVideoView().setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-
+        videoView = (VideoView) findViewById(R.id.video_view);
+        MediaController mediaController = new MediaController(this);
+        videoView.setMediaController(mediaController);
+        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
-            public void onPrepared(MediaPlayer mediaPlayer) {
-                mediaPlayer.start();
+            public void onPrepared(MediaPlayer mp) {
+                mp.start();
             }
         });
 
-        mVideoView.getVideoView().setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+        imageview.setOnClickListener((v -> {
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) videoView.getLayoutParams();
+            layoutParams.height = RelativeLayout.LayoutParams.MATCH_PARENT;
+            layoutParams.width = RelativeLayout.LayoutParams.MATCH_PARENT;
+            videoView.setLayoutParams(layoutParams);
+        }));
+    }
 
-            @Override
-            public void onCompletion(MediaPlayer arg0) {
-                PlayActivity.this.finish();
-            }
-        });
+    @Override
+    public void showPlayInfo(PlayInfoModel playInfoModel) {
+        videoView.setVideoPath(playInfoModel.programList.get(0).movieList.get(0).movieUrl);
+        videoView.start();
+    }
 
-        mVideoView.getVideoView().setOnErrorListener(new MediaPlayer.OnErrorListener() {
-            @Override
-            public boolean onError(MediaPlayer mp, int what, int extra) {
-                System.out.println(what + "");
-                return false;
-            }
-        });
-
-        mVideoView.getVideoView().setOnInfoListener(new MediaPlayer.OnInfoListener() {
-            @Override
-            public boolean onInfo(MediaPlayer mp, int what, int extra) {
-                System.out.println(what + "");
-                return false;
-            }
-        });
-
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
+            this.finish();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

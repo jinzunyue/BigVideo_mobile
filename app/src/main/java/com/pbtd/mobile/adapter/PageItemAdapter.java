@@ -9,9 +9,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.pbtd.mobile.R;
-import com.pbtd.mobile.UIUtil;
 import com.pbtd.mobile.model.RecommendModel;
 import com.pbtd.mobile.model.RecommendedVideo;
+import com.pbtd.mobile.utils.UIUtil;
 import com.pbtd.mobile.widget.FixGridView;
 
 import java.util.ArrayList;

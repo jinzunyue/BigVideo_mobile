@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/rl_one"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        >
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:src="@mipmap/back"
+            android:paddingLeft="11dp"
+            android:paddingRight="23dp"
+            android:paddingBottom="13dp"
+            android:paddingTop="13dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="流量闪充包"
+            android:textSize="18sp"
+            android:textColor="@color/bule_text"
+            android:layout_centerInParent="true"
+            />
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/view_two"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/divide_line"
+        android:layout_below="@id/rl_one"
+        />
+
+    <RelativeLayout
+        android:id="@+id/rl_three"
+        android:layout_width="match_parent"
+        android:layout_height="69dp"
+        android:paddingLeft="13dp"
+        android:layout_below="@id/view_two"
+        >
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="43dp"
+            android:layout_height="43dp"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/vip"
+            />
+
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="包月会员"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:layout_toRightOf="@id/icon"
+            android:layout_marginLeft="13dp"
+            android:layout_marginTop="13dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="资费 10元/月"
+            android:textSize="12sp"
+            android:textColor="@color/black"
+            android:layout_toRightOf="@id/icon"
+            android:layout_below="@id/text"
+            android:layout_marginLeft="13dp"
+            android:layout_marginTop="5dp"
+            />
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/four"
+        android:layout_width="match_parent"
+        android:layout_height="7.5dp"
+        android:background="@color/divide_line"
+        android:layout_below="@id/rl_three"
+        />
+
+    <RelativeLayout
+        android:id="@+id/five"
+        android:layout_width="match_parent"
+        android:layout_height="47dp"
+        android:layout_below="@id/four"
+        >
+
+        <View
+            android:layout_width="4dp"
+            android:layout_height="21dp"
+            android:background="@drawable/shape_verticla_blue"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="订购流量闪充包"
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="25dp"
+            />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/divide_line"
+        android:layout_below="@id/five"
+        />
+
+    <LinearLayout
+        android:id="@+id/six"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/five"
+        >
+        <Button
+            android:id="@+id/btn_province"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="80dp"
+            android:background="@android:color/transparent"
+            android:text="￥ 5 \n 省内加油包"
+            />
+
+        <Button
+            android:id="@+id/btn_country"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="80dp"
+            android:background="@android:color/transparent"
+            android:text="￥ 10 \n 国内加油包"
+            />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/seven"
+        android:layout_width="match_parent"
+        android:layout_height="7.5dp"
+        android:background="@color/divide_line"
+        android:layout_below="@id/six"
+        />
+
+    <RelativeLayout
+        android:id="@+id/eight"
+        android:layout_width="match_parent"
+        android:layout_height="47dp"
+        android:layout_below="@id/seven"
+        >
+
+        <View
+            android:layout_width="4dp"
+            android:layout_height="21dp"
+            android:background="@drawable/shape_verticla_blue"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="业务描述"
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="25dp"
+            />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/divide_line"
+        android:layout_below="@id/eight"
+        />
+
+    <TextView
+        android:id="@+id/nine"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="19dp"
+        android:paddingBottom="19dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_below="@id/eight"
+        android:textSize="14sp"
+        android:textColor="@color/black"
+        android:text="  开通会员即可享受会员观影特权（特殊节目除外），新用户订购立即生效。"
+        />
+
+    <View
+        android:id="@+id/ten"
+        android:layout_width="match_parent"
+        android:layout_height="7.5dp"
+        android:background="@color/divide_line"
+        android:layout_below="@id/nine"
+        />
+
+    <RelativeLayout
+        android:id="@+id/view_11"
+        android:layout_width="match_parent"
+        android:layout_height="47dp"
+        android:layout_below="@id/ten"
+        >
+
+        <View
+            android:layout_width="4dp"
+            android:layout_height="21dp"
+            android:background="@drawable/shape_verticla_blue"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="选择支付方式"
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="25dp"
+            />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@id/view_11"
+        >
+        <RelativeLayout
+            android:id="@+id/rl_mobile"
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            >
+            <ImageView
+                android:id="@+id/iv_icon"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@mipmap/pay_mobile"
+                />
+
+            <TextView
+                android:id="@+id/tv_mobile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:text="话费支付"
+                android:layout_marginLeft="13dp"
+                android:layout_toRightOf="@id/iv_icon"
+                android:layout_centerVertical="true"
+                />
+
+            <ImageView
+                android:id="@+id/btn_mobile"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/bg_pay"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_ali"
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            >
+            <ImageView
+                android:id="@+id/iv_icon_ali"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@mipmap/pay_ali"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:text="支付宝支付"
+                android:layout_marginLeft="13dp"
+                android:layout_toRightOf="@id/iv_icon_ali"
+                android:layout_centerVertical="true"
+                />
+
+            <ImageView
+                android:id="@+id/btn_ali"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/bg_pay"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_wechat"
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            >
+            <ImageView
+                android:id="@+id/iv_icon_wechat"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@mipmap/pay_wechat"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:text="话费支付"
+                android:layout_marginLeft="13dp"
+                android:layout_toRightOf="@id/iv_icon_wechat"
+                android:layout_centerVertical="true"
+                />
+
+            <ImageView
+                android:id="@+id/btn_wechat"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/bg_pay"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/divide_line"
+        android:layout_below="@id/view_11"
+        />
+
+    <Button
+        android:id="@+id/btn_buy"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="@color/bule_text"
+        android:text="立即开通"
+        android:textSize="17sp"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        />
+
+</RelativeLayout>
