@@ -152,7 +152,6 @@ public class PlayActivity extends BaseActivity implements PlayContract.View {
             mYearView.setText(productDetailModel.getOrgairDate());
             mDescriptionView.setText(productDetailModel.getDescription());
 
-
             mSelectContainer.removeAllViews();
             for (int i = 0; i < model.size(); i++) {
                 TextView textView = new TextView(this);
