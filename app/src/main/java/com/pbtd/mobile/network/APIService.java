@@ -73,4 +73,14 @@ public interface APIService {
                                                     @Query("userCode")String userCode,
                                                     @Query("productCode")String productCode
     );
+
+    @GET("commodityList!getRecommendList")
+    Call<BaseModel<ProductInfoListModel>> getRelativeProductInfoList(@Query("userCode")String userCode,
+                                                                     @Query("serviceGroupCode")String serviceGroupCode,
+                                                                     @Query("packageCode")String packageCodes,
+                                                                     @Query("productCode")String productCode,
+                                                                     @Query("commodityType")String commodityType,
+                                                                     @Query("recommendType")String recommendType,
+                                                                     @Query("pageLimit")String pageLimit,
+                                                                     @Query("pageNum")String pageNum);
 }

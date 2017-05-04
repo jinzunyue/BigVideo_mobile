@@ -20,6 +20,7 @@ public class LauncherActivity extends BaseActivity implements LauncherContract.V
 //        mPresenter.doAuth();
 
         startActivity(new Intent(this, MainActivity.class));
+        this.finish();
     }
 
     @Override

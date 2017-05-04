@@ -8,6 +8,12 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         >
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/white" />
+
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/sd_top"
             android:layout_width="match_parent"
@@ -18,13 +24,29 @@
             android:layout_height="7.5dp"
             android:background="@color/divide_line" />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="精彩内容"
+            android:textSize="20sp"
+            android:textColor="@color/bule_text"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dp"
+            android:background="@color/white"
+            />
+
         <com.pbtd.mobile.widget.FixGridView
             android:id="@+id/lv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:numColumns="2"
-            android:paddingLeft="5dp"
-            android:scrollbars="none" />
+            android:horizontalSpacing="5dp"
+            android:paddingLeft="6dp"
+            android:paddingRight="6dp"
+            android:scrollbars="none"
+            android:gravity="center_horizontal"
+            android:background="@color/white"
+            />
     </LinearLayout>
 
 

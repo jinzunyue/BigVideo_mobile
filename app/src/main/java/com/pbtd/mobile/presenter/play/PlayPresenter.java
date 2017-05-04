@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import com.pbtd.mobile.Constants;
 import com.pbtd.mobile.model.BaseModel;
 import com.pbtd.mobile.model.PlayInfoModel;
+import com.pbtd.mobile.model.ProductInfoListModel;
 import com.pbtd.mobile.network.RetrofitUtil;
 
 import retrofit2.Call;
@@ -29,7 +30,8 @@ public class PlayPresenter implements PlayContract.Presenter {
 
     @Override
     public void getPlayInfo(@NonNull String product_code) {
-        RetrofitUtil.getInstance("http://vod01.ott.guttv.cibntv.net/vod_api/").getRequestApi().getPlayInfoModel(
+        RetrofitUtil.getInstance("http://vod01.ott.guttv.cibntv.net/vod_api/").getRequestApi().
+                getPlayInfoModel(
                 Constants.DOMAIN_CODE,
                 Constants.SERVICE_GROUP_CODE,
                 Constants.USER_CODE,
@@ -49,4 +51,28 @@ public class PlayPresenter implements PlayContract.Presenter {
                     }
                 });
     }
+
+    @Override
+    public void getRelativeProductInfoList(@NonNull String packageCodes, @NonNull String productCode, @NonNull String pageLimit, @NonNull String pageNum) {
+        RetrofitUtil.getInstance("http://vod01.ott.guttv.cibntv.net/vod_api/").getRequestApi()
+                .getRelativeProductInfoList(Constants.USER_CODE,
+                        Constants.SERVICE_GROUP_CODE,
+                        packageCodes, productCode, "2", "2", "6", "1")
+                .enqueue(new Callback<BaseModel<ProductInfoListModel>>() {
+                    @Override
+                    public void onResponse(Call<BaseModel<ProductInfoListModel>> call, Response<BaseModel<ProductInfoListModel>> response) {
+                        if (response.body().retCode.equals("00000000") && response.body().retMsg != null) {
+                            mView.showRelativeProductInfoList(response.body().retMsg);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<BaseModel<ProductInfoListModel>> call, Throwable t) {
+
+                    }
+                });
+
+    }
+
+
 }

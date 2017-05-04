@@ -9,7 +9,7 @@
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/sd_view"
-        android:layout_width="174dp"
+        android:layout_width="match_parent"
         android:layout_height="116dp"
         fresco:failureImage="@mipmap/ic_launcher"
         />
@@ -32,6 +32,7 @@
         android:orientation="vertical"
         android:layout_below="@id/sd_view"
         android:paddingTop="7dp"
+        android:paddingBottom="7dp"
         >
         <TextView
             android:id="@+id/tv_main_title"

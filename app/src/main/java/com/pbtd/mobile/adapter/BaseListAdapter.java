@@ -38,6 +38,10 @@ public abstract class BaseListAdapter<T> extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    public List<T> getDatas() {
+        return mDatas;
+    }
+
     public void appendDatas(List<T> list) {
         if (mDatas == null) mDatas = new ArrayList<T>();
         mDatas.addAll(list);

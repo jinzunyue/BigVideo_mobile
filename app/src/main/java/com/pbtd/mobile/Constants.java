@@ -5,7 +5,7 @@ package com.pbtd.mobile;
  */
 
 public class Constants {
-    public static final String BASE_SERVER = "http://120.221.38.130/";
+    public static final String BASE_SERVER = "http://220.191.161.222/";
     public static final String SHAREDPREFERENCES_NAME = "pbtd";
 
     public static final String TEMP_MOVIE_PACKAGE_CODE = "2100130022392276101921199,2100130022631201392140035,2100130022392284788181400,2100130022392182965450898,2100130023872294529000573,2100130023871474482350457,2100130022392295907501402,2100130022391464202680890,2100130022392289426981401,2100130023872295729010574";
@@ -23,4 +23,15 @@ public class Constants {
     public static final String USER_CODE = "1300110014040051686330081";
 
     public static final String DOMAIN_CODE = "2100090023831778866170007";
+
+    //直播
+    public static final String BTV_WEISHI = "http://223.99.189.25:8089/shandong_cabletv.live.zte.com/heyi.starschinalive.com/0132/index_1200k.m3u8";
+    public static final String BTV_WENYI = "http://223.99.189.25:8089/shandong_cabletv.live.zte.com/heyi.starschinalive.com/0133/index_1200k.m3u8";
+    public static final String BTV_KEJIAO = "http://223.99.189.25:8089/shandong_cabletv.live.zte.com/heyi.starschinalive.com/0133/index_1200k.m3u8";
+    public static final String BTV_YINGSHI = "http://223.99.189.25:8089/shandong_cabletv.live.zte.com/heyi.starschinalive.com/0133/index_1200k.m3u8";
+    public static final String BTV_CAIJING = "http://223.99.189.25:8089/shandong_cabletv.live.zte.com/heyi.starschinalive.com/0133/index_1200k.m3u8";
+    public static final String BTV_SHENGHUO = "http://223.99.189.25:8089/shandong_cabletv.live.zte.com/heyi.starschinalive.com/0133/index_1200k.m3u8";
+    public static final String BTV_QINGNIAN = "http://223.99.189.25:8089/shandong_cabletv.live.zte.com/heyi.starschinalive.com/0133/index_1200k.m3u8";
+    public static final String BTV_TIYU = "http://223.99.189.25:8089/shandong_cabletv.live.zte.com/heyi.starschinalive.com/0133/index_1200k.m3u8";
+
 }

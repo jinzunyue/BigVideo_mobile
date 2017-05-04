@@ -25,7 +25,12 @@
         <activity android:name=".activity.MainActivity" />
         <activity android:name=".activity.VipBuyActivity" />
         <activity android:name=".activity.FourGActivity" />
-        <activity android:name=".activity.PlayActivity"></activity>
+        <activity
+            android:name=".activity.PlayActivity"
+            android:configChanges="orientation|keyboardHidden" />
+        <activity android:name=".activity.PlayLandActivity"
+            android:screenOrientation="landscape"
+            ></activity>
     </application>
 
 </manifest>
