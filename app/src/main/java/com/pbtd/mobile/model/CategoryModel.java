@@ -1,18 +1,27 @@
 package com.pbtd.mobile.model;
 
 /**
- * Created by xuqinchao on 17/4/26.
- * 栏目树 JavaBean
+ * 没有解析全部字段
+ * Created by xuqinchao on 17/5/4.
  */
 
 public class CategoryModel {
-    public String categoryCode;
-    public String name;
-    public String aliasName;
-    public String description;
-    public String serviceGroupCode;
-    public String packageCodes;
-    public int sequence;
-    public int level;
-    public String parentCode;
+    private String name;
+    private String categorycode;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCategorycode() {
+        return categorycode;
+    }
+
+    public void setCategorycode(String categorycode) {
+        this.categorycode = categorycode;
+    }
 }

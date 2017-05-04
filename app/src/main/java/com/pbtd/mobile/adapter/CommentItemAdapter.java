@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.pbtd.mobile.R;
 import com.pbtd.mobile.activity.PlayActivity;
-import com.pbtd.mobile.model.RecommendedVideo;
+import com.pbtd.mobile.model.ProductModel;
 
 import java.util.List;
 
@@ -22,7 +22,7 @@ import java.util.List;
 public class CommentItemAdapter extends BaseAdapter {
 
     private Context mContext;
-    private List<RecommendedVideo> mDatas;
+    private List<ProductModel> mDatas;
     private boolean mIsBig;
 
     public CommentItemAdapter(Context mContext, boolean isBig) {
@@ -36,8 +36,8 @@ public class CommentItemAdapter extends BaseAdapter {
     }
 
     @Override
-    public RecommendedVideo getItem(int position) {
-        if (mDatas==null) return new RecommendedVideo();
+    public ProductModel getItem(int position) {
+        if (mDatas==null) return new ProductModel();
         return mDatas.get(position);
     }
 
@@ -62,21 +62,21 @@ public class CommentItemAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        RecommendedVideo recommendedVideo = mDatas.get(position);
-        viewHolder.sd_view.setImageURI(recommendedVideo.getImageURL());
+        ProductModel recommendedVideo = mDatas.get(position);
+        viewHolder.sd_view.setImageURI(recommendedVideo.getPictureurl1());
         viewHolder.tv_updata.setText("更新至第33集");
-        viewHolder.tv_main_title.setText(recommendedVideo.getTitle());
-        viewHolder.tv_sub_title.setText(recommendedVideo.getSubtitle()+"");
+        viewHolder.tv_main_title.setText(recommendedVideo.getSeriesName());
+        viewHolder.tv_sub_title.setText("");
         viewHolder.rl_root.setOnClickListener((view) ->
         {
             Intent intent = new Intent(mContext, PlayActivity.class);
-            intent.putExtra("video_id", recommendedVideo.getVideoID());
+            intent.putExtra(PlayActivity.PRODUCT_CODE, recommendedVideo.getSeriesCode());
             mContext.startActivity(intent);
         });
         return convertView;
     }
 
-    public void setData(List<RecommendedVideo> list) {
+    public void setData(List<ProductModel> list) {
         mDatas = list;
         notifyDataSetChanged();
     }

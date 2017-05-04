@@ -1,106 +1,100 @@
 package com.pbtd.mobile.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.AdapterView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.pbtd.mobile.R;
-import com.pbtd.mobile.adapter.PageItemAdapter;
-import com.pbtd.mobile.adapter.RecommentPagerAdapter;
-import com.pbtd.mobile.model.ProductInfoModel;
-import com.pbtd.mobile.model.RecommendModel;
-import com.pbtd.mobile.model.RecommendVideoModel;
-import com.pbtd.mobile.presenter.recomment.RecommentContract;
-import com.pbtd.mobile.presenter.recomment.RecommentPresenter;
+import com.pbtd.mobile.activity.PlayActivity;
+import com.pbtd.mobile.adapter.TempTabAdapter;
+import com.pbtd.mobile.model.ProductModel;
+import com.pbtd.mobile.presenter.tab.TabContract;
+import com.pbtd.mobile.presenter.tab.TabPresenter;
+import com.pbtd.mobile.utils.UIUtil;
+import com.pbtd.mobile.widget.FixGridView;
 
 import java.util.List;
+import java.util.Random;
 
 /**
- * Created by xuqinchao on 17/4/19.
+ * Created by xuqinchao on 17/4/27.
  */
 
-public class TabItemFragment extends BaseFragment implements RecommentContract.View {
+public class TabItemFragment extends BaseFragment implements TabContract.View{
 
-    public static final String RECOMMEND_CODE = "recommendCode";
-    public static final String PACKAGE_CODE = "packageCode";
-
-    private RecommentPagerAdapter mViewPagerAdapter;
-    private ListView mContentView;
-    private PageItemAdapter mPageItemAdapter;
-    private SimpleDraweeView mTopView_header2;
-    private TextView mTitle_header2;
-    private LinearLayout mBottom_header2;
-    private RecommentPresenter mPresenter;
+    private SimpleDraweeView mTopView;
+    private FixGridView mListView;
+    private TempTabAdapter mAdapter;
+    public static final String CATEGORY_CODE = "categorycode";
+    private String mCategoryCode;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle arguments = getArguments();
-        if (arguments != null) {
-            String recommend_code = arguments.getString(RECOMMEND_CODE);
-            String package_code = arguments.getString(PACKAGE_CODE);
-            mPresenter = new RecommentPresenter(mActivity, this);
-//            mPresenter.getRecommentVideo(recommend_code);
-            mPresenter.getProductInfoList(package_code);
-        }
+        mCategoryCode = arguments.getString(CATEGORY_CODE);
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // TODO: 17/4/21 重构
-        View view = inflater.inflate(R.layout.fragment_recomment, null);
-        View header_view2 = inflater.inflate(R.layout.header_view2, null);
-
-        initView(view,header_view2);
+        View view = inflater.inflate(R.layout.temp_tab_item, null);
+        initView(view);
         return view;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        TabContract.Presenter mPresenter = new TabPresenter(mActivity, this);
+        mPresenter.getProductList(mCategoryCode, "0", "7");
     }
 
-    private void initView(View view, View header_view2) {
+    private void initView(View view) {
+        mTopView = (SimpleDraweeView) view.findViewById(R.id.sd_top);
+        mListView = (FixGridView) view.findViewById(R.id.lv);
+        Random random = new Random();
+        int i = random.nextInt(10);
+        mAdapter = new TempTabAdapter(mActivity, i>4);
+        mListView.setNumColumns(i>4?2:3);
+        mListView.setAdapter(mAdapter);
 
-        mTopView_header2 = (SimpleDraweeView) header_view2.findViewById(R.id.sd_view);
-        mTitle_header2 = (TextView) header_view2.findViewById(R.id.tv_tip);
-        mBottom_header2 = (LinearLayout) header_view2.findViewById(R.id.ll_bottom);
-
-        mContentView = (ListView) view.findViewById(R.id.lv);
-
-        mPageItemAdapter = new PageItemAdapter(getActivity(), true);
-        mContentView.addHeaderView(header_view2);
-        if (mTitle.equals("4K")) mBottom_header2.setVisibility(View.GONE);
-        mContentView.setAdapter(mPageItemAdapter);
-
-    }
-
-    @Override
-    public void setRecomment(List<RecommendModel> list) {
-        mTopView_header2.setImageURI(list.get(0).getRecommendedVideos().get(0).getImageURL());
-        mTitle_header2.setText(list.get(0).getRecommendedVideos().get(0).getTitle());
-        mPageItemAdapter.setData(list);
-    }
-
-    @Override
-    public void showRecommendVideo(RecommendVideoModel model) {
-
-    }
-
-    @Override
-    public void showProductInfoList(List<ProductInfoModel> list) {
-
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                List<ProductModel> datas = mAdapter.getDatas();
+                if (datas != null) {
+                    ProductModel productInfoModel = datas.get(position);
+                    Intent intent = new Intent(mActivity, PlayActivity.class);
+                    intent.putExtra(PlayActivity.PRODUCT_CODE, productInfoModel.getSeriesCode());
+                    mActivity.startActivity(intent);
+                }
+            }
+        });
     }
 
     @Override
-    public void setTitle(String title) {
-        mTitle = title;
+    public void showError(String error) {
+        UIUtil.showToast(mActivity, error+"");
+    }
+
+    @Override
+    public void showProductList(List<ProductModel> list) {
+        if (list != null) {
+            ProductModel productModel = list.get(0);
+            mTopView.setImageURI(productModel.getPictureurl1());
+            mTopView.setOnClickListener((v) -> {
+                Intent intent = new Intent(mActivity, PlayActivity.class);
+                intent.putExtra(PlayActivity.PRODUCT_CODE, productModel.getSeriesCode());
+                startActivity(intent);
+            });
+
+            mAdapter.setDatas(list.subList(1, 7));
+        }
     }
 }

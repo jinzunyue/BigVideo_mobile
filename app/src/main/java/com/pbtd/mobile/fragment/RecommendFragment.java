@@ -15,42 +15,46 @@ import android.widget.TextView;
 import com.pbtd.mobile.R;
 import com.pbtd.mobile.adapter.PageItemAdapter;
 import com.pbtd.mobile.adapter.RecommentPagerAdapter;
-import com.pbtd.mobile.model.ProductInfoModel;
-import com.pbtd.mobile.model.RecommendModel;
-import com.pbtd.mobile.model.RecommendVideoModel;
-import com.pbtd.mobile.presenter.recomment.RecommentContract;
-import com.pbtd.mobile.presenter.recomment.RecommentPresenter;
+import com.pbtd.mobile.model.ProductModel;
+import com.pbtd.mobile.model.temp.RecommendModel;
+import com.pbtd.mobile.presenter.tab.TabContract;
+import com.pbtd.mobile.presenter.tab.TabPresenter;
 import com.pbtd.mobile.utils.UIUtil;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
  * Created by xuqinchao on 17/4/19.
  */
 
-public class RecommendFragment extends BaseFragment implements RecommentContract.View {
+public class RecommendFragment extends BaseFragment implements TabContract.View {
 
-    public static final String RECOMMEND_CODE = "recommendCode";
-
+    public static final String LIST = "list";
     private RecommentPagerAdapter mViewPagerAdapter;
     private LinearLayout mIndicator;
     private TextView mTitleView;
     private ListView mContentView;
     private PageItemAdapter mPageItemAdapter;
     private ViewPager mViewPager;
-    private RecommentPresenter mPresenter;
+    private TabContract.Presenter mPresenter;
+    private List<RecommendModel> mRecommendModelList;
+    private List<String> mRecommendTitleList;
+    public static HashMap<String, Integer> mRecommendIcon = new HashMap<>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        mTitle = "推荐";
         Bundle arguments = getArguments();
-        if (arguments != null) {
-            String recommend_code = arguments.getString(RECOMMEND_CODE);
-            mPresenter = new RecommentPresenter(mActivity, this);
-            mPresenter.getRecommentVideo(recommend_code);
-        }
+        mRecommendTitleList = arguments.getStringArrayList(LIST);
+
+        mRecommendIcon.put("电视剧", R.mipmap.tv_video);
+        mRecommendIcon.put("电影", R.mipmap.movie);
+        mRecommendIcon.put("综艺", R.mipmap.variety);
+        mRecommendIcon.put("动漫", R.mipmap.anime);
+        mRecommendIcon.put("纪录片", R.mipmap.information);// TODO: 17/5/4 这里用的是资讯的图片
+        mRecommendIcon.put("推荐", R.mipmap.hot);
     }
 
     @Nullable
@@ -67,6 +71,8 @@ public class RecommendFragment extends BaseFragment implements RecommentContract
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mPresenter = new TabPresenter(mActivity, this);
+        mPresenter.getProductList(null, null, null);
     }
 
     private void initView(View view, View header_view, View footer_view) {
@@ -115,30 +121,6 @@ public class RecommendFragment extends BaseFragment implements RecommentContract
         adjustView.setOnClickListener((adjust_view) -> UIUtil.showToast(getActivity(), "调整栏目"));
     }
 
-    @Override
-    public void setRecomment(List<RecommendModel> list) {
-
-        mViewPagerAdapter.setData(list.get(0).getRecommendedVideos());
-//        mViewPager.setCurrentItem(Integer.MAX_VALUE/2 - Integer.MAX_VALUE/2%mViewPagerAdapter.getDataSize());
-
-        int size = 0;
-        if (list != null && list.get(0) != null && list.get(0).getRecommendedVideos() != null)
-            size = list.get(0).getRecommendedVideos().size();
-        initIndicator(size);
-
-        mPageItemAdapter.setData(list);
-    }
-
-    @Override
-    public void showRecommendVideo(RecommendVideoModel model) {
-
-    }
-
-    @Override
-    public void showProductInfoList(List<ProductInfoModel> list) {
-
-    }
-
     private void initIndicator(int size) {
         mIndicator.removeAllViews();
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(UIUtil.convertDpToPixel(getActivity(), 4), UIUtil.convertDpToPixel(getActivity(), 4));
@@ -162,4 +144,26 @@ public class RecommendFragment extends BaseFragment implements RecommentContract
     public void setTitle(String title) {
         mTitle = title;
     }
+
+    @Override
+    public void showError(String error) {
+
+    }
+
+    @Override
+    public void showProductList(List<ProductModel> list) {
+        mRecommendModelList = new ArrayList<>();
+        for (String name : mRecommendTitleList) {
+            RecommendModel r = new RecommendModel();
+            r.setName(name);
+            for (ProductModel model : list) {
+                if(model.getProgramtype().equals(name))
+                    r.getList().add(model);
+            }
+            mRecommendModelList.add(r);
+        }
+
+        mPageItemAdapter.setData(mRecommendModelList);
+    }
+
 }

@@ -2,8 +2,10 @@ package com.pbtd.mobile.presenter.play;
 
 import android.support.annotation.NonNull;
 
-import com.pbtd.mobile.model.PlayInfoModel;
-import com.pbtd.mobile.model.ProductInfoListModel;
+import com.pbtd.mobile.model.ProductDetailModel;
+import com.pbtd.mobile.model.ProductModel;
+
+import java.util.List;
 
 /**
  * Created by xuqinchao on 17/4/19.
@@ -11,15 +13,13 @@ import com.pbtd.mobile.model.ProductInfoListModel;
 
 public interface PlayContract {
     interface Presenter {
-        void getPlayInfo(@NonNull String product_code);
-
-        void getRelativeProductInfoList(@NonNull String packageCodes, @NonNull String productCode,
-                                        @NonNull String pageLimit, @NonNull String pageNum);
+        void getProductDetail(@NonNull String productCode);
+        void getRelativeProductList(@NonNull String productCode);
     }
 
     interface View {
-        void showPlayInfo(PlayInfoModel playInfoModel);
-
-        void showRelativeProductInfoList(ProductInfoListModel productInfoListModel);
+        void showError(String error);
+        void showProductDetail(List<ProductDetailModel> model);
+        void showRelativeProductInfo(List<ProductModel> model);
     }
 }

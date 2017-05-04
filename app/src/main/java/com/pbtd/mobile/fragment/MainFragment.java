@@ -9,16 +9,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import com.pbtd.mobile.Constants;
 import com.pbtd.mobile.R;
-import com.pbtd.mobile.model.NavigationInfoModel;
+import com.pbtd.mobile.adapter.MainTabAdapter;
+import com.pbtd.mobile.model.CategoryModel;
 import com.pbtd.mobile.presenter.main.MainContract;
 import com.pbtd.mobile.presenter.main.MainPresenter;
 import com.pbtd.mobile.utils.UIUtil;
-import com.pbtd.mobile.adapter.MainTabAdapter;
 import com.pbtd.mobile.widget.PagerSlidingTabStrip;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by xuqinchao on 17/4/19.
@@ -44,8 +44,7 @@ public class MainFragment extends BaseFragment implements MainContract.View{
         super.onViewCreated(view, savedInstanceState);
 
         mPresenter = new MainPresenter(mActivity, this);
-//        mPresenter.getNavigationInfo();
-        showNavigation(null);
+        mPresenter.getCategoryList();
     }
 
     private void initView(View view) {
@@ -58,10 +57,9 @@ public class MainFragment extends BaseFragment implements MainContract.View{
         mAdapter = new MainTabAdapter(getChildFragmentManager());
         mViewPager.setAdapter(mAdapter);
 
-        searchView.setOnClickListener((view_search) -> UIUtil.showToast(getActivity(), "搜索"));
-        historyView.setOnClickListener((view_search) -> UIUtil.showToast(getActivity(), "播放记录"));
-        moreTabView.setOnClickListener((view_search) -> UIUtil.showToast(getActivity(), "更多频道"));
-
+        searchView.setOnClickListener((search_view) -> UIUtil.showToast(getActivity(), "搜索"));
+        historyView.setOnClickListener((history_view) -> UIUtil.showToast(getActivity(), "播放记录"));
+        moreTabView.setOnClickListener((more_view) -> UIUtil.showToast(getActivity(), "更多频道"));
     }
 
     @Override
@@ -70,52 +68,30 @@ public class MainFragment extends BaseFragment implements MainContract.View{
     }
 
     @Override
-    public void showNavigation(NavigationInfoModel navigationInfoModel) {
-        ArrayList<BaseFragment> tabs = new ArrayList<>();
-//        for (int i = 0; i < navigationInfoModel.navigationItem.size(); i++) {
-//            NavigationInfoModel.NavigationItem navigationItem = navigationInfoModel.navigationItem.get(i);
-//            TabItemFragment recomment = new TabItemFragment();
-//            Bundle bundle = new Bundle();
-//            bundle.putString(TabItemFragment.RECOMMEND_CODE, navigationItem.recommendCode);
-//            recomment.setArguments(bundle);
-//            recomment.setTitle(navigationItem.name);
-//            tabs.add(recomment);
-//        }
+    public void showCategoryList(List<CategoryModel> list) {
+        List<BaseFragment> tabs = new ArrayList<>();
+        ArrayList<String> recommendModelList = new ArrayList<>();
+        recommendModelList.add("推荐");
 
-        TempFragment tempFragment = new TempFragment();
-        tempFragment.setTitle("电影");
+        RecommendFragment recommendFragment = new RecommendFragment();
+        tabs.add(recommendFragment);
+
+        for (CategoryModel model : list) {
+            String name = model.getName();
+            String categorycode = model.getCategorycode();
+            TabItemFragment itemFragment = new TabItemFragment();
+            itemFragment.setTitle(name);
+            Bundle bundle = new Bundle();
+            bundle.putString(TabItemFragment.CATEGORY_CODE, categorycode);
+            itemFragment.setArguments(bundle);
+            tabs.add(itemFragment);
+
+            recommendModelList.add(name);
+        }
+        recommendFragment.setTitle("推荐");
         Bundle bundle = new Bundle();
-        bundle.putString(TempFragment.PACKAGE_CODE, Constants.TEMP_MOVIE_PACKAGE_CODE);
-        tempFragment.setArguments(bundle);
-        tabs.add(tempFragment);
-
-        TempFragment tempFragment_tv = new TempFragment();
-        tempFragment_tv.setTitle("电视剧");
-        Bundle bundle_tv = new Bundle();
-        bundle_tv.putString(TempFragment.PACKAGE_CODE, Constants.TEMP_TV_PACKAGE_CODE);
-        tempFragment_tv.setArguments(bundle_tv);
-        tabs.add(tempFragment_tv);
-
-        TempFragment tempFragment_variety = new TempFragment();
-        tempFragment_variety.setTitle("综艺");
-        Bundle bundle_variety = new Bundle();
-        bundle_variety.putString(TempFragment.PACKAGE_CODE, Constants.TEMP_VARIETY_PACKAGE_CODE);
-        tempFragment_variety.setArguments(bundle_variety);
-        tabs.add(tempFragment_variety);
-
-        TempFragment tempFragment_anime = new TempFragment();
-        tempFragment_anime.setTitle("动漫");
-        Bundle bundle_anime = new Bundle();
-        bundle_anime.putString(TempFragment.PACKAGE_CODE, Constants.TEMP_ANIME_PACKAGE_CODE);
-        tempFragment_anime.setArguments(bundle_anime);
-        tabs.add(tempFragment_anime);
-
-        TempFragment tempFragment_reco = new TempFragment();
-        tempFragment_reco.setTitle("纪录片");
-        Bundle bundle_reco = new Bundle();
-        bundle_reco.putString(TempFragment.PACKAGE_CODE, Constants.TEMP_RECOMDER_PACKAGE_CODE);
-        tempFragment_reco.setArguments(bundle_reco);
-        tabs.add(tempFragment_reco);
+        bundle.putStringArrayList(RecommendFragment.LIST, recommendModelList);
+        recommendFragment.setArguments(bundle);
 
         mAdapter.setData(tabs);
         mIndicator.setViewPager(mViewPager);

@@ -5,6 +5,8 @@ package com.pbtd.mobile.model;
  */
 
 public class BaseModel<T> {
-    public String retCode;
-    public T retMsg;
+    public boolean success;
+    public boolean validate;
+    public String message;
+    public T result;
 }

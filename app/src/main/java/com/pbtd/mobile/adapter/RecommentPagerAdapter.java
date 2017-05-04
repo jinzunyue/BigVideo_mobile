@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.pbtd.mobile.model.RecommendedVideo;
+import com.pbtd.mobile.model.ProductModel;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ import java.util.List;
 
 public class RecommentPagerAdapter extends PagerAdapter {
 
-    private List<RecommendedVideo> mDatas;
+    private List<ProductModel> mDatas;
     private Context mContext;
 
     public RecommentPagerAdapter(Context mContext) {
@@ -37,9 +37,9 @@ public class RecommentPagerAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         int realPosition = getRealPosition(position);
-        RecommendedVideo recommendedVideo = mDatas.get(realPosition);
+        ProductModel recommendedVideo = mDatas.get(realPosition);
         SimpleDraweeView simpleDraweeView = new SimpleDraweeView(mContext);
-        simpleDraweeView.setImageURI(recommendedVideo.getImageURL());
+        simpleDraweeView.setImageURI(recommendedVideo.getPictureurl1());
         simpleDraweeView.setScaleType(ImageView.ScaleType.FIT_XY);
         container.addView(simpleDraweeView);
         return simpleDraweeView;
@@ -53,15 +53,15 @@ public class RecommentPagerAdapter extends PagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         if (mDatas==null) return "";
-        return mDatas.get(getRealPosition(position)).getTitle();
+        return mDatas.get(getRealPosition(position)).getSeriesName();
     }
 
-    public void setData(List<RecommendedVideo> datas) {
+    public void setData(List<ProductModel> datas) {
         mDatas = datas;
         notifyDataSetChanged();
     }
 
-    public List<RecommendedVideo> getDatas() {
+    public List<ProductModel> getDatas() {
         return mDatas;
     }
 

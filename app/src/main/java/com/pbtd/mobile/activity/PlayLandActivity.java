@@ -42,7 +42,6 @@ public class PlayLandActivity extends BaseActivity {
         });
         mVideoView.setOnErrorListener((mp, what, extra) -> false);
 
-
         mMediaController = new MediaController(this);
         mVideoView.setMediaController(mMediaController);
         mVideoView.setVideoPath(mUrl);

@@ -8,7 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.pbtd.mobile.R;
-import com.pbtd.mobile.model.RecommendedVideo;
+import com.pbtd.mobile.model.ProductModel;
 import com.pbtd.mobile.utils.UIUtil;
 
 import java.util.List;
@@ -20,7 +20,7 @@ import java.util.List;
 public class CommentItem {
 
     private Context mContext;
-    private List<RecommendedVideo> mData;
+    private List<ProductModel> mData;
     private int mType_id;
     private boolean mIsRecomment;
     private View mRootView;
@@ -33,7 +33,7 @@ public class CommentItem {
      * @param recommendedVideo
      * @param isRecomment      是否是首页
      */
-    public CommentItem(Context context, int type_id, List<RecommendedVideo> recommendedVideo, boolean isRecomment) {
+    public CommentItem(Context context, int type_id, List<ProductModel> recommendedVideo, boolean isRecomment) {
         mContext = context;
         mData = recommendedVideo;
         mType_id = type_id;

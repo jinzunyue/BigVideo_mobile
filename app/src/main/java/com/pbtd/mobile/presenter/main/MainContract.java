@@ -1,6 +1,8 @@
 package com.pbtd.mobile.presenter.main;
 
-import com.pbtd.mobile.model.NavigationInfoModel;
+import com.pbtd.mobile.model.CategoryModel;
+
+import java.util.List;
 
 /**
  * Created by xuqinchao on 17/4/19.
@@ -8,11 +10,11 @@ import com.pbtd.mobile.model.NavigationInfoModel;
 
 public interface MainContract {
     interface Presenter {
-        void getNavigationInfo();
+        void getCategoryList();
     }
 
     interface View {
         void showError(String error);
-        void showNavigation(NavigationInfoModel navigationInfoModel);
+        void showCategoryList(List<CategoryModel> list);
     }
 }

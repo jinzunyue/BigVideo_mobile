@@ -9,13 +9,13 @@ import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.pbtd.mobile.R;
-import com.pbtd.mobile.model.ProductInfoModel;
+import com.pbtd.mobile.model.ProductModel;
 
 /**
  * Created by xuqinchao on 17/4/27.
  */
 
-public class TempTabAdapter extends BaseListAdapter<ProductInfoModel> {
+public class TempTabAdapter extends BaseListAdapter<ProductModel> {
     private boolean mIsBig;
     public TempTabAdapter(Context mContext, boolean isBig) {
         super(mContext);
@@ -39,10 +39,10 @@ public class TempTabAdapter extends BaseListAdapter<ProductInfoModel> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        ProductInfoModel productInfoModel = mDatas.get(position);
+        ProductModel productModel = mDatas.get(position);
         viewHolder.tv_sub_title.setVisibility(View.GONE);
-        viewHolder.sd_view.setImageURI(productInfoModel.pictureUrl);
-        viewHolder.tv_main_title.setText(TextUtils.isEmpty(productInfoModel.productName)?"好电影":productInfoModel.productName);
+        viewHolder.sd_view.setImageURI(productModel.getPictureurl1());
+        viewHolder.tv_main_title.setText(TextUtils.isEmpty(productModel.getSeriesName())?"好电影":productModel.getSeriesName());
         return convertView;
     }
 

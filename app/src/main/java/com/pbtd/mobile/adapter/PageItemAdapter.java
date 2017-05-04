@@ -9,8 +9,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.pbtd.mobile.R;
-import com.pbtd.mobile.model.RecommendModel;
-import com.pbtd.mobile.model.RecommendedVideo;
+import com.pbtd.mobile.fragment.RecommendFragment;
+import com.pbtd.mobile.model.ProductModel;
+import com.pbtd.mobile.model.temp.RecommendModel;
 import com.pbtd.mobile.utils.UIUtil;
 import com.pbtd.mobile.widget.FixGridView;
 
@@ -62,15 +63,15 @@ public class PageItemAdapter extends BaseAdapter {
             viewHolder.mBottomTip = (LinearLayout) convertView.findViewById(R.id.ll_bottom_tip);
             viewHolder.mTipView = (TextView) convertView.findViewById(R.id.tv_bottom_tip);
             boolean isBig;
-            switch (recommendModel.getTypeID()) {
-                case "3206":
-                case "3207":
-                    isBig = true;
-                    break;
-                case "3208":
+            switch (recommendModel.getName()) {
+                case "电视剧":
+                case "电影":
+                case "综艺":
                     isBig = false;
+                    viewHolder.mGridView.setNumColumns(3);
                     break;
                 default:
+                    viewHolder.mGridView.setNumColumns(2);
                     isBig = true;
             }
             viewHolder.mAdapter = new CommentItemAdapter(mContext, isBig);
@@ -79,81 +80,22 @@ public class PageItemAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
+        String name = recommendModel.getName();
         viewHolder.mIconView.setVisibility(mIsRecomment ?View.VISIBLE:View.GONE);
         viewHolder.mIconLineView.setVisibility(mIsRecomment ?View.GONE:View.VISIBLE);
-//        viewHolder.mBottomTip.setOnClickListener((click_view) -> UIUtil.showToast(mContext, "更多精彩内容"));
-        viewHolder.mBottomTip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                UIUtil.showToast(mContext, "更多精彩内容");
-            }
-        });
+        viewHolder.mBottomTip.setOnClickListener((click_view) -> UIUtil.showToast(mContext, "更多精彩内容"));
 
-        switch (recommendModel.getTypeID()) {
-            case "3206"://点播
-                viewHolder.mTitleView.setText("热门");
-                viewHolder.mIconView.setImageResource(R.mipmap.hot);
-                viewHolder.mGridView.setNumColumns(2);
-                viewHolder.mAdapter.setData(getWantedDatas(recommendModel.getRecommendedVideos(), 4));
-                break;
-            case "3207"://电视剧轮播
-                viewHolder.mTitleView.setText("电视剧轮播");
-                viewHolder.mIconView.setImageResource(R.mipmap.tv_video);
-                viewHolder.mGridView.setNumColumns(3);
-                viewHolder.mAdapter.setData(getWantedDatas(recommendModel.getRecommendedVideos(), 6));
-                break;
-            case "3208"://电视剧列表
-                viewHolder.mTitleView.setText("电视剧列表");
-                viewHolder.mIconView.setImageResource(R.mipmap.movie);
-                viewHolder.mGridView.setNumColumns(3);
-                viewHolder.mAdapter.setData(getWantedDatas(recommendModel.getRecommendedVideos(), 6));
-                break;
-            case "3203"://电影
-                viewHolder.mTitleView.setText("电影");
-                viewHolder.mIconView.setImageResource(R.mipmap.movie);
-                viewHolder.mGridView.setNumColumns(3);
-                viewHolder.mAdapter.setData(getWantedDatas(recommendModel.getRecommendedVideos(), 6));
-                break;
-            default:
-                viewHolder.mTitleView.setText("娱乐");
-                viewHolder.mIconView.setImageResource(R.mipmap.entertainment);
-                viewHolder.mGridView.setNumColumns(2);
-                viewHolder.mAdapter.setData(getWantedDatas(recommendModel.getRecommendedVideos(), 4));
-                break;
-        }
-
+        viewHolder.mTitleView.setText(name);
+        viewHolder.mIconView.setImageResource(RecommendFragment.mRecommendIcon.get(name));
+        viewHolder.mAdapter.setData(getWantedDatas(recommendModel.getList(),
+                (name.equals("电影") || name.equals("电视剧") || name.equals("综艺"))?6:4));
         viewHolder.mGridView.setAdapter(viewHolder.mAdapter);
 
         return convertView;
     }
 
-    // TODO: 17/4/21 算法优化
     public void setData(List<RecommendModel> datas) {
         mData.clear();
-        for (int i = 0; i < datas.size(); i++) {
-            if (datas.get(i).getTypeID().equals("3206")) {
-                mData.add(datas.get(i));
-                datas.remove(i);
-                break;
-            }
-        }
-
-        for (int i = 0; i < datas.size(); i++) {
-            if (datas.get(i).getTypeID().equals("3207")) {
-                mData.add(datas.get(i));
-                datas.remove(i);
-                break;
-            }
-        }
-
-        for (int i = 0; i < datas.size(); i++) {
-            if (datas.get(i).getTypeID().equals("3208")) {
-                mData.add(datas.get(i));
-                datas.remove(i);
-                break;
-            }
-        }
-
         mData.addAll(datas);
         notifyDataSetChanged();
     }
@@ -168,8 +110,8 @@ public class PageItemAdapter extends BaseAdapter {
         public CommentItemAdapter mAdapter;
     }
 
-    private List<RecommendedVideo> getWantedDatas(List<RecommendedVideo> list, int count) {
-        if (list == null || list.size()==0) return new ArrayList<RecommendedVideo>();
+    private List<ProductModel> getWantedDatas(List<ProductModel> list, int count) {
+        if (list == null || list.size()==0) return new ArrayList<ProductModel>();
         while (list.size() < count) {
             list.addAll(list);
         }

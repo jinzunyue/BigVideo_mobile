@@ -1,239 +1,240 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.pbtd.mobile.activity.PlayActivity"
-    android:id="@+id/root"
-    >
+    tools:context="com.pbtd.mobile.activity.PlayActivity">
 
     <RelativeLayout
         android:id="@+id/rl_top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/black"
-        >
+        android:background="@color/black">
+
         <VideoView
             android:id="@+id/video_view"
             android:layout_width="match_parent"
             android:layout_height="210dp"
-            android:layout_centerInParent="true"
-            />
+            android:layout_centerInParent="true" />
+
         <ImageView
             android:id="@+id/iv_back"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
-            android:src="@mipmap/back_play"
-            />
+            android:layout_marginTop="10dp"
+            android:src="@mipmap/back_play" />
 
         <ImageView
             android:id="@+id/iv_full_screen"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_alignParentRight="true"
-            android:src="@mipmap/full_screen"
-            android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
-            />
+            android:layout_marginTop="10dp"
+            android:src="@mipmap/full_screen" />
     </RelativeLayout>
 
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="none"
         android:layout_below="@id/rl_top"
-        >
+        android:scrollbars="none">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            >
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                >
-                <TextView
-                    android:id="@+id/tv_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="15sp"
-                    android:textColor="@color/black"
-                    android:layout_marginTop="15dp"
-                    />
-
-                <TextView
-                    android:id="@+id/tv_type"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="12sp"
-                    android:textColor="@color/gray_text"
-                    android:layout_below="@id/tv_name"
-                    android:layout_marginTop="5dp"
-                    android:text="动作"
-                    />
-
-                <ImageView
-                    android:id="@+id/iv_more"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginTop="18dp"
-                    android:layout_marginRight="12dp"
-                    android:src="@drawable/select_arrow"
-                    android:scaleType="centerInside"
-                    />
-
-                <TextView
-                    android:id="@+id/tv_description"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="升级了卡就上课了分解磷"
-                    android:textSize="12sp"
-                    android:textColor="@color/gray_text"
-                    android:layout_below="@id/tv_type"
-                    android:paddingBottom="5dp"
-                    />
-
-            </RelativeLayout>
+            android:orientation="vertical">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
+                android:paddingBottom="10dp"
                 >
 
                 <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/tv_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_name"
+                    android:layout_marginTop="5dp"
+                    android:textColor="@color/gray_text"
+                    android:textSize="12sp" />
+
+
+                <ImageView
+                    android:id="@+id/iv_more"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="12dp"
+                    android:layout_marginTop="18dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/select_arrow" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_detail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingRight="10dp"
+                android:paddingLeft="10dp"
+                android:paddingBottom="5dp"
+                android:visibility="gone"
+                >
+                <TextView
+                    android:id="@+id/tv_director_xml"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="导演："
+                    android:textSize="12sp"
+                    android:textColor="@color/gray_text"
+                    />
+                <TextView
+                    android:id="@+id/tv_director"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/tv_director_xml"
+                    android:layout_alignTop="@id/tv_director_xml"
+                    android:textSize="12sp"
+                    android:textColor="@color/bule_text"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_year_xml"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@id/tv_director"
+                    android:layout_toRightOf="@id/tv_director"
+                    android:layout_marginLeft="20dp"
+                    android:text="年份："
+                    android:textColor="@color/gray_text"
+                    android:textSize="12sp"
+                    />
+                <TextView
+                    android:id="@+id/tv_year"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@id/tv_year_xml"
+                    android:layout_toRightOf="@id/tv_year_xml"
+                    android:textSize="12sp"
+                    android:textColor="@color/bule_text"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_actor_xml"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_director"
+                    android:layout_marginTop="3dp"
+                    android:text="主演："
+                    android:textSize="12sp"
+                    android:textColor="@color/gray_text"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_actor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/tv_actor_xml"
+                    android:layout_alignTop="@id/tv_actor_xml"
+                    android:textSize="12sp"
+                    android:textColor="@color/bule_text"
+                    />
+                <TextView
+                    android:id="@+id/tv_description_xml"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_actor_xml"
+                    android:paddingBottom="5dp"
+                    android:layout_marginTop="3dp"
+                    android:textColor="@color/gray_text"
+                    android:textSize="12sp"
+                    android:text="简介："
+                    />
+
+                <TextView
+                    android:id="@+id/tv_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/gray_text"
+                    android:textSize="12sp"
+                    android:layout_toRightOf="@id/tv_description_xml"
+                    android:layout_alignTop="@id/tv_description_xml"
+                    />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_select"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <include layout="@layout/divider_line" />
+
+                <TextView
+                    android:id="@+id/tv_select_title"
                     android:layout_width="wrap_content"
                     android:layout_height="44dp"
-                    android:text="选集"
-                    android:textSize="15sp"
-                    android:textColor="@color/black"
                     android:gravity="center_vertical"
+                    android:text="选集"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="7.5dp"
                     />
 
                 <TextView
                     android:id="@+id/tv_update"
                     android:layout_width="wrap_content"
                     android:layout_height="44dp"
-                    android:text="更新至24集 | 共55集"
-                    android:textSize="12sp"
-                    android:textColor="@color/gray_text"
-                    android:gravity="center_vertical"
                     android:layout_alignParentRight="true"
+                    android:gravity="center_vertical"
+                    android:text="更新至24集 | 共55集"
+                    android:textColor="@color/gray_text"
+                    android:textSize="12sp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="7.5dp"
                     />
 
                 <View
                     android:id="@+id/view_divider"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
+                    android:layout_height="0.5dp"
+                    android:background="@color/divide_line"
                     android:layout_below="@id/tv_update"
                     />
 
-                <!--<LinearLayout-->
-                    <!--android:id="@+id/ll_select"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:orientation="horizontal"-->
-                    <!--android:layout_below="@id/view_divider"-->
-                    <!--&gt;-->
-
-                    <!--<LinearLayout-->
-                    <!--android:id="@+id/ll_1_10"-->
-                    <!--android:layout_width="48dp"-->
-                    <!--android:layout_height="40dp"-->
-                    <!--android:orientation="horizontal"-->
-                    <!--&gt;-->
-                    <!--<View-->
-                        <!--android:layout_width="1dp"-->
-                        <!--android:layout_height="10dp"-->
-                        <!--android:background="@color/gray_text"-->
-                        <!--/>-->
-                    <!--<TextView-->
-                        <!--android:id="@+id/tv_1_10"-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="match_parent"-->
-                        <!--android:gravity="center"-->
-                        <!--android:text="1-10"-->
-                        <!--android:textSize="13dp"-->
-                        <!--android:textColor="@color/bule_text"-->
-                        <!--/>-->
-                <!--</LinearLayout>-->
-
-                    <!--<LinearLayout-->
-                        <!--android:id="@+id/ll_11_20"-->
-                        <!--android:layout_width="48dp"-->
-                        <!--android:layout_height="40dp"-->
-                        <!--android:orientation="horizontal"-->
-                        <!--&gt;-->
-                        <!--<View-->
-                            <!--android:layout_width="1dp"-->
-                            <!--android:layout_height="10dp"-->
-                            <!--android:background="@color/gray_text"-->
-                            <!--/>-->
-                        <!--<TextView-->
-                            <!--android:id="@+id/tv_11_20"-->
-                            <!--android:layout_width="match_parent"-->
-                            <!--android:layout_height="match_parent"-->
-                            <!--android:gravity="center"-->
-                            <!--android:text="11-20"-->
-                            <!--android:textSize="13dp"-->
-                            <!--android:textColor="@color/gray_text"-->
-                            <!--/>-->
-                    <!--</LinearLayout>-->
-
-                    <!--<LinearLayout-->
-                        <!--android:id="@+id/ll_21_30"-->
-                        <!--android:layout_width="48dp"-->
-                        <!--android:layout_height="40dp"-->
-                        <!--android:orientation="horizontal"-->
-                        <!--&gt;-->
-                        <!--<View-->
-                            <!--android:layout_width="1dp"-->
-                            <!--android:layout_height="10dp"-->
-                            <!--android:background="@color/gray_text"-->
-                            <!--/>-->
-                        <!--<TextView-->
-                            <!--android:id="@+id/tv_21_30"-->
-                            <!--android:layout_width="match_parent"-->
-                            <!--android:layout_height="match_parent"-->
-                            <!--android:gravity="center"-->
-                            <!--android:text="21-30"-->
-                            <!--android:textSize="13dp"-->
-                            <!--android:textColor="@color/gray_text"-->
-                            <!--/>-->
-                    <!--</LinearLayout>-->
-
-                <!--</LinearLayout>-->
-
-                <!--<com.pbtd.mobile.widget.FixGridView-->
-                    <!--android:id="@+id/gd_select"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_below="@id/ll_select"-->
-                    <!--android:scrollbars="none"-->
-                    <!--android:horizontalSpacing="6.5dp"-->
-                    <!--android:verticalSpacing="11dp"-->
-                    <!--/>-->
-                
                 <HorizontalScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="70dp"
+                    android:layout_height="match_parent"
                     android:scrollbars="none"
-                    android:layout_below="@id/tv_update"
+                    android:layout_below="@id/view_divider"
                     >
-                    <RadioGroup
-                        android:id="@+id/ll_selected"
+                    <LinearLayout
+                        android:id="@+id/ll_select_container"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:orientation="horizontal"
+                        android:layout_below="@id/view_divider"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
                         />
-
                 </HorizontalScrollView>
+
             </RelativeLayout>
 
             <include layout="@layout/divider_line" />
@@ -241,23 +242,22 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="47dp"
-                android:text="相关推荐"
-                android:textSize="15sp"
-                android:textColor="@color/black"
                 android:gravity="center"
                 android:paddingLeft="10dp"
-                />
+                android:text="相关推荐"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
             <com.pbtd.mobile.widget.FixGridView
                 android:id="@+id/lv_recommend"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:horizontalSpacing="5dp"
                 android:numColumns="3"
-                android:scrollbars="none"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:horizontalSpacing="5dp"
-                android:verticalSpacing="5dp"
-                />
+                android:scrollbars="none"
+                android:verticalSpacing="5dp" />
         </LinearLayout>
     </ScrollView>
 
