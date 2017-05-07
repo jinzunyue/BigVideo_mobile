@@ -147,7 +147,7 @@ public class RecommendFragment extends BaseFragment implements TabContract.View 
 
     @Override
     public void showError(String error) {
-
+        UIUtil.showToast(mActivity, error);
     }
 
     @Override
@@ -164,6 +164,21 @@ public class RecommendFragment extends BaseFragment implements TabContract.View 
         }
 
         mPageItemAdapter.setData(mRecommendModelList);
+
+        for (int i = 0; i < mRecommendModelList.size(); i++) {
+            RecommendModel recommendModel = mRecommendModelList.get(i);
+            if (recommendModel.getName().equals("推荐")) {
+                List<ProductModel> list1 = recommendModel.getList();
+                List<ProductModel> list2 = new ArrayList<>();
+                list2.addAll(list1);
+                if (list2.size() > 4) {
+                    mViewPagerAdapter.setData(list2.subList(4, list1.size() - 1));
+                } else {
+                    mViewPagerAdapter.setData(list2);
+                }
+                initIndicator(mViewPagerAdapter.getDataSize());
+            }
+        }
     }
 
 }

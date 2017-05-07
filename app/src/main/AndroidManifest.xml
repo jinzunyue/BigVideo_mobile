@@ -27,12 +27,13 @@
         <activity android:name=".activity.FourGActivity" />
         <activity
             android:name=".activity.PlayActivity"
-            android:launchMode="singleTop"
-            android:configChanges="orientation|keyboardHidden" />
-        <activity android:name=".activity.PlayLandActivity"
-            android:screenOrientation="landscape"
+            android:configChanges="orientation|keyboardHidden"
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".activity.PlayLandActivity"
             android:launchMode="singleTask"
-            ></activity>
+            android:screenOrientation="landscape" />
+        <activity android:name=".activity.HistoryAndCollectionActivity"></activity>
     </application>
 
 </manifest>

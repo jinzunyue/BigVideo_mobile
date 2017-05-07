@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="44dp">
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="44dp"
+            android:layout_height="match_parent"
+            android:src="@mipmap/back"
+            android:paddingLeft="11dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="13dp"
+            android:paddingTop="9dp"
+            />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="最近观看"
+            android:textSize="18sp"
+            android:textColor="@color/bule_text"
+            android:layout_centerInParent="true"
+            />
+        
+        <ImageView
+            android:id="@+id/iv_delete"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:src="@mipmap/delete"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp"
+            android:layout_marginRight="9dp"
+            android:layout_alignParentRight="true"
+            />
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="29dp"
+        android:text="今天"
+        android:textSize="14sp"
+        android:textColor="@color/black"
+        android:background="@color/divide_line"
+        android:gravity="center_vertical"
+        android:paddingLeft="12dp"
+        />
+    <ListView
+        android:id="@+id/lv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        android:cacheColorHint="@android:color/transparent"
+        android:dividerHeight="0.5dp"
+        android:divider="@color/divide_line"
+        />
+</LinearLayout>

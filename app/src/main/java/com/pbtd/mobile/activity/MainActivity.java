@@ -31,10 +31,8 @@ public class MainActivity extends BaseActivity{
         initView();
     }
 
-    /**
-     * 初始化组件
-     */
-    private void initView(){
+    @Override
+    protected void initView(){
         mTabHost = (FragmentTabHost)findViewById(android.R.id.tabhost);
         mTabHost.setup(this, getSupportFragmentManager(), R.id.realtabcontent);
         mTabHost.getTabWidget().setShowDividers(LinearLayout.SHOW_DIVIDER_NONE);

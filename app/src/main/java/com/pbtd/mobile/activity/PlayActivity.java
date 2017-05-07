@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
@@ -59,14 +61,21 @@ public class PlayActivity extends BaseActivity implements PlayContract.View {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
 
-        mProduct_code = getIntent().getStringExtra(PRODUCT_CODE);
+        initView();
+
         mPresenter = new PlayPresenter(this, this);
         mPresenter.getProductDetail(mProduct_code);
         mPresenter.getRelativeProductList(mProduct_code);
-        initVideoView();
     }
 
-    private void initVideoView() {
+    @Override
+    protected void getIntentData() {
+        super.getIntentData();
+        mProduct_code = mIntent.getStringExtra(PRODUCT_CODE);
+    }
+
+    @Override
+    protected void initView() {
         mScrollView = (ScrollView) findViewById(R.id.scrollView);
         ImageView backView = (ImageView) findViewById(R.id.iv_back);
         ImageView fullScreenView = (ImageView) findViewById(R.id.iv_full_screen);
@@ -87,6 +96,9 @@ public class PlayActivity extends BaseActivity implements PlayContract.View {
         mVideoView = (VideoView) findViewById(R.id.video_view);
         mMediaController = new MediaController(this);
         mVideoView.setMediaController(mMediaController);
+        ViewGroup.LayoutParams layoutParams = mMediaController.getLayoutParams();
+        layoutParams.height = UIUtil.convertDpToPixel(this, 42);
+
         mVideoView.setOnPreparedListener((mp) -> {
             mp.start();
             mVideoView.seekTo(mCurrentPosition);
@@ -94,6 +106,16 @@ public class PlayActivity extends BaseActivity implements PlayContract.View {
 
         mAdapter = new TempTabAdapter(this, false);
         mRelativeView.setAdapter(mAdapter);
+        mRelativeView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ProductModel productModel = mAdapter.getDatas().get(position);
+                String seriesCode = productModel.getSeriesCode();
+                Intent intent = new Intent(PlayActivity.this, PlayActivity.class);
+                intent.putExtra(PlayActivity.PRODUCT_CODE, seriesCode);
+                PlayActivity.this.startActivity(intent);
+            }
+        });
 
         backView.setOnClickListener((v -> this.finish()));
 

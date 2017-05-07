@@ -58,7 +58,7 @@ public class LiveVideoFragment extends BaseFragment {
         mRightAdapter = new LiveRightAdapter(mActivity);
         mRightGridView.setAdapter(mRightAdapter);
 
-        mVideoView.setOnErrorListener((mp, what, extra) -> false);
+        mVideoView.setOnErrorListener((mp, what, extra) -> true);
         mVideoView.setMediaController(new MediaController(mActivity));
         mVideoView.setOnPreparedListener((mp) -> {
             mp.start();

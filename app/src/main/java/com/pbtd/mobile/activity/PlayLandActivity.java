@@ -28,19 +28,26 @@ public class PlayLandActivity extends BaseActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_play_land);
 
-        mUrl = getIntent().getStringExtra(URL);
-        mPosition = getIntent().getIntExtra(POSITION, 0);
         initView();
+
+        mPosition = getIntent().getIntExtra(POSITION, 0);
     }
 
-    private void initView() {
+    @Override
+    protected void getIntentData() {
+        super.getIntentData();
+        mUrl = mIntent.getStringExtra(URL);
+    }
+
+    @Override
+    protected void initView() {
         ImageView mBackView = (ImageView) findViewById(R.id.iv_back);
         mVideoView = (VideoView) findViewById(R.id.video_view);
         mVideoView.setOnPreparedListener((mp) -> {
             mp.start();
             mVideoView.seekTo(mPosition);
         });
-        mVideoView.setOnErrorListener((mp, what, extra) -> false);
+        mVideoView.setOnErrorListener((mp, what, extra) -> true);
 
         mMediaController = new MediaController(this);
         mVideoView.setMediaController(mMediaController);

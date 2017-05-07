@@ -14,6 +14,11 @@ public class VipBuyActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vip_buy);
 
+        initView();
+    }
+
+    @Override
+    protected void initView() {
         Button btn_buy = (Button) findViewById(R.id.btn_buy);
         btn_buy.setOnClickListener((view) -> UIUtil.showToast(this, "订购成功"));
 

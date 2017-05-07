@@ -1,5 +1,6 @@
 package com.pbtd.mobile.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.pbtd.mobile.R;
+import com.pbtd.mobile.activity.HistoryAndCollectionActivity;
 import com.pbtd.mobile.utils.UIUtil;
 
 /**
@@ -42,8 +44,16 @@ public class MyFragment extends BaseFragment {
         mUpAvatarView.setOnClickListener((up_view) -> UIUtil.showToast(mActivity, "上传头像"));
         mNoteView.setOnClickListener((up_view) -> UIUtil.showToast(mActivity, "签到成功"));
         mMessageView.setOnClickListener((up_view) -> UIUtil.showToast(mActivity, "我的消息"));
-        mHistoryView.setOnClickListener((up_view) -> UIUtil.showToast(mActivity, "最近观看记录"));
-        mCollectionView.setOnClickListener((up_view) -> UIUtil.showToast(mActivity, "我的收藏"));
+        mHistoryView.setOnClickListener((up_view) -> {
+            Intent intent = new Intent(mActivity, HistoryAndCollectionActivity.class);
+            intent.putExtra(HistoryAndCollectionActivity.IS_HISTORY, true);
+            mActivity.startActivity(intent);
+        });
+        mCollectionView.setOnClickListener((up_view) -> {
+            Intent intent = new Intent(mActivity, HistoryAndCollectionActivity.class);
+            intent.putExtra(HistoryAndCollectionActivity.IS_HISTORY, false);
+            mActivity.startActivity(intent);
+        });
         mOrderView.setOnClickListener((up_view) -> UIUtil.showToast(mActivity, "我的订单"));
         mBindView.setOnClickListener((up_view) -> UIUtil.showToast(mActivity, "绑定管理"));
         mVipView.setOnClickListener((up_view) -> UIUtil.showToast(mActivity, "会员中心"));

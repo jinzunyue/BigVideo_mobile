@@ -42,7 +42,7 @@ public class TabPresenter implements TabContract.Presenter {
 
                     @Override
                     public void onFailure(Call<BaseModel<List<ProductModel>>> call, Throwable t) {
-
+                        mView.showError(t.getMessage());
                     }
                 });
     }

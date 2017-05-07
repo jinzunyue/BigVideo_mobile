@@ -1,12 +1,16 @@
 package com.pbtd.mobile.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.pbtd.mobile.R;
+import com.pbtd.mobile.activity.PlayActivity;
 import com.pbtd.mobile.model.ProductModel;
 
 import java.util.List;
@@ -38,11 +42,22 @@ public class RecommentPagerAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, int position) {
         int realPosition = getRealPosition(position);
         ProductModel recommendedVideo = mDatas.get(realPosition);
-        SimpleDraweeView simpleDraweeView = new SimpleDraweeView(mContext);
-        simpleDraweeView.setImageURI(recommendedVideo.getPictureurl1());
-        simpleDraweeView.setScaleType(ImageView.ScaleType.FIT_XY);
-        container.addView(simpleDraweeView);
-        return simpleDraweeView;
+        View view = View.inflate(mContext, R.layout.item_recommend_top, null);
+        RelativeLayout rl_root = (RelativeLayout) view.findViewById(R.id.rl_root);
+        SimpleDraweeView sd = (SimpleDraweeView) view.findViewById(R.id.sd);
+        TextView tv = (TextView) view.findViewById(R.id.tv);
+        sd.setImageURI(recommendedVideo.getPictureurl1());
+        tv.setText(recommendedVideo.getSeriesName());
+        rl_root.setTag(recommendedVideo);
+        rl_root.setOnClickListener((v -> {
+            ProductModel tag = (ProductModel) v.getTag();
+            String seriesCode = tag.getSeriesCode();
+            Intent intent = new Intent(mContext, PlayActivity.class);
+            intent.putExtra(PlayActivity.PRODUCT_CODE, seriesCode);
+            mContext.startActivity(intent);
+        }));
+        container.addView(view);
+        return view;
     }
 
     @Override

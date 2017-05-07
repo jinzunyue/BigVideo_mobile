@@ -24,4 +24,9 @@ public class LauncherActivity extends BaseActivity{
 
         mHandler.sendEmptyMessageDelayed(0, 3000);
     }
+
+    @Override
+    protected void initView() {
+
+    }
 }

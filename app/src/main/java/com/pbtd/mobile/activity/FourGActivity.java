@@ -20,7 +20,8 @@ public class FourGActivity extends BaseActivity {
         initView();
     }
 
-    private void initView() {
+    @Override
+    protected void initView() {
         Button mProvinceView = (Button) findViewById(R.id.btn_province);
         Button mCountryView = (Button) findViewById(R.id.btn_country);
         Button mBuyView = (Button) findViewById(R.id.btn_buy);
