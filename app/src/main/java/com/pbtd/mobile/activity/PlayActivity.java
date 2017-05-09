@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.MediaController;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -23,18 +23,22 @@ import com.pbtd.mobile.presenter.play.PlayContract;
 import com.pbtd.mobile.presenter.play.PlayPresenter;
 import com.pbtd.mobile.utils.UIUtil;
 import com.pbtd.mobile.widget.FixGridView;
+import com.pbtd.mobile.widget.MediaControl;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PlayActivity extends BaseActivity implements PlayContract.View {
 
     public static final String PRODUCT_CODE = "PRODUCT_CODE";
-    private String mProduct_code = "";
+    private int mCurrentPosition;
+    private int mCurrentItem;
 
+    private String mProduct_code = "";
     private PlayContract.Presenter mPresenter;
     private VideoView mVideoView;
     private RelativeLayout mSelectView;
@@ -43,8 +47,6 @@ public class PlayActivity extends BaseActivity implements PlayContract.View {
     private FixGridView mRelativeView;
     private TempTabAdapter mAdapter;
     private ScrollView mScrollView;
-    private static int mCurrentPosition;
-    private MediaController mMediaController;
     private String mCurrentUrl;
     private TextView mDirectorView;
     private TextView mActorView;
@@ -54,7 +56,11 @@ public class PlayActivity extends BaseActivity implements PlayContract.View {
     private TextView mSelectTitleView;
     private LinearLayout mSelectContainer;
     private TextView mUpdateView;
-    private int mCurrentSelectPosition;
+    private int mCurrentSelectPosition;//当前选择的第几集
+    private List<ProductDetailModel> mModelList;//当前数据集
+    private MediaControl mControl;
+    private RelativeLayout mTop;
+    private ProgressBar mProgress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,9 +82,10 @@ public class PlayActivity extends BaseActivity implements PlayContract.View {
 
     @Override
     protected void initView() {
+        mProgress = (ProgressBar) findViewById(R.id.pb);
+        mTop = (RelativeLayout) findViewById(R.id.rl_top);
         mScrollView = (ScrollView) findViewById(R.id.scrollView);
         ImageView backView = (ImageView) findViewById(R.id.iv_back);
-        ImageView fullScreenView = (ImageView) findViewById(R.id.iv_full_screen);
         ImageView mDesciptionButtonView = (ImageView) findViewById(R.id.iv_more);
         mDescriptionView = (TextView) findViewById(R.id.tv_description);
         mNameView = (TextView) findViewById(R.id.tv_name);
@@ -94,14 +101,24 @@ public class PlayActivity extends BaseActivity implements PlayContract.View {
         mRelativeView = (FixGridView) findViewById(R.id.lv_recommend);
 
         mVideoView = (VideoView) findViewById(R.id.video_view);
-        mMediaController = new MediaController(this);
-        mVideoView.setMediaController(mMediaController);
-        ViewGroup.LayoutParams layoutParams = mMediaController.getLayoutParams();
-        layoutParams.height = UIUtil.convertDpToPixel(this, 42);
-
+        mControl = new MediaControl(this, mVideoView);
+        View rootView = mControl.getRootView();
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, UIUtil.convertDpToPixel(this, 42));
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        mTop.addView(rootView, layoutParams);
+        mControl.setOnClickListener(v -> {
+            mCurrentPosition = mVideoView.getCurrentPosition();
+            Intent intent = new Intent(this, PlayLandActivity.class);
+            intent.putExtra(PlayLandActivity.PROGRESS_POSITION, mCurrentPosition);
+            intent.putExtra(PlayLandActivity.CURRENT_ITEM, mCurrentSelectPosition);
+            intent.putParcelableArrayListExtra(PlayLandActivity .PRODUCT_DETAIL, (ArrayList) mModelList);
+            startActivityForResult(intent, 1);
+        });
         mVideoView.setOnPreparedListener((mp) -> {
+            mProgress.setVisibility(View.GONE);
+            mControl.show();
             mp.start();
-            mVideoView.seekTo(mCurrentPosition);
         });
 
         mAdapter = new TempTabAdapter(this, false);
@@ -124,21 +141,25 @@ public class PlayActivity extends BaseActivity implements PlayContract.View {
             mDesciptionButtonView.setSelected(mDetailView.getVisibility() == View.VISIBLE);
         });
 
-        fullScreenView.setOnClickListener((full_view) -> {
-
-            mCurrentPosition = mVideoView.getCurrentPosition();
-            Intent intent = new Intent(this, PlayLandActivity.class);
-            intent.putExtra(PlayLandActivity.URL, mCurrentUrl);
-            intent.putExtra(PlayLandActivity.POSITION, mCurrentPosition);
-            startActivityForResult(intent, 1);
-        });
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        mCurrentPosition = getIntent().getIntExtra(PlayLandActivity.POSITION, 0);
-        mVideoView.seekTo(mCurrentPosition);
+        mCurrentPosition = getIntent().getIntExtra(PlayLandActivity.PROGRESS_POSITION, 0);
+        mCurrentSelectPosition = getIntent().getIntExtra(PlayLandActivity.CURRENT_ITEM, 0);
+        ProductDetailModel productDetailModel = mModelList.get(mCurrentSelectPosition);
+        String movieList = productDetailModel.getMovieList();
+        try {
+            JSONArray jsonArray = new JSONArray(movieList);
+            JSONObject jsonObject = jsonArray.getJSONObject(0);
+            String movieurl = jsonObject.getString("movieurl");
+            mProgress.setVisibility(View.VISIBLE);
+            mVideoView.setVideoPath(movieurl);
+            mVideoView.seekTo(mCurrentPosition);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -158,6 +179,7 @@ public class PlayActivity extends BaseActivity implements PlayContract.View {
     @Override
     public void showProductDetail(List<ProductDetailModel> model) {
         if (model == null) return;
+        mModelList = model;
         if (model.size() == 1) mSelectView.setVisibility(View.GONE);
 
         ProductDetailModel productDetailModel = model.get(0);
@@ -196,8 +218,8 @@ public class PlayActivity extends BaseActivity implements PlayContract.View {
                     mCurrentUrl = (String) view.getTag(R.id.tag_first);
                     mCurrentSelectPosition = (int) view.getTag(R.id.tag_second);
                     mSelectContainer.getChildAt(mCurrentSelectPosition).setSelected(true);
+                    mProgress.setVisibility(View.VISIBLE);
                     mVideoView.setVideoPath(mCurrentUrl);
-
                 });
                 textView.setSelected(i==0);
                 mSelectContainer.addView(textView);

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="42dp"
+    android:background="@color/black"
+    android:alpha="0.5"
+    android:gravity="center_vertical"
+    >
+    
+    <ImageView
+        android:id="@+id/iv_play"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/select_control_play"
+        android:layout_marginLeft="17dp"
+        />
+    
+    <TextView
+        android:id="@+id/tv_start"
+        android:layout_width="68dp"
+        android:layout_height="wrap_content" 
+        android:gravity="center"
+        android:textSize="13sp"
+        android:textColor="@color/white"
+        android:layout_toRightOf="@id/iv_play"
+        />
+    
+    <SeekBar
+        android:id="@+id/progress"
+        android:layout_width="164dp"
+        android:layout_height="wrap_content"
+        android:progressDrawable="@drawable/progress_style"
+        android:layout_toRightOf="@id/tv_start"
+        android:thumb="@drawable/progress_circle"
+        />
+
+    <TextView
+        android:id="@+id/tv_end"
+        android:layout_width="68dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="13sp"
+        android:textColor="@color/white"
+        android:layout_toRightOf="@id/progress"
+        />
+
+    <ImageView
+        android:id="@+id/iv_full_screen"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_toRightOf="@id/tv_end"
+        />
+</RelativeLayout>

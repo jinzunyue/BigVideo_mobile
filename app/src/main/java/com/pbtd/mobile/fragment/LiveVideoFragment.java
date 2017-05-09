@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.MediaController;
+import android.widget.ProgressBar;
 import android.widget.VideoView;
 
 import com.pbtd.mobile.Constants;
@@ -38,6 +38,7 @@ public class LiveVideoFragment extends BaseFragment {
     private VideoView mVideoView;
     private int mCurrentPlayPosition;
     private String mCurrentUrl;
+    private ProgressBar mProgress;
 
     @Nullable
     @Override
@@ -48,6 +49,7 @@ public class LiveVideoFragment extends BaseFragment {
     }
 
     private void initView(View view) {
+        mProgress = (ProgressBar) view.findViewById(R.id.pb);
         mVideoView = (VideoView) view.findViewById(R.id.video_view);
         ImageView mFullScreenView = (ImageView) view.findViewById(R.id.iv_full_screen);
         mLeftGridView = (FixListView) view.findViewById(R.id.list_left);
@@ -59,17 +61,18 @@ public class LiveVideoFragment extends BaseFragment {
         mRightGridView.setAdapter(mRightAdapter);
 
         mVideoView.setOnErrorListener((mp, what, extra) -> true);
-        mVideoView.setMediaController(new MediaController(mActivity));
+        mVideoView.seekTo(mCurrentPlayPosition);
         mVideoView.setOnPreparedListener((mp) -> {
+            mProgress.setVisibility(View.GONE);
             mp.start();
-            mp.seekTo(mCurrentPlayPosition);
         });
 
         mFullScreenView.setOnClickListener((full_view) -> {
             mCurrentPlayPosition = mVideoView.getCurrentPosition();
             Intent intent = new Intent(mActivity, PlayLandActivity.class);
             intent.putExtra(PlayLandActivity.URL, mCurrentUrl);
-            intent.putExtra(PlayLandActivity.POSITION, mCurrentPlayPosition);
+            intent.putExtra(PlayLandActivity.TITLE, "测试标题");
+            intent.putExtra(PlayLandActivity.PROGRESS_POSITION, mCurrentPlayPosition);
             startActivityForResult(intent, 1);
         });
 
@@ -114,16 +117,16 @@ public class LiveVideoFragment extends BaseFragment {
         });
 
         mCurrentUrl = mRightDatas.get(0).url;
+        mProgress.setVisibility(View.VISIBLE);
         mVideoView.setVideoPath(mCurrentUrl);
-        mVideoView.start();
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        mCurrentPlayPosition = data.getIntExtra(PlayLandActivity.POSITION, 0);
+        mCurrentPlayPosition = data.getIntExtra(PlayLandActivity.PROGRESS_POSITION, 0);
+        mProgress.setVisibility(View.VISIBLE);
         mVideoView.seekTo(mCurrentPlayPosition);
-        mVideoView.start();
     }
 
     //    @Override

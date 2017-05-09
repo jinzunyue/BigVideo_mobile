@@ -27,13 +27,32 @@
             android:src="@mipmap/back_play" />
 
         <ImageView
-            android:id="@+id/iv_full_screen"
+            android:id="@+id/iv_tv"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_alignParentRight="true"
             android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
-            android:src="@mipmap/full_screen" />
+            android:src="@mipmap/tv_half" />
+
+        <ImageView
+            android:id="@+id/iv_download"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_toLeftOf="@id/iv_tv"
+            android:layout_marginRight="10dp"
+            android:layout_alignTop="@id/iv_tv"
+            android:src="@mipmap/download"
+            />
+
+        <ProgressBar
+            android:id="@+id/pb"
+            android:layout_width="51dp"
+            android:layout_height="51dp"
+            android:layout_centerInParent="true"
+            android:indeterminateDrawable="@drawable/progress"
+            android:indeterminateBehavior="repeat"
+            />
     </RelativeLayout>
 
     <ScrollView

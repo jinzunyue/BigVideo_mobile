@@ -1,11 +1,14 @@
 package com.pbtd.mobile.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by xuqinchao on 17/5/4.
  * 没有全部解析
  */
 
-public class ProductDetailModel {
+public class ProductDetailModel implements Parcelable{
     private String seriesName;//剧名
     private String programName;//本集名称
     private String actorDisplay;//导演
@@ -17,6 +20,32 @@ public class ProductDetailModel {
     private String orgairDate;//上线时间
     private String movieList;// TODO: 17/5/4 数据格式
     private String programType2;// 电影类型
+
+    protected ProductDetailModel(Parcel in) {
+        seriesName = in.readString();
+        programName = in.readString();
+        actorDisplay = in.readString();
+        writerDisplay = in.readString();
+        description = in.readString();
+        keyWord = in.readString();
+        language = in.readString();
+        originalCountry = in.readString();
+        orgairDate = in.readString();
+        movieList = in.readString();
+        programType2 = in.readString();
+    }
+
+    public static final Creator<ProductDetailModel> CREATOR = new Creator<ProductDetailModel>() {
+        @Override
+        public ProductDetailModel createFromParcel(Parcel in) {
+            return new ProductDetailModel(in);
+        }
+
+        @Override
+        public ProductDetailModel[] newArray(int size) {
+            return new ProductDetailModel[size];
+        }
+    };
 
     public String getSeriesName() {
         return seriesName;
@@ -104,5 +133,25 @@ public class ProductDetailModel {
 
     public void setWriterDisplay(String writerDisplay) {
         this.writerDisplay = writerDisplay;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(seriesName);
+        dest.writeString(programName);
+        dest.writeString(actorDisplay);
+        dest.writeString(writerDisplay);
+        dest.writeString(description);
+        dest.writeString(keyWord);
+        dest.writeString(language);
+        dest.writeString(originalCountry);
+        dest.writeString(orgairDate);
+        dest.writeString(movieList);
+        dest.writeString(programType2);
     }
 }

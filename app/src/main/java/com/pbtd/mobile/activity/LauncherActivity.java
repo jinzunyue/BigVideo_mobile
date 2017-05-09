@@ -12,6 +12,7 @@ public class LauncherActivity extends BaseActivity{
     private Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
+//            mActivity.startActivity(new Intent(mActivity, PlayLandActivity.class));
             mActivity.startActivity(new Intent(mActivity, MainActivity.class));
             LauncherActivity.this.finish();
         }
