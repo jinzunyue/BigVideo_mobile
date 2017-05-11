@@ -42,7 +42,7 @@ public class FullMediaControl {
 
     public FullMediaControl(Context context, VideoView videoView) {
         if (videoView == null) {
-            Log.e(Constants.GLOBAL_TAG, "videoView can not be null");
+            Log.e(Constants.LOGGER_TAG, "videoView can not be null");
             return;
         }
         
@@ -84,6 +84,7 @@ public class FullMediaControl {
             if (mListener != null)
                 mListener.onClick(SELECT);
         });
+        mPlay.setSelected(true);
     }
 
     private final SeekBar.OnSeekBarChangeListener mSeekListener = new SeekBar.OnSeekBarChangeListener() {
@@ -243,7 +244,7 @@ public class FullMediaControl {
     
     public void setVideoView(VideoView videoView) {
         if (videoView == null) {
-            Log.e(Constants.GLOBAL_TAG, "videoView can not be null");
+            Log.e(Constants.LOGGER_TAG, "videoView can not be null");
             return;
         }
         mVideoView = videoView;

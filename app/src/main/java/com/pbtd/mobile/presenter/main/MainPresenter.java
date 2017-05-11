@@ -2,6 +2,7 @@ package com.pbtd.mobile.presenter.main;
 
 import android.content.Context;
 
+import com.pbtd.mobile.Constants;
 import com.pbtd.mobile.model.BaseModel;
 import com.pbtd.mobile.model.CategoryModel;
 import com.pbtd.mobile.network.RetrofitUtil;
@@ -28,7 +29,7 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void getCategoryList() {
-        RetrofitUtil.getInstance().getRequestApi().getCategoryList()
+        RetrofitUtil.getInstance(Constants.BASE_SERVER).getRequestApi().getCategoryList()
                 .enqueue(new Callback<BaseModel<List<CategoryModel>>>() {
                     @Override
                     public void onResponse(Call<BaseModel<List<CategoryModel>>> call, Response<BaseModel<List<CategoryModel>>> response) {

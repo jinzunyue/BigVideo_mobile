@@ -67,9 +67,9 @@ public class HistoryAndCollectionActivity extends BaseActivity {
         List<ProductModel> datas = new ArrayList<>();
 
         ProductModel model1 = new ProductModel();
-        model1.setPictureurl1("http://images.ott.cibntv.net/2017/05/05/yujieguilaigq.jpg");
-        model1.setSeriesName("御姐归来 高清");
-        model1.setSeriesCode("2100140023170893348180029");
+        model1.setPictureurl1("http://120.221.38.138:8993/2015/06/19/handouxiansheng.jpg");
+        model1.setSeriesName("憨豆先生");
+        model1.setSeriesCode("2100010062044525321125173");
 
         for (int i = 0; i < 10; i++) {
             datas.add(model1);

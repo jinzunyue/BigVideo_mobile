@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -15,6 +16,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.VideoView;
 
+import com.pbtd.mobile.Constants;
 import com.pbtd.mobile.R;
 import com.pbtd.mobile.adapter.TempTabAdapter;
 import com.pbtd.mobile.model.ProductDetailModel;
@@ -25,7 +27,6 @@ import com.pbtd.mobile.utils.UIUtil;
 import com.pbtd.mobile.widget.FixGridView;
 import com.pbtd.mobile.widget.MediaControl;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -117,8 +118,20 @@ public class PlayActivity extends BaseActivity implements PlayContract.View {
         });
         mVideoView.setOnPreparedListener((mp) -> {
             mProgress.setVisibility(View.GONE);
-            mControl.show();
             mp.start();
+            mControl.show();
+        });
+
+        mVideoView.setOnTouchListener((v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                if (mControl.isShowing()) {
+                    mControl.hide();
+                }else {
+                    mControl.show();
+                }
+                return true;
+            }
+            return super.onTouchEvent(event);
         });
 
         mAdapter = new TempTabAdapter(this, false);
@@ -140,23 +153,33 @@ public class PlayActivity extends BaseActivity implements PlayContract.View {
             mDetailView.setVisibility(mDetailView.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
             mDesciptionButtonView.setSelected(mDetailView.getVisibility() == View.VISIBLE);
         });
+    }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        mProduct_code = intent.getStringExtra(PRODUCT_CODE);
+        mPresenter.getProductDetail(mProduct_code);
+        mPresenter.getRelativeProductList(mProduct_code);
+        super.onNewIntent(intent);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        mCurrentPosition = getIntent().getIntExtra(PlayLandActivity.PROGRESS_POSITION, 0);
-        mCurrentSelectPosition = getIntent().getIntExtra(PlayLandActivity.CURRENT_ITEM, 0);
+        mCurrentPosition = data.getIntExtra(PlayLandActivity.PROGRESS_POSITION, 0);
+        mCurrentSelectPosition = data.getIntExtra(PlayLandActivity.CURRENT_ITEM, 0);
         ProductDetailModel productDetailModel = mModelList.get(mCurrentSelectPosition);
         String movieList = productDetailModel.getMovieList();
         try {
-            JSONArray jsonArray = new JSONArray(movieList);
-            JSONObject jsonObject = jsonArray.getJSONObject(0);
-            String movieurl = jsonObject.getString("movieurl");
+//            JSONArray jsonArray = new JSONArray(movieList);
+//            JSONObject jsonObject = jsonArray.getJSONObject(0);
+//            String movieurl = jsonObject.getString("movieurl");
             mProgress.setVisibility(View.VISIBLE);
-            mVideoView.setVideoPath(movieurl);
+//            mVideoView.setVideoPath(movieurl);
+            mVideoView.setVideoPath(Constants.TEMP_PLAY_URL);
             mVideoView.seekTo(mCurrentPosition);
+
+            JSONObject jsonObject = new JSONObject("{}");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -185,10 +208,11 @@ public class PlayActivity extends BaseActivity implements PlayContract.View {
         ProductDetailModel productDetailModel = model.get(0);
         String movieList = model.get(0).getMovieList();
         try {
-            JSONArray jsonArray = new JSONArray(movieList);
-            JSONObject jsonObject = jsonArray.getJSONObject(0);
-            mCurrentUrl = jsonObject.getString("movieurl");
-            mVideoView.setVideoPath(mCurrentUrl);
+//            JSONArray jsonArray = new JSONArray(movieList);
+//            JSONObject jsonObject = jsonArray.getJSONObject(0);
+//            mCurrentUrl = jsonObject.getString("movieurl");
+//            mVideoView.setVideoPath(mCurrentUrl);
+            mVideoView.setVideoPath(Constants.TEMP_PLAY_URL);
             mNameView.setText(productDetailModel.getSeriesName());
             mTypeView.setText(productDetailModel.getProgramType2());
             mActorView.setText(productDetailModel.getWriterDisplay());
@@ -200,10 +224,11 @@ public class PlayActivity extends BaseActivity implements PlayContract.View {
             for (int i = 0; i < model.size(); i++) {
                 TextView textView = new TextView(this);
                 ProductDetailModel productDetailModel1 = model.get(i);
-                JSONArray array = new JSONArray(productDetailModel1.getMovieList());
-                JSONObject jsonObject1 = array.getJSONObject(0);
-                String movieurl = jsonObject1.getString("movieurl");
-                textView.setTag(R.id.tag_first, movieurl);
+//                JSONArray array = new JSONArray(productDetailModel1.getMovieList());
+//                JSONObject jsonObject1 = array.getJSONObject(0);
+//                String movieurl = jsonObject1.getString("movieurl");
+//                textView.setTag(R.id.tag_first, movieurl);
+                textView.setTag(R.id.tag_first, Constants.TEMP_PLAY_URL);
                 textView.setTag(R.id.tag_second, i);
                 textView.setText(i + "");
                 textView.setBackgroundResource(R.drawable.select_item);
@@ -219,12 +244,14 @@ public class PlayActivity extends BaseActivity implements PlayContract.View {
                     mCurrentSelectPosition = (int) view.getTag(R.id.tag_second);
                     mSelectContainer.getChildAt(mCurrentSelectPosition).setSelected(true);
                     mProgress.setVisibility(View.VISIBLE);
-                    mVideoView.setVideoPath(mCurrentUrl);
+//                    mVideoView.setVideoPath(mCurrentUrl);
+                    mVideoView.setVideoPath(Constants.TEMP_PLAY_URL);
+                    mControl.show();
                 });
                 textView.setSelected(i==0);
                 mSelectContainer.addView(textView);
             }
-
+            JSONObject jsonObject = new JSONObject("{}");
         } catch (JSONException e) {
             e.printStackTrace();
         }

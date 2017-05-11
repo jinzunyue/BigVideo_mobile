@@ -2,6 +2,7 @@ package com.pbtd.mobile.presenter.tab;
 
 import android.content.Context;
 
+import com.pbtd.mobile.Constants;
 import com.pbtd.mobile.model.BaseModel;
 import com.pbtd.mobile.model.ProductModel;
 import com.pbtd.mobile.network.RetrofitUtil;
@@ -28,7 +29,7 @@ public class TabPresenter implements TabContract.Presenter {
 
     @Override
     public void getProductList(String categoryCode, String start, String limit) {
-        RetrofitUtil.getInstance().getRequestApi().getProductList(categoryCode, start, limit)
+        RetrofitUtil.getInstance(Constants.BASE_SERVER).getRequestApi().getProductList(categoryCode, start, limit)
                 .enqueue(new Callback<BaseModel<List<ProductModel>>>() {
                     @Override
                     public void onResponse(Call<BaseModel<List<ProductModel>>> call, Response<BaseModel<List<ProductModel>>> response) {

@@ -29,6 +29,8 @@
         android:id="@+id/progress"
         android:layout_width="164dp"
         android:layout_height="wrap_content"
+        android:minHeight="3dp"
+        android:maxHeight="3dp"
         android:progressDrawable="@drawable/progress_style"
         android:layout_toRightOf="@id/tv_start"
         android:thumb="@drawable/progress_circle"
@@ -49,5 +51,6 @@
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_toRightOf="@id/tv_end"
+        android:src="@mipmap/full_screen"
         />
 </RelativeLayout>

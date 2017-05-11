@@ -28,9 +28,6 @@ public class LiveLeftAdapter extends BaseListAdapter<String> {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-
-        viewHolder.mTv.setSelected(position==0);
-
         viewHolder.mTv.setText(mDatas.get(position));
         return convertView;
     }

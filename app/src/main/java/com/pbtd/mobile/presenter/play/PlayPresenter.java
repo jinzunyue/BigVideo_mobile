@@ -3,6 +3,7 @@ package com.pbtd.mobile.presenter.play;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.pbtd.mobile.Constants;
 import com.pbtd.mobile.model.BaseModel;
 import com.pbtd.mobile.model.ProductDetailModel;
 import com.pbtd.mobile.model.ProductModel;
@@ -30,7 +31,7 @@ public class PlayPresenter implements PlayContract.Presenter {
 
     @Override
     public void getProductDetail(@NonNull String productCode) {
-        RetrofitUtil.getInstance().getRequestApi().getProductDetail(productCode)
+        RetrofitUtil.getInstance(Constants.BASE_SERVER).getRequestApi().getProductDetail(productCode)
                 .enqueue(new Callback<BaseModel<List<ProductDetailModel>>>() {
                     @Override
                     public void onResponse(Call<BaseModel<List<ProductDetailModel>>> call, Response<BaseModel<List<ProductDetailModel>>> response) {
@@ -51,7 +52,7 @@ public class PlayPresenter implements PlayContract.Presenter {
 
     @Override
     public void getRelativeProductList(@NonNull String productCode) {
-        RetrofitUtil.getInstance().getRequestApi().getRelativeProduct(productCode)
+        RetrofitUtil.getInstance(Constants.BASE_SERVER).getRequestApi().getRelativeProduct(productCode)
                 .enqueue(new Callback<BaseModel<List<ProductModel>>>() {
                     @Override
                     public void onResponse(Call<BaseModel<List<ProductModel>>> call, Response<BaseModel<List<ProductModel>>> response) {

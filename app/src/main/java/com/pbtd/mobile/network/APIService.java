@@ -31,4 +31,11 @@ public interface APIService {
     Call<BaseModel<List<ProductModel>>> getRelativeProduct(@Query("seriesCode")String seriesCode);
 
 
+    @GET("api/tab/michannellist")
+    Call<BaseModel<String>> getLiveCategoryList(@Query("appKey")String appKey, @Query("appOS")String appOS,
+    @Query("osVer")String osVer, @Query("appVer")String appVer);
+
+    @GET("api/currentegps")
+    Call<BaseModel<String>> getLiveEGPList(@Query("appKey")String appKey, @Query("appOS")String appOS,
+                                                @Query("osVer")String osVer, @Query("appVer")String appVer);
 }

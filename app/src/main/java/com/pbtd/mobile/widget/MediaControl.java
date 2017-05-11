@@ -40,7 +40,7 @@ public class MediaControl {
 
     public MediaControl(Context context, VideoView videoView) {
         if (videoView == null) {
-            Log.e(Constants.GLOBAL_TAG, "videoView can not be null");
+            Log.e(Constants.LOGGER_TAG, "videoView can not be null");
             return;
         }
         
@@ -59,7 +59,7 @@ public class MediaControl {
         mCurrentTime = (TextView) mRootView.findViewById(R.id.tv_start);
         mEndTime = (TextView) mRootView.findViewById(R.id.tv_end);
         mFullScreen = (ImageView) mRootView.findViewById(R.id.iv_full_screen);
-        mProgress = (SeekBar) mRootView.findViewById(R.id.seek_bar);
+        mProgress = (SeekBar) mRootView.findViewById(R.id.progress);
         
         mProgress.setMax(1000);
         mProgress.setOnSeekBarChangeListener(mSeekListener);
@@ -76,6 +76,7 @@ public class MediaControl {
             if (mListener != null)
                 mListener.onClick(FULL_SCREEN);
         });
+        mPlay.setSelected(true);
     }
 
     private final SeekBar.OnSeekBarChangeListener mSeekListener = new SeekBar.OnSeekBarChangeListener() {
@@ -235,7 +236,7 @@ public class MediaControl {
     
     public void setVideoView(VideoView videoView) {
         if (videoView == null) {
-            Log.e(Constants.GLOBAL_TAG, "videoView can not be null");
+            Log.e(Constants.LOGGER_TAG, "videoView can not be null");
             return;
         }
         mVideoView = videoView;

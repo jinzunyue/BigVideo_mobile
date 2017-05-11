@@ -62,61 +62,72 @@
 
     </RelativeLayout>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="39dp"
-        android:gravity="center_horizontal"
+        android:orientation="horizontal"
         >
 
-        <TextView
-            android:id="@+id/tv_tv"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/ll_channel"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:textSize="15sp"
-            android:textColor="@color/bule_text"
-            android:text="电视台"
-            android:gravity="center"
-            />
+            android:layout_weight="1"
+            android:orientation="vertical"
+            >
+            <TextView
+                android:id="@+id/tv_channel"
+                android:layout_width="match_parent"
+                android:layout_height="38dp"
+                android:textSize="15sp"
+                android:textColor="@color/live_indicator_text"
+                android:text="电视台"
+                android:gravity="center"
+                />
 
-        <View
-            android:id="@+id/view_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="2dp"
-            android:layout_alignRight="@id/tv_tv"
-            android:layout_alignParentBottom="true"
-            />
+            <View
+                android:id="@+id/view_channel"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@drawable/select_live_indicator_line"
+                />
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/tv_program"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/ll_program"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:text="节目单"
-            android:textColor="@color/black"
-            android:textSize="15sp"
-            android:layout_toRightOf="@id/tv_tv"
-            android:gravity="center"
-            android:layout_marginLeft="10dp"
-            />
+            android:layout_weight="1"
+            android:orientation="vertical"
+            >
+            <TextView
+                android:id="@+id/tv_program"
+                android:layout_width="match_parent"
+                android:layout_height="38dp"
+                android:textSize="15sp"
+                android:textColor="@color/live_indicator_text"
+                android:text="节目单"
+                android:gravity="center"
+                />
 
-        <View
-            android:id="@+id/view_program"
-            android:layout_width="wrap_content"
-            android:layout_height="2dp"
-            android:layout_alignRight="@id/tv_program"
-            android:layout_alignLeft="@id/tv_program"
-            android:layout_alignParentBottom="true"
-            />
-    </RelativeLayout>
+            <View
+                android:id="@+id/view_program"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@drawable/select_live_indicator_line"
+                />
+        </LinearLayout>
+    </LinearLayout>
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/view_pager"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:background="@color/gray_text" />
 
-    <include layout="@layout/page_live" />
+    <android.support.v4.view.ViewPager
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
 </LinearLayout>

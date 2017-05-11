@@ -6,6 +6,7 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -16,13 +17,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.VideoView;
 
+import com.pbtd.mobile.Constants;
 import com.pbtd.mobile.R;
 import com.pbtd.mobile.model.ProductDetailModel;
 import com.pbtd.mobile.utils.UIUtil;
 import com.pbtd.mobile.widget.FullMediaControl;
 import com.pbtd.mobile.widget.FullScreenPoP;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -68,7 +69,6 @@ public class PlayLandActivity extends BaseActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_play_land);
 
-//        mUrl = "http://hls01.ott.disp.guttv.cibntv.net/2017/03/05/93b8c7d962e1473da79cd60156b1f4f5/b6d57016088499cba0b7295be25c156c.m3u8";
         initView();
 
     }
@@ -122,11 +122,14 @@ public class PlayLandActivity extends BaseActivity {
             try {
                 ProductDetailModel productDetailModel = mProductDetailModelList.get(mCurrentItem);
                 String movieList = productDetailModel.getMovieList();
-                JSONArray jsonArray = new JSONArray(movieList);
-                JSONObject jsonObject = jsonArray.getJSONObject(0);
-                String movieurl = jsonObject.getString("movieurl");
-                mVideoView.setVideoPath(movieurl);
+//                JSONArray jsonArray = new JSONArray(movieList);
+//                JSONObject jsonObject = jsonArray.getJSONObject(0);
+//                String movieurl = jsonObject.getString("movieurl");
+//                mVideoView.setVideoPath(movieurl);
+                mVideoView.setVideoPath(Constants.TEMP_PLAY_URL);
                 mTitleView.setText(productDetailModel.getSeriesName());
+
+                JSONObject jsonObject = new JSONObject("{}");
             } catch (JSONException e) {
                 e.printStackTrace();
                 UIUtil.showToast(this, "播放异常");
@@ -134,7 +137,8 @@ public class PlayLandActivity extends BaseActivity {
             }
         } else {
             mTitleView.setText(mTitle);
-            mVideoView.setVideoPath(mUrl);
+//            mVideoView.setVideoPath(mUrl);
+            mVideoView.setVideoPath(Constants.TEMP_PLAY_URL);
         }
 
 
@@ -288,5 +292,17 @@ public class PlayLandActivity extends BaseActivity {
                 UIUtil.showToast(this, "截屏失败");
             }
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode==KeyEvent.KEYCODE_BACK){
+            Intent intent = new Intent();
+            intent.putExtra(PROGRESS_POSITION, mVideoView.getCurrentPosition());
+            setResult(RESULT_OK, intent);
+            PlayLandActivity.this.finish();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }
