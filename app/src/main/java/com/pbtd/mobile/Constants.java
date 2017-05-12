@@ -26,7 +26,7 @@ public class Constants {
 
     //国广 直播
     public static final String KEY = "ZjNmMjc2ODViOTgy";
-    public static final String APPOS = "Android";
+    public static final String APPOs = "Android";
     public static final String osVer = "4.3";
     public static final String appVer = "1.0";
 

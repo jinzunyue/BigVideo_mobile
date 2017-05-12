@@ -32,7 +32,7 @@ public class LiveLeftAdapter extends BaseListAdapter<String> {
         return convertView;
     }
 
-    class ViewHolder{
+    public class ViewHolder{
         public TextView mTv;
     }
 }

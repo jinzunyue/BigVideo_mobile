@@ -41,13 +41,14 @@ public class RetrofitUtil {
     }
 
     public static RetrofitUtil getInstance (String base_url) {
-        if (mRetrofitUtil == null) {
-            synchronized (RetrofitUtil.class) {
-                if (mRetrofitUtil == null)
-                    mRetrofitUtil = new RetrofitUtil(base_url);
-            }
-        }
+//        if (mRetrofitUtil == null) {
+//            synchronized (RetrofitUtil.class) {
+//                if (mRetrofitUtil == null)
+//                    mRetrofitUtil = new RetrofitUtil(base_url);
+//            }
 
+//        }
+        mRetrofitUtil = new RetrofitUtil(base_url);
         return mRetrofitUtil;
     }
 

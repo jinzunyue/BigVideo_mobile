@@ -32,10 +32,10 @@ public interface APIService {
 
 
     @GET("api/tab/michannellist")
-    Call<BaseModel<String>> getLiveCategoryList(@Query("appKey")String appKey, @Query("appOS")String appOS,
+    Call<String> getLiveCategoryList(@Query("appKey")String appKey, @Query("appOS")String appOS,
     @Query("osVer")String osVer, @Query("appVer")String appVer);
 
-    @GET("api/currentegps")
-    Call<BaseModel<String>> getLiveEGPList(@Query("appKey")String appKey, @Query("appOS")String appOS,
+    @GET("api/currentepgs")
+    Call<String> getLiveEGPList(@Query("appKey")String appKey, @Query("appOs")String appOS,
                                                 @Query("osVer")String osVer, @Query("appVer")String appVer);
 }

@@ -7,7 +7,7 @@
     <com.pbtd.mobile.widget.FixListView
         android:id="@+id/list_left"
         android:layout_width="65dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:cacheColorHint="@color/white"
         android:divider="@color/white"
         android:dividerHeight="5dp"
@@ -19,12 +19,12 @@
     <View
         android:layout_width="0.5dp"
         android:layout_height="match_parent"
-        android:background="@color/gray_text" />
+        android:background="@color/divide_line" />
 
     <com.pbtd.mobile.widget.FixListView
         android:id="@+id/list_right"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:scrollbars="none" />
 
 </LinearLayout>

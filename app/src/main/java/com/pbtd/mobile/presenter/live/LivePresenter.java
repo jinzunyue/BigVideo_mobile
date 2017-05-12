@@ -2,7 +2,18 @@ package com.pbtd.mobile.presenter.live;
 
 import android.content.Context;
 
-import com.pbtd.mobile.presenter.main.MainContract;
+import com.android.volley.VolleyError;
+import com.google.gson.Gson;
+import com.pbtd.mobile.model.live.CategoryInnerModel;
+import com.pbtd.mobile.model.live.ProgramTimeModel;
+import com.pbtd.mobile.volley.VolleyController;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by xuqinchao on 17/5/4.
@@ -10,17 +21,117 @@ import com.pbtd.mobile.presenter.main.MainContract;
 
 public class LivePresenter implements LiveContract.Presenter {
 
-    private final MainContract.View mView;
+    private final LiveContract.View mView;
     private final Context mContext;
+    private final Gson mGson;
+    private List<CategoryInnerModel> mCategoryInnerModel;
 
-    public LivePresenter(Context context, MainContract.View view) {
+    public LivePresenter(Context context, LiveContract.View view) {
         mContext = context;
         mView = view;
+        mGson = new Gson();
     }
 
     @Override
     public void getCategoryList() {
-//        RetrofitUtil.getInstance("https://api.starschina.com/appKey=ZjNmMjc2ODViOTgy&appOs=Android&osVer=4.4.4&appVer=1.0")
-//                .getRequestApi().getLiveCategoryList()
+        VolleyController volleyController = new VolleyController(mContext, new VolleyController.VolleyCallback() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    JSONArray datas = jsonObject.getJSONArray("datas");
+                    JSONObject jsonObject1 = datas.getJSONObject(0);
+                    JSONArray data = jsonObject1.getJSONArray("data");
+
+                    CategoryInnerModel[] categoryInnerModels = mGson.fromJson(data.toString(), CategoryInnerModel[].class);
+                    mCategoryInnerModel = Arrays.asList(categoryInnerModels);
+
+                    getCurrentTimeProgram();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        volleyController.requestGetAction("https://api.starschina.com/api/tab/michannellist?" +
+                "appKey=ZjNmMjc2ODViOTgy&appOs=Android&osVer=4.4.4&appVer=1.0");
     }
+
+    @Override
+    public void getProgramOfWeek(String videoId) {
+        VolleyController volleyController = new VolleyController(mContext, new VolleyController.VolleyCallback() {
+            @Override
+            public void onResponse(String response) {
+
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        volleyController.requestGetAction("https://e.starschina.com/api/channels/" + videoId +
+                "/epgs?appOs=Android&appVer=6.3 &appKey=CIBN_PLAYER_APPKEY&page=1&pageSize=120");
+    }
+
+    public void getCurrentTimeProgram() {
+        VolleyController volleyController = new VolleyController(mContext, new VolleyController.VolleyCallback() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    JSONObject rows = jsonObject.getJSONObject("rows");
+                    JSONObject jsonObject_271646 = rows.getJSONObject("271646");
+                    ProgramTimeModel programTimeModel_271646 = mGson.fromJson(jsonObject_271646.toString(),
+                            ProgramTimeModel.class);
+                    JSONObject jsonObject_271647 = rows.getJSONObject("271647");
+                    ProgramTimeModel programTimeModel_271647 = mGson.fromJson(jsonObject_271647.toString(),
+                            ProgramTimeModel.class);
+                    JSONObject jsonObject_271652 = rows.getJSONObject("271652");
+                    ProgramTimeModel programTimeModel_271652 = mGson.fromJson(jsonObject_271652.toString(),
+                            ProgramTimeModel.class);
+                    JSONObject jsonObject_271660 = rows.getJSONObject("271660");
+                    ProgramTimeModel programTimeModel_271660 = mGson.fromJson(jsonObject_271660.toString(),
+                            ProgramTimeModel.class);
+
+                    if (mCategoryInnerModel != null) {
+                        for (int i = 0; i < mCategoryInnerModel.size(); i++) {
+                            CategoryInnerModel categoryInnerModel = mCategoryInnerModel.get(i);
+                            if ("271646".equals(categoryInnerModel.getVideoId() + "")) {
+                                categoryInnerModel.setmTimeProgram(programTimeModel_271646);
+                            }
+
+                            if ("271647".equals(categoryInnerModel.getVideoId() + "")) {
+                                categoryInnerModel.setmTimeProgram(programTimeModel_271647);
+                            }
+
+                            if ("271652".equals(categoryInnerModel.getVideoId() + "")) {
+                                categoryInnerModel.setmTimeProgram(programTimeModel_271652);
+                            }
+
+                            if ("271660".equals(categoryInnerModel.getVideoId() + "")) {
+                                categoryInnerModel.setmTimeProgram(programTimeModel_271660);
+                            }
+
+                            mView.showCategoryList(mCategoryInnerModel);
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        volleyController.requestGetAction("https://e.starschina.com/api/currentepgs?appKey=ZjNmMjc2ODViOTgy&appOs=Android&osVer=4.3&appVer=1.0");
+    }
+
+
 }

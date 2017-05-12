@@ -1,6 +1,6 @@
 package com.pbtd.mobile.presenter.live;
 
-import com.pbtd.mobile.model.CategoryModel;
+import com.pbtd.mobile.model.live.CategoryInnerModel;
 
 import java.util.List;
 
@@ -11,10 +11,11 @@ import java.util.List;
 public interface LiveContract {
     interface Presenter {
         void getCategoryList();
+        void getProgramOfWeek(String videoId);
     }
 
     interface View {
         void showError(String error);
-        void showCategoryList(List<CategoryModel> list);
+        void showCategoryList(List<CategoryInnerModel> list);
     }
 }
