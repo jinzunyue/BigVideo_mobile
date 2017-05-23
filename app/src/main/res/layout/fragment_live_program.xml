@@ -3,7 +3,7 @@
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.pbtd.mobile.widget.FixListView
+    <ListView
         android:id="@+id/list_left"
         android:layout_width="85dp"
         android:layout_height="wrap_content"
@@ -20,10 +20,12 @@
         android:layout_height="match_parent"
         android:background="@color/divide_line" />
 
-    <com.pbtd.mobile.widget.FixListView
+    <ListView
         android:id="@+id/list_right"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scrollbars="none" />
+        android:scrollbars="none"
+        android:divider="@android:color/transparent"
+        />
 
 </LinearLayout>

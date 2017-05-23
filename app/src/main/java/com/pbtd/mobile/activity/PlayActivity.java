@@ -32,6 +32,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class PlayActivity extends BaseActivity implements PlayContract.View {
 
@@ -212,7 +214,14 @@ public class PlayActivity extends BaseActivity implements PlayContract.View {
 //            JSONObject jsonObject = jsonArray.getJSONObject(0);
 //            mCurrentUrl = jsonObject.getString("movieurl");
 //            mVideoView.setVideoPath(mCurrentUrl);
-            mVideoView.setVideoPath(Constants.TEMP_PLAY_URL);
+            String re = "http(.*)BreakPoint=0";
+            Pattern p = Pattern.compile(re);
+            Matcher m = p.matcher(movieList);
+            if (m.find()) {
+                mCurrentUrl = m.group();
+            }
+//            mVideoView.setVideoPath(Constants.TEMP_PLAY_URL);
+            mVideoView.setVideoPath(mCurrentUrl);
             mNameView.setText(productDetailModel.getSeriesName());
             mTypeView.setText(productDetailModel.getProgramType2());
             mActorView.setText(productDetailModel.getWriterDisplay());
@@ -251,7 +260,7 @@ public class PlayActivity extends BaseActivity implements PlayContract.View {
                 textView.setSelected(i==0);
                 mSelectContainer.addView(textView);
             }
-            JSONObject jsonObject = new JSONObject("{}");
+            JSONObject jsonObject444 = new JSONObject("{}");
         } catch (JSONException e) {
             e.printStackTrace();
         }

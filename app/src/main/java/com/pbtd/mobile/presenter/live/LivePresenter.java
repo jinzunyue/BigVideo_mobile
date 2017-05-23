@@ -4,8 +4,11 @@ import android.content.Context;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
+import com.pbtd.mobile.Constants;
 import com.pbtd.mobile.model.live.CategoryInnerModel;
 import com.pbtd.mobile.model.live.ProgramTimeModel;
+import com.pbtd.mobile.model.live.WeekProgramModel;
+import com.pbtd.mobile.utils.StringUtil;
 import com.pbtd.mobile.volley.VolleyController;
 
 import org.json.JSONArray;
@@ -66,7 +69,16 @@ public class LivePresenter implements LiveContract.Presenter {
         VolleyController volleyController = new VolleyController(mContext, new VolleyController.VolleyCallback() {
             @Override
             public void onResponse(String response) {
-
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    JSONArray rows = jsonObject.getJSONArray("rows");
+                    WeekProgramModel[] weekProgramModels = mGson.fromJson(rows.toString(), WeekProgramModel[].class);
+                    List<WeekProgramModel> list = Arrays.asList(weekProgramModels);
+                    mView.showProgramWeek(list);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    mView.showError(e.getMessage());
+                }
             }
 
             @Override
@@ -74,8 +86,13 @@ public class LivePresenter implements LiveContract.Presenter {
 
             }
         });
+
+        String startDate = StringUtil.getCurrentDate(-5);
+        String endDate = StringUtil.getCurrentDate(1);
+
         volleyController.requestGetAction("https://e.starschina.com/api/channels/" + videoId +
-                "/epgs?appOs=Android&appVer=6.3 &appKey=CIBN_PLAYER_APPKEY&page=1&pageSize=120");
+                "/epgs?appOs=Android&appVer=6.3&appKey=" + Constants.KEY+
+                "&page=1&pageSize=120&startDate=" + startDate + "&endDate=" + endDate);
     }
 
     public void getCurrentTimeProgram() {
@@ -116,9 +133,8 @@ public class LivePresenter implements LiveContract.Presenter {
                             if ("271660".equals(categoryInnerModel.getVideoId() + "")) {
                                 categoryInnerModel.setmTimeProgram(programTimeModel_271660);
                             }
-
-                            mView.showCategoryList(mCategoryInnerModel);
                         }
+                        mView.showCategoryList(mCategoryInnerModel);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -130,7 +146,8 @@ public class LivePresenter implements LiveContract.Presenter {
 
             }
         });
-        volleyController.requestGetAction("https://e.starschina.com/api/currentepgs?appKey=ZjNmMjc2ODViOTgy&appOs=Android&osVer=4.3&appVer=1.0");
+        volleyController.requestGetAction("https://e.starschina.com/api/currentepgs?appKey="
+                + Constants.KEY+ "&appOs=Android&osVer=4.3&appVer=1.0");
     }
 
 

@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.pbtd.mobile.Constants;
 import com.pbtd.mobile.R;
 import com.pbtd.mobile.activity.PlayActivity;
 import com.pbtd.mobile.adapter.TempTabAdapter;
@@ -17,6 +18,7 @@ import com.pbtd.mobile.presenter.tab.TabContract;
 import com.pbtd.mobile.presenter.tab.TabPresenter;
 import com.pbtd.mobile.utils.UIUtil;
 import com.pbtd.mobile.widget.FixGridView;
+import com.pbtd.mobile.widget.refresh.PullToRefreshLayout;
 
 import java.util.List;
 import java.util.Random;
@@ -32,6 +34,11 @@ public class TabItemFragment extends BaseFragment implements TabContract.View{
     private TempTabAdapter mAdapter;
     public static final String CATEGORY_CODE = "categorycode";
     private String mCategoryCode;
+    private PullToRefreshLayout mRefresh;
+    private TabContract.Presenter mPresenter;
+    private int mCurrentPage = 7;
+    private boolean mIsLoadMore;
+    private boolean mIsRefreshIng;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,11 +58,12 @@ public class TabItemFragment extends BaseFragment implements TabContract.View{
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        TabContract.Presenter mPresenter = new TabPresenter(mActivity, this);
+        mPresenter = new TabPresenter(mActivity, this);
         mPresenter.getProductList(mCategoryCode, "0", "7");
     }
 
     private void initView(View view) {
+        mRefresh = (PullToRefreshLayout) view.findViewById(R.id.refresh);
         mTopView = (SimpleDraweeView) view.findViewById(R.id.sd_top);
         mListView = (FixGridView) view.findViewById(R.id.lv);
         Random random = new Random();
@@ -76,6 +84,22 @@ public class TabItemFragment extends BaseFragment implements TabContract.View{
                 }
             }
         });
+
+        mRefresh.setOnRefreshListener(new PullToRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh(PullToRefreshLayout pullToRefreshLayout) {
+                mIsRefreshIng = true;
+                mPresenter.getProductList(mCategoryCode, "0", "7");
+            }
+
+            @Override
+            public void onLoadMore(PullToRefreshLayout pullToRefreshLayout) {
+                mIsLoadMore = true;
+                mPresenter.getProductList(mCategoryCode, mCurrentPage+"", Constants.TAB_MORE_LIMIT+"");
+                mCurrentPage += Constants.TAB_MORE_LIMIT;
+            }
+        });
+
     }
 
     @Override
@@ -85,16 +109,28 @@ public class TabItemFragment extends BaseFragment implements TabContract.View{
 
     @Override
     public void showProductList(List<ProductModel> list) {
-        if (list != null) {
-            ProductModel productModel = list.get(0);
-            mTopView.setImageURI(productModel.getPictureurl1());
-            mTopView.setOnClickListener((v) -> {
-                Intent intent = new Intent(mActivity, PlayActivity.class);
-                intent.putExtra(PlayActivity.PRODUCT_CODE, productModel.getSeriesCode());
-                startActivity(intent);
-            });
-
-            mAdapter.setDatas(list.subList(1, 7));
+        if (mIsRefreshIng) {
+            mIsRefreshIng = false;
+            mRefresh.refreshFinish(PullToRefreshLayout.SUCCEED);
         }
+
+        if (mIsLoadMore) {
+            mAdapter.appendDatas(list);
+            mRefresh.loadmoreFinish(PullToRefreshLayout.SUCCEED);
+            mIsLoadMore = false;
+        } else {
+            if (list != null) {
+                ProductModel productModel = list.get(0);
+                mTopView.setImageURI(productModel.getPictureurl1());
+                mTopView.setOnClickListener((v) -> {
+                    Intent intent = new Intent(mActivity, PlayActivity.class);
+                    intent.putExtra(PlayActivity.PRODUCT_CODE, productModel.getSeriesCode());
+                    startActivity(intent);
+                });
+
+                mAdapter.setDatas(list.subList(1, 7));
+            }
+        }
+
     }
 }

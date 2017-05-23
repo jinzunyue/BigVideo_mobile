@@ -28,6 +28,7 @@ public class RetrofitUtil {
                         HttpUrl url = request.url();
                         System.out.println(Constants.LOGGER_TAG + url);
                         Response response = chain.proceed(request);
+                        System.out.println(Constants.LOGGER_TAG + url + "--" + response.code());
                         return response;
                     }
                 }).build();

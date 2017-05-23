@@ -8,6 +8,7 @@ public class Constants {
     public static final String BASE_SERVER = "http://220.191.161.221:8080/";
     public static final String SHAREDPREFERENCES_NAME = "pbtd";
     public static final String LOGGER_TAG = "大视频";
+    public static final int TAB_MORE_LIMIT = 6;//必须是6的倍数
 
     //直播
     public static final String BTV_WEISHI = "http://223.99.189.25:8089/shandong_cabletv.live.zte.com/heyi.starschinalive.com/0132/index_1200k.m3u8";

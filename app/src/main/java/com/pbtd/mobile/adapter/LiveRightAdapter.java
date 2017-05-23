@@ -9,6 +9,8 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.pbtd.mobile.R;
 import com.pbtd.mobile.model.live.CategoryInnerModel;
+import com.pbtd.mobile.model.live.ProgramTimeModel;
+import com.pbtd.mobile.utils.StringUtil;
 
 /**
  * Created by xuqinchao on 17/5/2.
@@ -39,7 +41,9 @@ public class LiveRightAdapter extends BaseListAdapter<CategoryInnerModel> {
         CategoryInnerModel categoryInnerModel = mDatas.get(position);
         viewHolder.mTitle.setText(categoryInnerModel.getVideoName());
         viewHolder.mNow.setText(categoryInnerModel.getmTimeProgram().getCurrent().getEpgName());
-        viewHolder.mNext.setText(categoryInnerModel.getmTimeProgram().getNext().getEpgName());
+        ProgramTimeModel.InnerModel next = categoryInnerModel.getmTimeProgram().getNext();
+        String time = StringUtil.formatTime(next.getStartTime());
+        viewHolder.mNext.setText(time + "  " + next.getEpgName());
         viewHolder.mSd.setImageURI(categoryInnerModel.getVideoImage());
 
         return convertView;

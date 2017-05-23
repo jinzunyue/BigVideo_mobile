@@ -47,4 +47,18 @@ public abstract class BaseListAdapter<T> extends BaseAdapter {
         mDatas.addAll(list);
         notifyDataSetChanged();
     }
+
+    public void clearDatas() {
+        if (mDatas != null) {
+            mDatas.clear();
+            notifyDataSetChanged();
+        }
+    }
+
+    public void removeItem(int position) {
+        if (mDatas == null || position < 0 || position > mDatas.size()-1)
+            return;
+        mDatas.remove(position);
+        notifyDataSetChanged();
+    }
 }

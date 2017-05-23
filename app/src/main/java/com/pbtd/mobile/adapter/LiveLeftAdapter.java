@@ -13,15 +13,23 @@ import com.pbtd.mobile.R;
 
 public class LiveLeftAdapter extends BaseListAdapter<String> {
 
-    public LiveLeftAdapter(Context mContext) {
+    boolean mIsBig;
+    private int mCurrentSelectPosition;
+    /**
+     * 直播页面左侧类别适配器
+     * @param mContext
+     * @param isBig isBig == true 节目单， false 电视台
+     */
+    public LiveLeftAdapter(Context mContext, boolean isBig) {
         super(mContext);
+        mIsBig = isBig;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder = null;
         if (convertView == null) {
-            convertView = View.inflate(mContext, R.layout.item_live_left, null);
+            convertView = View.inflate(mContext, mIsBig?R.layout.item_live_left_big:R.layout.item_live_left, null);
             viewHolder = new ViewHolder();
             viewHolder.mTv = (TextView) convertView.findViewById(R.id.tv_title);
             convertView.setTag(viewHolder);
@@ -29,7 +37,13 @@ public class LiveLeftAdapter extends BaseListAdapter<String> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         viewHolder.mTv.setText(mDatas.get(position));
+        viewHolder.mTv.setSelected(position==mCurrentSelectPosition);
         return convertView;
+    }
+
+    public void setCurrentSelctPosition(int position) {
+        mCurrentSelectPosition = position;
+        notifyDataSetChanged();
     }
 
     public class ViewHolder{

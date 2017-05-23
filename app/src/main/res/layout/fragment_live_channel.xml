@@ -4,11 +4,11 @@
     android:layout_height="match_parent"
     android:orientation="horizontal">
 
-    <com.pbtd.mobile.widget.FixListView
+    <ListView
         android:id="@+id/list_left"
         android:layout_width="65dp"
         android:layout_height="match_parent"
-        android:cacheColorHint="@color/white"
+        android:cacheColorHint="@android:color/transparent"
         android:divider="@color/white"
         android:dividerHeight="5dp"
         android:paddingLeft="2dp"
@@ -21,10 +21,12 @@
         android:layout_height="match_parent"
         android:background="@color/divide_line" />
 
-    <com.pbtd.mobile.widget.FixListView
+    <ListView
         android:id="@+id/list_right"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="none" />
+        android:scrollbars="none"
+        android:cacheColorHint="@android:color/transparent"
+        />
 
 </LinearLayout>

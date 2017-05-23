@@ -19,6 +19,7 @@ import com.pbtd.mobile.adapter.MainTabAdapter;
 import com.pbtd.mobile.fragment.live.FragmentChannel;
 import com.pbtd.mobile.fragment.live.FragmentProgram;
 import com.pbtd.mobile.model.live.CategoryInnerModel;
+import com.pbtd.mobile.model.live.WeekProgramModel;
 import com.pbtd.mobile.presenter.live.LiveContract;
 import com.pbtd.mobile.presenter.live.LivePresenter;
 
@@ -118,15 +119,21 @@ public class LiveVideoFragment extends BaseFragment implements LiveContract.View
         list.add(mFragmentChannel);
         list.add(mFragmentProgram);
         mAdapter.setData(list);
+        switchIndicator(true);
 
         mProgress.setVisibility(View.VISIBLE);
-        switchIndicator(true);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mPresenter = new LivePresenter(mActivity, this);
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         mPresenter.getCategoryList();
     }
 
@@ -145,7 +152,19 @@ public class LiveVideoFragment extends BaseFragment implements LiveContract.View
 
     @Override
     public void showCategoryList(List<CategoryInnerModel> list) {
-        mFragmentChannel.setData(list);
+        if (mFragmentChannel != null) mFragmentChannel.setData(list);
+        if (list != null) {
+            CategoryInnerModel categoryInnerModel = list.get(0);
+            mCurrentVideoId = categoryInnerModel.getVideoId()+"";
+
+            mPresenter.getProgramOfWeek(mCurrentVideoId);
+        }
+    }
+
+    @Override
+    public void showProgramWeek(List<WeekProgramModel> list) {
+        if (mFragmentProgram != null)
+            mFragmentProgram.setDatas(list);
     }
 
     private void switchIndicator(boolean isChannel) {

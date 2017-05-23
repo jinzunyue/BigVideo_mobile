@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.pbtd.mobile.R;
@@ -20,6 +19,8 @@ import com.pbtd.mobile.model.temp.RecommendModel;
 import com.pbtd.mobile.presenter.tab.TabContract;
 import com.pbtd.mobile.presenter.tab.TabPresenter;
 import com.pbtd.mobile.utils.UIUtil;
+import com.pbtd.mobile.widget.refresh.PullToRefreshLayout;
+import com.pbtd.mobile.widget.refresh.PullableListView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,13 +36,27 @@ public class RecommendFragment extends BaseFragment implements TabContract.View 
     private RecommentPagerAdapter mViewPagerAdapter;
     private LinearLayout mIndicator;
     private TextView mTitleView;
-    private ListView mContentView;
+    private PullableListView mContentView;
     private PageItemAdapter mPageItemAdapter;
     private ViewPager mViewPager;
     private TabContract.Presenter mPresenter;
     private List<RecommendModel> mRecommendModelList;
     private List<String> mRecommendTitleList;
     public static HashMap<String, Integer> mRecommendIcon = new HashMap<>();
+    private PullToRefreshLayout mRefresh;
+    public static final long AUTO_SWITCH = 3000;
+
+//    private Handler mHandler = new Handler() {
+//        @Override
+//        public void handleMessage(Message msg) {
+//            if (msg.what == 0) {
+//                int currentItem = mViewPager.getCurrentItem();
+//                mViewPager.setCurrentItem(currentItem + 1);
+//                mHandler.sendEmptyMessageDelayed(0, AUTO_SWITCH);
+//            }
+//        }
+//    };
+    private boolean mIsRefreshIng;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -76,6 +91,7 @@ public class RecommendFragment extends BaseFragment implements TabContract.View 
     }
 
     private void initView(View view, View header_view, View footer_view) {
+
         LinearLayout left_4g = (LinearLayout) header_view.findViewById(R.id.left_4g);
         LinearLayout recomment = (LinearLayout) header_view.findViewById(R.id.recomment);
         LinearLayout sign_in = (LinearLayout) header_view.findViewById(R.id.sign_in);
@@ -83,10 +99,23 @@ public class RecommendFragment extends BaseFragment implements TabContract.View 
         mViewPager = (ViewPager) header_view.findViewById(R.id.view_pager);
         mIndicator = (LinearLayout) header_view.findViewById(R.id.ll_indicator);
         mTitleView = (TextView) header_view.findViewById(R.id.tv_title);
+        mRefresh = (PullToRefreshLayout) view.findViewById(R.id.refresh);
+        mRefresh.setEnableLoadMore(false);
+        mRefresh.setOnRefreshListener(new PullToRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh(PullToRefreshLayout pullToRefreshLayout) {
+                mIsRefreshIng = true;
+                mPresenter.getProductList(null, null, null);
+            }
+
+            @Override
+            public void onLoadMore(PullToRefreshLayout pullToRefreshLayout) {
+
+            }
+        });
 
         Button adjustView = (Button) footer_view.findViewById(R.id.btn_adjust);
-
-        mContentView = (ListView) view.findViewById(R.id.lv);
+        mContentView = (PullableListView) view.findViewById(R.id.lv);
 
         mViewPagerAdapter = new RecommentPagerAdapter(getActivity());
         mViewPager.setAdapter(mViewPagerAdapter);
@@ -119,7 +148,9 @@ public class RecommendFragment extends BaseFragment implements TabContract.View 
         subject.setOnClickListener((view_left_4g) -> UIUtil.showToast(getActivity(), "精选专题"));
 
         adjustView.setOnClickListener((adjust_view) -> UIUtil.showToast(getActivity(), "调整栏目"));
+
     }
+
 
     private void initIndicator(int size) {
         mIndicator.removeAllViews();
@@ -152,12 +183,17 @@ public class RecommendFragment extends BaseFragment implements TabContract.View 
 
     @Override
     public void showProductList(List<ProductModel> list) {
+        if (mIsRefreshIng) {
+            mIsRefreshIng = false;
+            mRefresh.refreshFinish(PullToRefreshLayout.SUCCEED);
+        }
+
         mRecommendModelList = new ArrayList<>();
         for (String name : mRecommendTitleList) {
             RecommendModel r = new RecommendModel();
             r.setName(name);
             for (ProductModel model : list) {
-                if(model.getProgramtype().equals(name))
+                if (model.getProgramtype().equals(name))
                     r.getList().add(model);
             }
             mRecommendModelList.add(r);
@@ -176,9 +212,10 @@ public class RecommendFragment extends BaseFragment implements TabContract.View 
                 } else {
                     mViewPagerAdapter.setData(list2);
                 }
+                mViewPager.setCurrentItem(5000);
                 initIndicator(mViewPagerAdapter.getDataSize());
+
             }
         }
     }
-
 }

@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ListView;
 
 import com.pbtd.mobile.Constants;
 import com.pbtd.mobile.R;
@@ -15,7 +16,6 @@ import com.pbtd.mobile.adapter.LiveLeftAdapter;
 import com.pbtd.mobile.adapter.LiveRightAdapter;
 import com.pbtd.mobile.fragment.BaseFragment;
 import com.pbtd.mobile.model.live.CategoryInnerModel;
-import com.pbtd.mobile.widget.FixListView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,14 +26,15 @@ import java.util.List;
 
 public class FragmentChannel extends BaseFragment{
 
-    private FixListView mRightGridView;
-    private FixListView mLeftGridView;
+    private ListView mRightGridView;
+    private ListView mLeftGridView;
     private LiveRightAdapter mRightAdapter;
     private LiveLeftAdapter mLeftAdapter;
 
     private int mLeftCurrentPosition;
     private int mRightCurrentPosition;
     private Listener mListener;
+    private View mRootView;
 
     private Handler mHandler = new Handler(){
         @Override
@@ -57,15 +58,15 @@ public class FragmentChannel extends BaseFragment{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_live_channel, null);
-        initView(view);
-        return view;
+        mRootView = inflater.inflate(R.layout.fragment_live_channel, null);
+        initView();
+        return mRootView;
     }
 
-    private void initView(View view) {
-        mLeftGridView = (FixListView) view.findViewById(R.id.list_left);
-        mRightGridView = (FixListView) view.findViewById(R.id.list_right);
-        mLeftAdapter = new LiveLeftAdapter(mActivity);
+    private void initView() {
+        mLeftGridView = (ListView) mRootView.findViewById(R.id.list_left);
+        mRightGridView = (ListView) mRootView.findViewById(R.id.list_right);
+        mLeftAdapter = new LiveLeftAdapter(mActivity, false);
         mLeftGridView.setAdapter(mLeftAdapter);
         mRightAdapter = new LiveRightAdapter(mActivity);
         mRightGridView.setAdapter(mRightAdapter);
@@ -105,20 +106,19 @@ public class FragmentChannel extends BaseFragment{
 
     public void setData(List<CategoryInnerModel> list) {
 
-        if (mLeftAdapter==null || mRightAdapter==null) return;
+        if (mLeftAdapter==null || mRightAdapter==null) {
+            return;
+        }
 
         List<String> leftData = new ArrayList<>();
         leftData.add("央视");
         leftData.add("卫视");
         mLeftAdapter.setDatas(leftData);
 
-        List<CategoryInnerModel> temp = new ArrayList<>();
-        temp.addAll(list);
-        temp.addAll(list);
-        mRightAdapter.setDatas(temp);
+        mRightAdapter.setDatas(list);
 
         mHandler.sendEmptyMessage(0);
-        mListener.onClick(Constants.CCTV_9, temp.get(0).getVideoId()+"");
+        mListener.onClick(Constants.CCTV_9, list.get(0).getVideoId()+"");
     }
 
     public interface Listener {
