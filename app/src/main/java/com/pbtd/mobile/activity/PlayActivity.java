@@ -1,6 +1,7 @@
 package com.pbtd.mobile.activity;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -64,6 +65,7 @@ public class PlayActivity extends BaseActivity implements PlayContract.View {
     private MediaControl mControl;
     private RelativeLayout mTop;
     private ProgressBar mProgress;
+    private ImageView mDesciptionButtonView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +91,7 @@ public class PlayActivity extends BaseActivity implements PlayContract.View {
         mTop = (RelativeLayout) findViewById(R.id.rl_top);
         mScrollView = (ScrollView) findViewById(R.id.scrollView);
         ImageView backView = (ImageView) findViewById(R.id.iv_back);
-        ImageView mDesciptionButtonView = (ImageView) findViewById(R.id.iv_more);
+        mDesciptionButtonView = (ImageView) findViewById(R.id.iv_more);
         mDescriptionView = (TextView) findViewById(R.id.tv_description);
         mNameView = (TextView) findViewById(R.id.tv_name);
         mTypeView = (TextView) findViewById(R.id.tv_type);
@@ -110,30 +112,40 @@ public class PlayActivity extends BaseActivity implements PlayContract.View {
                 ViewGroup.LayoutParams.MATCH_PARENT, UIUtil.convertDpToPixel(this, 42));
         layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
         mTop.addView(rootView, layoutParams);
-        mControl.setOnClickListener(v -> {
-            mCurrentPosition = mVideoView.getCurrentPosition();
-            Intent intent = new Intent(this, PlayLandActivity.class);
-            intent.putExtra(PlayLandActivity.PROGRESS_POSITION, mCurrentPosition);
-            intent.putExtra(PlayLandActivity.CURRENT_ITEM, mCurrentSelectPosition);
-            intent.putParcelableArrayListExtra(PlayLandActivity .PRODUCT_DETAIL, (ArrayList) mModelList);
-            startActivityForResult(intent, 1);
-        });
-        mVideoView.setOnPreparedListener((mp) -> {
-            mProgress.setVisibility(View.GONE);
-            mp.start();
-            mControl.show();
+        mControl.setOnClickListener(new MediaControl.OnClickListener() {
+            @Override
+            public void onClick(int action) {
+                mCurrentPosition = mVideoView.getCurrentPosition();
+                Intent intent = new Intent(PlayActivity.this, PlayLandActivity.class);
+                intent.putExtra(PlayLandActivity.PROGRESS_POSITION, mCurrentPosition);
+                intent.putExtra(PlayLandActivity.CURRENT_ITEM, mCurrentSelectPosition);
+                intent.putParcelableArrayListExtra(PlayLandActivity .PRODUCT_DETAIL, (ArrayList) mModelList);
+                startActivityForResult(intent, 1);
+            }
         });
 
-        mVideoView.setOnTouchListener((v, event) -> {
-            if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                if (mControl.isShowing()) {
-                    mControl.hide();
-                }else {
-                    mControl.show();
-                }
-                return true;
+        mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                mProgress.setVisibility(View.GONE);
+                mp.start();
+                mControl.show();
             }
-            return super.onTouchEvent(event);
+        });
+
+        mVideoView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    if (mControl.isShowing()) {
+                        mControl.hide();
+                    }else {
+                        mControl.show();
+                    }
+                    return true;
+                }
+                return PlayActivity.super.onTouchEvent(event);
+            }
         });
 
         mAdapter = new TempTabAdapter(this, false);
@@ -149,11 +161,19 @@ public class PlayActivity extends BaseActivity implements PlayContract.View {
             }
         });
 
-        backView.setOnClickListener((v -> this.finish()));
+        backView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PlayActivity.this.finish();
+            }
+        });
 
-        mDesciptionButtonView.setOnClickListener((description_view) -> {
-            mDetailView.setVisibility(mDetailView.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
-            mDesciptionButtonView.setSelected(mDetailView.getVisibility() == View.VISIBLE);
+        mDesciptionButtonView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDetailView.setVisibility(mDetailView.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+                mDesciptionButtonView.setSelected(mDetailView.getVisibility() == View.VISIBLE);
+            }
         });
     }
 
@@ -247,15 +267,18 @@ public class PlayActivity extends BaseActivity implements PlayContract.View {
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(UIUtil.convertDpToPixel(this, 60), UIUtil.convertDpToPixel(this, 40));
                 layoutParams.leftMargin = UIUtil.convertDpToPixel(this, 10);
                 textView.setLayoutParams(layoutParams);
-                textView.setOnClickListener((view) -> {
-                    mSelectContainer.getChildAt(mCurrentSelectPosition).setSelected(false);
-                    mCurrentUrl = (String) view.getTag(R.id.tag_first);
-                    mCurrentSelectPosition = (int) view.getTag(R.id.tag_second);
-                    mSelectContainer.getChildAt(mCurrentSelectPosition).setSelected(true);
-                    mProgress.setVisibility(View.VISIBLE);
+                textView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mSelectContainer.getChildAt(mCurrentSelectPosition).setSelected(false);
+                        mCurrentUrl = (String) view.getTag(R.id.tag_first);
+                        mCurrentSelectPosition = (int) view.getTag(R.id.tag_second);
+                        mSelectContainer.getChildAt(mCurrentSelectPosition).setSelected(true);
+                        mProgress.setVisibility(View.VISIBLE);
 //                    mVideoView.setVideoPath(mCurrentUrl);
-                    mVideoView.setVideoPath(Constants.TEMP_PLAY_URL);
-                    mControl.show();
+                        mVideoView.setVideoPath(Constants.TEMP_PLAY_URL);
+                        mControl.show();
+                    }
                 });
                 textView.setSelected(i==0);
                 mSelectContainer.addView(textView);

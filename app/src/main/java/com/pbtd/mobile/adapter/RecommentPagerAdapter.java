@@ -49,13 +49,16 @@ public class RecommentPagerAdapter extends PagerAdapter {
         sd.setImageURI(recommendedVideo.getPictureurl1());
         tv.setText(recommendedVideo.getSeriesName());
         rl_root.setTag(recommendedVideo);
-        rl_root.setOnClickListener((v -> {
-            ProductModel tag = (ProductModel) v.getTag();
-            String seriesCode = tag.getSeriesCode();
-            Intent intent = new Intent(mContext, PlayActivity.class);
-            intent.putExtra(PlayActivity.PRODUCT_CODE, seriesCode);
-            mContext.startActivity(intent);
-        }));
+        rl_root.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ProductModel tag = (ProductModel) v.getTag();
+                String seriesCode = tag.getSeriesCode();
+                Intent intent = new Intent(mContext, PlayActivity.class);
+                intent.putExtra(PlayActivity.PRODUCT_CODE, seriesCode);
+                mContext.startActivity(intent);
+            }
+        });
         container.addView(view);
         return view;
     }

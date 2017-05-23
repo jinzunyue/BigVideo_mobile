@@ -39,10 +39,10 @@ public class FragmentChannel extends BaseFragment{
     private Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
-            LiveLeftAdapter.ViewHolder viewHolder = (LiveLeftAdapter.ViewHolder) mLeftGridView.getChildAt(0).getTag();
+            LiveLeftAdapter.ViewHolder viewHolder = (LiveLeftAdapter.ViewHolder) mLeftGridView.getChildAt(mLeftCurrentPosition).getTag();
             viewHolder.mTv.setSelected(true);
 
-            LiveRightAdapter.ViewHolder viewHolder2 = (LiveRightAdapter.ViewHolder) mRightGridView.getChildAt(0).getTag();
+            LiveRightAdapter.ViewHolder viewHolder2 = (LiveRightAdapter.ViewHolder) mRightGridView.getChildAt(mRightCurrentPosition).getTag();
             viewHolder2.mTitle.setSelected(true);
             viewHolder2.mPlay.setSelected(true);
             viewHolder2.mNow.setSelected(true);

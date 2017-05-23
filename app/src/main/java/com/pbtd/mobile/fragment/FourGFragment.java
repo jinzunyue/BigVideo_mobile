@@ -35,18 +35,34 @@ public class FourGFragment extends BaseFragment {
         LinearLayout mPlusView = (LinearLayout) view.findViewById(R.id.plus_4g);
         LinearLayout mMoreView = (LinearLayout) view.findViewById(R.id.more);
 
-        mVipView.setOnClickListener((vip_view) -> startActivity(new Intent(mActivity, VipBuyActivity.class)));
-        mQuickView.setOnClickListener((quick_view) -> {
-            Intent intent = new Intent(mActivity, FourGActivity.class);
-            intent.putExtra(FourGActivity.IS_PLUS, false);
-            startActivity(intent);
+        mVipView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(mActivity, VipBuyActivity.class));
+            }
         });
-        mPlusView.setOnClickListener((plus_view) -> {
-            Intent intent = new Intent(mActivity, FourGActivity.class);
-            intent.putExtra(FourGActivity.IS_PLUS, true);
-            startActivity(intent);
+        mQuickView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mActivity, FourGActivity.class);
+                intent.putExtra(FourGActivity.IS_PLUS, false);
+                startActivity(intent);
+            }
         });
-        mMoreView.setOnClickListener((more_view) -> UIUtil.showToast(mActivity, "更多业务"));
+        mPlusView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mActivity, FourGActivity.class);
+                intent.putExtra(FourGActivity.IS_PLUS, true);
+                startActivity(intent);
+            }
+        });
+        mMoreView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UIUtil.showToast(mActivity, "更多业务");
+            }
+        });
 
         PagerSlidingTabStrip mIndicator = (PagerSlidingTabStrip) view.findViewById(R.id.indicator);
         ViewPager mViewPager = (ViewPager) view.findViewById(R.id.view_pager);

@@ -71,7 +71,7 @@ public class FragmentProgram extends BaseFragment{
         list.add(StringUtil.convertDate(StringUtil.getCurrentDate(-4)));
         list.add(StringUtil.convertDate(StringUtil.getCurrentDate(-5)));
         for (int i = 0; i < list.size(); i++) {
-            mDataMap.put(list.get(i), new ArrayList<>());
+            mDataMap.put(list.get(i), new ArrayList<WeekProgramModel>());
         }
 
         mLeftAdapter.setDatas(list);

@@ -41,26 +41,82 @@ public class MyFragment extends BaseFragment {
         RelativeLayout mAboutView = (RelativeLayout) view.findViewById(R.id.rl_about);
         RelativeLayout mSetView = (RelativeLayout) view.findViewById(R.id.rl_set);
 
-        mUpAvatarView.setOnClickListener((up_view) -> UIUtil.showToast(mActivity, "上传头像"));
-        mNoteView.setOnClickListener((up_view) -> UIUtil.showToast(mActivity, "签到成功"));
-        mMessageView.setOnClickListener((up_view) -> UIUtil.showToast(mActivity, "我的消息"));
-        mHistoryView.setOnClickListener((up_view) -> {
-            Intent intent = new Intent(mActivity, HistoryAndCollectionActivity.class);
-            intent.putExtra(HistoryAndCollectionActivity.IS_HISTORY, true);
-            mActivity.startActivity(intent);
+        mUpAvatarView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UIUtil.showToast(mActivity, "上传头像");
+            }
         });
-        mCollectionView.setOnClickListener((up_view) -> {
-            Intent intent = new Intent(mActivity, HistoryAndCollectionActivity.class);
-            intent.putExtra(HistoryAndCollectionActivity.IS_HISTORY, false);
-            mActivity.startActivity(intent);
+        mNoteView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UIUtil.showToast(mActivity, "签到成功");
+            }
         });
-        mOrderView.setOnClickListener((up_view) -> UIUtil.showToast(mActivity, "我的订单"));
-        mBindView.setOnClickListener((up_view) -> UIUtil.showToast(mActivity, "绑定管理"));
-        mVipView.setOnClickListener((up_view) -> UIUtil.showToast(mActivity, "会员中心"));
-        mSuggestionView.setOnClickListener((up_view) -> UIUtil.showToast(mActivity, "意见反馈"));
-        mQuestionView.setOnClickListener((up_view) -> UIUtil.showToast(mActivity, "常见问题"));
-        mAboutView.setOnClickListener((up_view) -> UIUtil.showToast(mActivity, "关于我们"));
-        mSetView.setOnClickListener((up_view) -> UIUtil.showToast(mActivity, "设置"));
+        mMessageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UIUtil.showToast(mActivity, "我的消息");
+            }
+        });
+        mHistoryView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mActivity, HistoryAndCollectionActivity.class);
+                intent.putExtra(HistoryAndCollectionActivity.IS_HISTORY, true);
+                mActivity.startActivity(intent);
+            }
+        });
+        mCollectionView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mActivity, HistoryAndCollectionActivity.class);
+                intent.putExtra(HistoryAndCollectionActivity.IS_HISTORY, false);
+                mActivity.startActivity(intent);
+            }
+        });
+        mOrderView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UIUtil.showToast(mActivity, "我的订单");
+            }
+        });
+        mBindView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UIUtil.showToast(mActivity, "绑定管理");
+            }
+        });
+        mVipView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UIUtil.showToast(mActivity, "会员中心");
+            }
+        });
+        mSuggestionView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UIUtil.showToast(mActivity, "意见反馈");
+            }
+        });
+        mQuestionView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UIUtil.showToast(mActivity, "常见问题");
+            }
+        });
+        mAboutView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UIUtil.showToast(mActivity, "关于我们");
+            }
+        });
+        mSetView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UIUtil.showToast(mActivity, "设置");
+            }
+        });
 
     }
 }

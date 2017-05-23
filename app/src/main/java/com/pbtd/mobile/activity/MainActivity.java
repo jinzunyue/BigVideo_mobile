@@ -1,7 +1,6 @@
 package com.pbtd.mobile.activity;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentTabHost;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -14,10 +13,11 @@ import com.pbtd.mobile.fragment.LiveVideoFragment;
 import com.pbtd.mobile.fragment.MainFragment;
 import com.pbtd.mobile.fragment.MyFragment;
 import com.pbtd.mobile.fragment.VIPFragment;
+import com.pbtd.mobile.widget.PBFragmentTabHost;
 
 public class MainActivity extends BaseActivity{
 
-    private FragmentTabHost mTabHost;
+    private PBFragmentTabHost mTabHost;
     private Class mFragmentArray[] = {MainFragment.class,LiveVideoFragment.class,VIPFragment.class,FourGFragment.class,MyFragment.class};
     private int mImageViewArray[] = {R.drawable.select_tab_main,R.drawable.select_tab_live_video,R.drawable.select_tab_vip,
             R.drawable.select_tab_4g,R.drawable.select_tab_my};
@@ -33,7 +33,7 @@ public class MainActivity extends BaseActivity{
 
     @Override
     protected void initView(){
-        mTabHost = (FragmentTabHost)findViewById(android.R.id.tabhost);
+        mTabHost = (PBFragmentTabHost)findViewById(android.R.id.tabhost);
         mTabHost.setup(this, getSupportFragmentManager(), R.id.realtabcontent);
         mTabHost.getTabWidget().setShowDividers(LinearLayout.SHOW_DIVIDER_NONE);
 

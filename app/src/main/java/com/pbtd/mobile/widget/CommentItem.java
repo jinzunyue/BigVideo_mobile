@@ -71,8 +71,11 @@ public class CommentItem {
 
         mIconView.setVisibility(mIsRecomment?View.VISIBLE:View.GONE);
         mIconLineView.setVisibility(mIsRecomment?View.GONE:View.VISIBLE);
-        mBottomTip.setOnClickListener((click_view) -> {
-            UIUtil.showToast(mContext, "更多精彩内容");
+        mBottomTip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UIUtil.showToast(mContext, "更多精彩内容");
+            }
         });
     }
 

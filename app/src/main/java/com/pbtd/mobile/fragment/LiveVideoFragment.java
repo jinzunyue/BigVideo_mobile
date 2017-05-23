@@ -1,6 +1,7 @@
 package com.pbtd.mobile.fragment;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
@@ -12,6 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.VideoView;
 
+import com.orhanobut.logger.Logger;
 import com.pbtd.mobile.Constants;
 import com.pbtd.mobile.R;
 import com.pbtd.mobile.activity.PlayLandActivity;
@@ -66,20 +68,31 @@ public class LiveVideoFragment extends BaseFragment implements LiveContract.View
         mTvChannelIndicator = view.findViewById(R.id.view_channel);
         mTvProgramIndicator = view.findViewById(R.id.view_program);
 
-        mVideoView.setOnErrorListener((mp, what, extra) -> true);
+        mVideoView.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+            @Override
+            public boolean onError(MediaPlayer mp, int what, int extra) {
+                return true;
+            }
+        });
         mVideoView.seekTo(mCurrentPlayPosition);
-        mVideoView.setOnPreparedListener((mp) -> {
-            mProgress.setVisibility(View.GONE);
-            mp.start();
+        mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                mProgress.setVisibility(View.GONE);
+                mp.start();
+            }
         });
 
-        mFullScreenView.setOnClickListener((full_view) -> {
-            mCurrentPlayPosition = mVideoView.getCurrentPosition();
-            Intent intent = new Intent(mActivity, PlayLandActivity.class);
-            intent.putExtra(PlayLandActivity.URL, Constants.CCTV_7);
-            intent.putExtra(PlayLandActivity.TITLE, "测试标题");
-            intent.putExtra(PlayLandActivity.PROGRESS_POSITION, mCurrentPlayPosition);
-            startActivityForResult(intent, 1);
+        mFullScreenView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCurrentPlayPosition = mVideoView.getCurrentPosition();
+                Intent intent = new Intent(mActivity, PlayLandActivity.class);
+                intent.putExtra(PlayLandActivity.URL, Constants.CCTV_7);
+                intent.putExtra(PlayLandActivity.TITLE, "测试标题");
+                intent.putExtra(PlayLandActivity.PROGRESS_POSITION, mCurrentPlayPosition);
+                startActivityForResult(intent, 1);
+            }
         });
 
         mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -98,8 +111,18 @@ public class LiveVideoFragment extends BaseFragment implements LiveContract.View
 
             }
         });
-        mTvProgram.setOnClickListener(v -> mViewPager.setCurrentItem(1));
-        mTvChannel.setOnClickListener(v -> mViewPager.setCurrentItem(0));
+        mTvProgram.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mViewPager.setCurrentItem(1);
+            }
+        });
+        mTvChannel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mViewPager.setCurrentItem(0);
+            }
+        });
 
         mAdapter = new MainTabAdapter(getChildFragmentManager());
         mViewPager.setAdapter(mAdapter);
@@ -128,13 +151,20 @@ public class LiveVideoFragment extends BaseFragment implements LiveContract.View
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mPresenter = new LivePresenter(mActivity, this);
-
+        mPresenter.getCategoryList();
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        mPresenter.getCategoryList();
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (hidden) {
+            mVideoView.pause();
+            mVideoView.stopPlayback();
+            Logger.i(Constants.LOGGER_TAG, "hidden");
+        } else {
+            mPresenter.getCategoryList();
+            Logger.i(Constants.LOGGER_TAG, "show");
+        }
     }
 
     @Override

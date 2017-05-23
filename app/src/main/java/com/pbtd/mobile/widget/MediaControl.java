@@ -64,17 +64,23 @@ public class MediaControl {
         mProgress.setMax(1000);
         mProgress.setOnSeekBarChangeListener(mSeekListener);
         
-        mPlay.setOnClickListener(v -> {
-            if (mVideoView.isPlaying()) {
-                pause();
-            } else {
-                play();
-            } 
+        mPlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mVideoView.isPlaying()) {
+                    pause();
+                } else {
+                    play();
+                }
+            }
         });
 
-        mFullScreen.setOnClickListener(v -> {
-            if (mListener != null)
-                mListener.onClick(FULL_SCREEN);
+        mFullScreen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mListener != null)
+                    mListener.onClick(FULL_SCREEN);
+            }
         });
         mPlay.setSelected(true);
     }

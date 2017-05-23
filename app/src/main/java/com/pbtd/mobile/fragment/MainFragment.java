@@ -57,9 +57,24 @@ public class MainFragment extends BaseFragment implements MainContract.View{
         mAdapter = new MainTabAdapter(getChildFragmentManager());
         mViewPager.setAdapter(mAdapter);
 
-        searchView.setOnClickListener((search_view) -> UIUtil.showToast(getActivity(), "搜索"));
-        historyView.setOnClickListener((history_view) -> UIUtil.showToast(getActivity(), "播放记录"));
-        moreTabView.setOnClickListener((more_view) -> UIUtil.showToast(getActivity(), "更多频道"));
+        searchView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UIUtil.showToast(getActivity(), "搜索");
+            }
+        });
+        historyView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UIUtil.showToast(getActivity(), "播放记录");
+            }
+        });
+        moreTabView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UIUtil.showToast(getActivity(), "更多频道");
+            }
+        });
     }
 
     @Override

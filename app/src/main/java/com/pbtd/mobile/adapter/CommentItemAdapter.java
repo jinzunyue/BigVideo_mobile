@@ -67,11 +67,15 @@ public class CommentItemAdapter extends BaseAdapter {
         viewHolder.tv_updata.setText("更新至第33集");
         viewHolder.tv_main_title.setText(recommendedVideo.getSeriesName());
         viewHolder.tv_sub_title.setText("");
-        viewHolder.rl_root.setOnClickListener((view) ->
-        {
-            Intent intent = new Intent(mContext, PlayActivity.class);
-            intent.putExtra(PlayActivity.PRODUCT_CODE, recommendedVideo.getSeriesCode());
-            mContext.startActivity(intent);
+        viewHolder.rl_root.setTag(R.id.tag_first, recommendedVideo);
+        viewHolder.rl_root.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ProductModel recommendedVideo = (ProductModel) v.getTag(R.id.tag_first);
+                Intent intent = new Intent(mContext, PlayActivity.class);
+                intent.putExtra(PlayActivity.PRODUCT_CODE, recommendedVideo.getSeriesCode());
+                mContext.startActivity(intent);
+            }
         });
         return convertView;
     }

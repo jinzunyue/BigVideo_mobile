@@ -83,7 +83,12 @@ public class PageItemAdapter extends BaseAdapter {
         String name = recommendModel.getName();
         viewHolder.mIconView.setVisibility(mIsRecomment ?View.VISIBLE:View.GONE);
         viewHolder.mIconLineView.setVisibility(mIsRecomment ?View.GONE:View.VISIBLE);
-        viewHolder.mBottomTip.setOnClickListener((click_view) -> UIUtil.showToast(mContext, "更多精彩内容"));
+        viewHolder.mBottomTip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UIUtil.showToast(mContext, "更多精彩内容");
+            }
+        });
 
         viewHolder.mTitleView.setText(name);
         viewHolder.mIconView.setImageResource(RecommendFragment.mRecommendIcon.get(name));

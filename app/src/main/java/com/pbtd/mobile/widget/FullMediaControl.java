@@ -68,21 +68,30 @@ public class FullMediaControl {
         mProgress.setMax(1000);
         mProgress.setOnSeekBarChangeListener(mSeekListener);
         
-        mPlay.setOnClickListener(v -> {
-            if (mVideoView.isPlaying()) {
-                pause();
-            } else {
-                play();
-            } 
+        mPlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mVideoView.isPlaying()) {
+                    pause();
+                } else {
+                    play();
+                }
+            }
         });
         mQuick.setOnClickListener(mFfwdListener);
-        mType.setOnClickListener(v -> {
-            if (mListener != null)
-                mListener.onClick(TYPE);
+        mType.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mListener != null)
+                    mListener.onClick(TYPE);
+            }
         });
-        mSelect.setOnClickListener(v -> {
-            if (mListener != null)
-                mListener.onClick(SELECT);
+        mSelect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mListener != null)
+                    mListener.onClick(SELECT);
+            }
         });
         mPlay.setSelected(true);
     }

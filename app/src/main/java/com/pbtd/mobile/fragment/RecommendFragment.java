@@ -142,12 +142,37 @@ public class RecommendFragment extends BaseFragment implements TabContract.View 
         mContentView.addFooterView(footer_view);
         mContentView.setAdapter(mPageItemAdapter);
 
-        left_4g.setOnClickListener((view_left_4g) -> UIUtil.showToast(getActivity(), "剩余流量"));
-        recomment.setOnClickListener((view_left_4g) -> UIUtil.showToast(getActivity(), "推荐有礼"));
-        sign_in.setOnClickListener((view_left_4g) -> UIUtil.showToast(getActivity(), "每日签到"));
-        subject.setOnClickListener((view_left_4g) -> UIUtil.showToast(getActivity(), "精选专题"));
+        left_4g.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UIUtil.showToast(getActivity(), "剩余流量");
+            }
+        });
+        recomment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UIUtil.showToast(getActivity(), "推荐有礼");
+            }
+        });
+        sign_in.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UIUtil.showToast(getActivity(), "每日签到");
+            }
+        });
+        subject.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UIUtil.showToast(getActivity(), "精选专题");
+            }
+        });
 
-        adjustView.setOnClickListener((adjust_view) -> UIUtil.showToast(getActivity(), "调整栏目"));
+        adjustView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UIUtil.showToast(getActivity(), "调整栏目");
+            }
+        });
 
     }
 

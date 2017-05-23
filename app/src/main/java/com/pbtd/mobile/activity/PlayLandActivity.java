@@ -60,6 +60,7 @@ public class PlayLandActivity extends BaseActivity {
     private ImageView mCenterPlayView;
     private RelativeLayout mRoot;
     private FullScreenPoP mSelectPop;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +88,7 @@ public class PlayLandActivity extends BaseActivity {
     @Override
     protected void initView() {
         mRoot = (RelativeLayout) findViewById(R.id.rl_root);
-        ProgressBar progressBar = (ProgressBar) findViewById(R.id.pb);
+        progressBar = (ProgressBar) findViewById(R.id.pb);
         ImageView mBackView = (ImageView) findViewById(R.id.iv_back);
         mVideoView = (VideoView) findViewById(R.id.video_view);
         mTitleView = (TextView) findViewById(R.id.tv_title);
@@ -100,19 +101,22 @@ public class PlayLandActivity extends BaseActivity {
         mControlTop = (RelativeLayout) findViewById(R.id.rl_control_top);
 
         mControl = new FullMediaControl(this, mVideoView);
-        mControl.setListener((click_type -> {
-            switch (click_type) {
-                case FullMediaControl.TYPE:
-                    UIUtil.showToast(PlayLandActivity.this, "高清切换成功");
-                    break;
-                case FullMediaControl.SELECT:
-                    if (mSelectPop==null) {
-                        mSelectPop = new FullScreenPoP(PlayLandActivity.this, 20);
-                    }
-                    mSelectPop.showAtLocation(mVideoView, Gravity.RIGHT, 0, 0);
-                    break;
+        mControl.setListener(new FullMediaControl.Listener() {
+            @Override
+            public void onClick(int click_type) {
+                switch (click_type) {
+                    case FullMediaControl.TYPE:
+                        UIUtil.showToast(PlayLandActivity.this, "高清切换成功");
+                        break;
+                    case FullMediaControl.SELECT:
+                        if (mSelectPop==null) {
+                            mSelectPop = new FullScreenPoP(PlayLandActivity.this, 20);
+                        }
+                        mSelectPop.showAtLocation(mVideoView, Gravity.RIGHT, 0, 0);
+                        break;
+                }
             }
-        }));
+        });
         View controlView = mControl.getRootView();
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, UIUtil.convertDpToPixel(this, 57));
         layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
@@ -143,12 +147,15 @@ public class PlayLandActivity extends BaseActivity {
 
 
         mVideoView.seekTo(mProgressPosition);
-        mVideoView.setOnPreparedListener((mp) -> {
-            progressBar.setVisibility(View.GONE);
-            mp.start();
-            mControl.show();
-            mRoot.removeCallbacks(mFadeOut);
-            mRoot.postDelayed(mFadeOut, FadeOutTime);
+        mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                progressBar.setVisibility(View.GONE);
+                mp.start();
+                mControl.show();
+                mRoot.removeCallbacks(mFadeOut);
+                mRoot.postDelayed(mFadeOut, FadeOutTime);
+            }
         });
         mVideoView.setOnInfoListener(new MediaPlayer.OnInfoListener() {
             @Override
@@ -157,93 +164,129 @@ public class PlayLandActivity extends BaseActivity {
                 return false;
             }
         });
-        mVideoView.setOnErrorListener((mp, what, extra) -> {
-            System.out.println(mp);
-            return true;
+        mVideoView.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+            @Override
+            public boolean onError(MediaPlayer mp, int what, int extra) {
+                return true;
+            }
         });
 
-        mVideoView.setOnTouchListener((view, eventType) -> {
-            switch (eventType.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    if (mIsLocked) {
-                        mLockView.setVisibility(View.VISIBLE);
-                        mRoot.removeCallbacks(mFadeOut);
-                        mRoot.postDelayed((() -> mLockView.setVisibility(View.GONE)), FadeOutTime);
-                    } else {
-                        if (mIsControlDisplay) {
-                            hideAll();
-                        } else {
-                            showAll();
+        mVideoView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        if (mIsLocked) {
+                            mLockView.setVisibility(View.VISIBLE);
                             mRoot.removeCallbacks(mFadeOut);
-                            mRoot.postDelayed(mFadeOut, FadeOutTime);
+                            mRoot.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mLockView.setVisibility(View.GONE);
+                                }
+                            }, FadeOutTime);
+                        } else {
+                            if (mIsControlDisplay) {
+                                hideAll();
+                            } else {
+                                showAll();
+                                mRoot.removeCallbacks(mFadeOut);
+                                mRoot.postDelayed(mFadeOut, FadeOutTime);
+                            }
+                            mIsControlDisplay = !mIsControlDisplay;
                         }
-                        mIsControlDisplay = !mIsControlDisplay;
-                    }
-                    return true;
+                        return true;
+                }
+                return false;
             }
-            return false;
-
         });
 
-        mShareView.setOnClickListener(v -> {
-            UIUtil.showToast(this, "分享成功");
-            mRoot.removeCallbacks(mFadeOut);
-            mRoot.postDelayed(mFadeOut, FadeOutTime);
+        mShareView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UIUtil.showToast(PlayLandActivity.this, "分享成功");
+                mRoot.removeCallbacks(mFadeOut);
+                mRoot.postDelayed(mFadeOut, FadeOutTime);
+            }
         });
-        mCollectView.setOnClickListener(v -> {
-            UIUtil.showToast(this, "收藏成功");
-            mRoot.removeCallbacks(mFadeOut);
-            mRoot.postDelayed(mFadeOut, FadeOutTime);
+        mCollectView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UIUtil.showToast(PlayLandActivity.this, "收藏成功");
+                mRoot.removeCallbacks(mFadeOut);
+                mRoot.postDelayed(mFadeOut, FadeOutTime);
+            }
         });
-        mBigScreenView.setOnClickListener(v -> {
-            UIUtil.showToast(this, "大屏推送成功");
-            mRoot.removeCallbacks(mFadeOut);
-            mRoot.postDelayed(mFadeOut, FadeOutTime);
+        mBigScreenView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UIUtil.showToast(PlayLandActivity.this, "大屏推送成功");
+                mRoot.removeCallbacks(mFadeOut);
+                mRoot.postDelayed(mFadeOut, FadeOutTime);
+            }
         });
-        mLockView.setOnClickListener(v -> {
-            if (mIsLocked) {
-                showAll();
-            } else {
-                hideAll();
+        mLockView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mIsLocked) {
+                    showAll();
+                } else {
+                    hideAll();
+                    mLockView.setVisibility(View.VISIBLE);
+                }
                 mLockView.setVisibility(View.VISIBLE);
+                mIsLocked = !mIsLocked;
+                mLockView.setSelected(!mLockView.isSelected());
+                mRoot.removeCallbacks(mFadeOut);
+                mRoot.postDelayed(mFadeOut, FadeOutTime);
             }
-            mLockView.setVisibility(View.VISIBLE);
-            mIsLocked = !mIsLocked;
-            mLockView.setSelected(!mLockView.isSelected());
-            mRoot.removeCallbacks(mFadeOut);
-            mRoot.postDelayed(mFadeOut, FadeOutTime);
         });
-        mCenterPlayView.setOnClickListener(v -> {
-            mControl.show();
-            if (mVideoView.isPlaying()) {
-                mControl.pause();
-            } else {
-                mControl.play();
+        mCenterPlayView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mControl.show();
+                if (mVideoView.isPlaying()) {
+                    mControl.pause();
+                } else {
+                    mControl.play();
+                }
+                mCenterPlayView.setSelected(!mCenterPlayView.isSelected());
+                mRoot.removeCallbacks(mFadeOut);
+                mRoot.postDelayed(mFadeOut, FadeOutTime);
             }
-            mCenterPlayView.setSelected(!mCenterPlayView.isSelected());
-            mRoot.removeCallbacks(mFadeOut);
-            mRoot.postDelayed(mFadeOut, FadeOutTime);
         });
-        mCutScreenView.setOnClickListener(v -> {
-            hideAll();
-            mRoot.removeCallbacks(mFadeOut);
-            screenshot();
+        mCutScreenView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hideAll();
+                mRoot.removeCallbacks(mFadeOut);
+                screenshot();
+            }
         });
-        mControl.getRootView().setOnTouchListener((v, event) -> {
-            mRoot.removeCallbacks(mFadeOut);
-            mRoot.postDelayed(mFadeOut, FadeOutTime);
-            return true;
+        mControl.getRootView().setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                mRoot.removeCallbacks(mFadeOut);
+                mRoot.postDelayed(mFadeOut, FadeOutTime);
+                return true;
+            }
         });
-        mControlTop.setOnTouchListener((v, event) -> {
-            mRoot.removeCallbacks(mFadeOut);
-            mRoot.postDelayed(mFadeOut, FadeOutTime);
-            return true;
+        mControlTop.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                mRoot.removeCallbacks(mFadeOut);
+                mRoot.postDelayed(mFadeOut, FadeOutTime);
+                return true;
+            }
         });
-        mBackView.setOnClickListener((back_view) -> {
-            Intent intent = new Intent();
-            intent.putExtra(PROGRESS_POSITION, mVideoView.getCurrentPosition());
-            setResult(RESULT_OK, intent);
-            PlayLandActivity.this.finish();
+        mBackView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.putExtra(PROGRESS_POSITION, mVideoView.getCurrentPosition());
+                setResult(RESULT_OK, intent);
+                PlayLandActivity.this.finish();
+            }
         });
 
     }

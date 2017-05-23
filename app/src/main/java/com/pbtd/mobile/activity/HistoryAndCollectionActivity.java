@@ -38,8 +38,18 @@ public class HistoryAndCollectionActivity extends BaseActivity {
         ImageView deleteView = (ImageView) findViewById(R.id.iv_delete);
         mListView = (ListView) findViewById(R.id.lv);
 
-        backView.setOnClickListener(v -> HistoryAndCollectionActivity.this.finish());
-        deleteView.setOnClickListener(v -> UIUtil.showToast(this, "删除所有"));
+        backView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HistoryAndCollectionActivity.this.finish();
+            }
+        });
+        deleteView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UIUtil.showToast(HistoryAndCollectionActivity.this, "删除所有");
+            }
+        });
         titleView.setText(mIsHistory?"最近观看":"我的收藏");
 
         mAdapter = new HistoryAdapter(this, mIsHistory);

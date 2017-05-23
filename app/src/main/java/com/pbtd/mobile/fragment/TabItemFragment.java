@@ -120,12 +120,15 @@ public class TabItemFragment extends BaseFragment implements TabContract.View{
             mIsLoadMore = false;
         } else {
             if (list != null) {
-                ProductModel productModel = list.get(0);
+                final ProductModel productModel = list.get(0);
                 mTopView.setImageURI(productModel.getPictureurl1());
-                mTopView.setOnClickListener((v) -> {
-                    Intent intent = new Intent(mActivity, PlayActivity.class);
-                    intent.putExtra(PlayActivity.PRODUCT_CODE, productModel.getSeriesCode());
-                    startActivity(intent);
+                mTopView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(mActivity, PlayActivity.class);
+                        intent.putExtra(PlayActivity.PRODUCT_CODE, productModel.getSeriesCode());
+                        startActivity(intent);
+                    }
                 });
 
                 mAdapter.setDatas(list.subList(1, 7));
