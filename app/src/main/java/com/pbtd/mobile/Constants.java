@@ -5,7 +5,7 @@ package com.pbtd.mobile;
  */
 
 public class Constants {
-    public static final String BASE_SERVER = "http://220.191.161.221:8080/";
+    public static final String BASE_SERVER = "http://220.191.161.221:8080/CIBN_APP/albumsAction!";
     public static final String SHAREDPREFERENCES_NAME = "pbtd";
     public static final String LOGGER_TAG = "大视频";
     public static final int TAB_MORE_LIMIT = 6;//必须是6的倍数

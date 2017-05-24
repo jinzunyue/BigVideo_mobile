@@ -2,50 +2,57 @@ package com.pbtd.mobile.presenter.main;
 
 import android.content.Context;
 
+import com.android.volley.VolleyError;
+import com.orhanobut.logger.Logger;
 import com.pbtd.mobile.Constants;
 import com.pbtd.mobile.model.BaseModel;
 import com.pbtd.mobile.model.CategoryModel;
-import com.pbtd.mobile.network.RetrofitUtil;
+import com.pbtd.mobile.presenter.BasePresenter;
+import com.pbtd.mobile.volley.VolleyController;
 
-import java.util.List;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import java.util.Arrays;
 
 /**
  * Created by xuqinchao on 17/5/4.
  */
 
-public class MainPresenter implements MainContract.Presenter {
+public class MainPresenter extends BasePresenter<MainContract.View> implements MainContract.Presenter {
 
-    private final MainContract.View mView;
-    private final Context mContext;
-
-    public MainPresenter(Context context, MainContract.View view) {
-        mContext = context;
-        mView = view;
+    public MainPresenter(Context ctx, MainContract.View view) {
+        super(ctx, view);
     }
 
     @Override
     public void getCategoryList() {
-        RetrofitUtil.getInstance(Constants.BASE_SERVER).getRequestApi().getCategoryList()
-                .enqueue(new Callback<BaseModel<List<CategoryModel>>>() {
-                    @Override
-                    public void onResponse(Call<BaseModel<List<CategoryModel>>> call, Response<BaseModel<List<CategoryModel>>> response) {
-                        BaseModel<List<CategoryModel>> body = response.body();
-                        if (body.success == true) {
-                            mView.showCategoryList(body.result);
-                        } else {
-                            String message = body.message;
-                            mView.showError(message);
-                        }
-                    }
+        mVolley.requestGetAction(Constants.BASE_SERVER + "getCategoryList.action",
+                new VolleyController.VolleyCallback() {
+            @Override
+            public void onResponse(String response) {
+                BaseModel baseModel = mGson.fromJson(response, BaseModel.class);
 
-                    @Override
-                    public void onFailure(Call<BaseModel<List<CategoryModel>>> call, Throwable t) {
-
+                if (baseModel.success) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(response);
+                        JSONArray result = jsonObject.getJSONArray("result");
+                        CategoryModel[] categoryModels = mGson.fromJson(result.toString(), CategoryModel[].class);
+                        mView.showCategoryList(Arrays.asList(categoryModels));
+                    } catch (JSONException e) {
+                        Logger.e(Constants.LOGGER_TAG, e.getMessage());
+                        mView.showError("数据异常");
                     }
-                });
+                } else {
+                    mView.showError(baseModel.message + "");
+                }
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mView.showError(error.getMessage() + "");
+            }
+        });
     }
 }

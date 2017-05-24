@@ -11,23 +11,26 @@ import java.util.Map;
 
 public class VolleyController {
 	
-	private VolleyCallback callback;
+	private VolleyCallback mCallBack;
 	
-	private Context context;
+	private Context mContext;
+
+	public static final String REQUEST_TAG = "volley_tag";
 	
-	public VolleyController(Context ctx,VolleyCallback callback){
-		this.context = ctx;
-		this.callback = callback;
+	public VolleyController(Context ctx){
+		this.mContext = ctx;
 	}
 	
-	/**
-	 * 进行get请求
-	 * @param url 请求url
-	 */ 
-	public void requestGetAction(String url){
-		startRequestGet(url);
+	public void requestGetAction(String url, VolleyCallback volleyCallback){
+		innerRequestGet(url, REQUEST_TAG);
+		mCallBack = volleyCallback;
 	}
-	
+
+	public void requestGetAction(String url, String tag, VolleyCallback volleyCallback){
+		innerRequestGet(url, tag);
+		mCallBack = volleyCallback;
+	}
+
 	/**
 	 * 进行POST请求
 	 * @param url 请求Url
@@ -38,51 +41,29 @@ public class VolleyController {
 		startRequestPost(url,bodyMap,headerMap);
 	}
 	
-	private void startRequestGet(String url) {
+	private void innerRequestGet(String url, String tag) {
 		ValueRequest requestGet = new ValueRequest(url, mResponseListener,mResponseErrorListener);
-		requestGet.setTag("volley_tag");
-		VolleyUtils.getInstance(context.getApplicationContext()).addToRequestQueue(requestGet);
+		requestGet.setTag(tag);
+		VolleyUtils.getInstance(mContext.getApplicationContext()).addToRequestQueue(requestGet);
 	}
 	
 	private void startRequestPost(String url,Map<String, String> bodyMap,Map<String, String> headerMap) {
 		ValueRequest requestPost = new ValueRequest(Method.POST, url, bodyMap, headerMap, mResponseListener,mResponseErrorListener);
 		requestPost.setTag("volley_tag");
-		VolleyUtils.getInstance(context.getApplicationContext()).addToRequestQueue(requestPost);
+		VolleyUtils.getInstance(mContext.getApplicationContext()).addToRequestQueue(requestPost);
 	}
 
-	private ValueRequest.RequestCallback requestCallback = new ValueRequest.RequestCallback() {
-		
-		@Override
-		public void onResponse(String response) {
-			if(callback != null){
-				callback.onResponse(response);
-			}
-				
-		}
-		
-		@Override
-		public void onErrorResponse(VolleyError error) {
-			if(callback != null)
-				callback.onErrorResponse(error);
-				
-		}
-	};
-
 	public interface VolleyCallback{
-		
-		public void onResponse(String response);
-		
-		public void onErrorResponse(VolleyError error);
-		
-		
+		void onResponse(String response);
+		void onErrorResponse(VolleyError error);
 	}
 	
 	private Response.Listener<String> mResponseListener = new Response.Listener<String>() {
 
 		@Override
 		public void onResponse(String response) {
-			if(callback != null)
-				callback.onResponse(response);
+			if(mCallBack != null)
+				mCallBack.onResponse(response);
 		}
 	};
 	
@@ -90,8 +71,8 @@ public class VolleyController {
 
 		@Override
 		public void onErrorResponse(VolleyError error) {
-			if(callback != null)
-				callback.onErrorResponse(error);
+			if(mCallBack != null)
+				mCallBack.onErrorResponse(error);
 		}
 	};
 	

@@ -3,70 +3,91 @@ package com.pbtd.mobile.presenter.play;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.android.volley.VolleyError;
+import com.orhanobut.logger.Logger;
 import com.pbtd.mobile.Constants;
 import com.pbtd.mobile.model.BaseModel;
 import com.pbtd.mobile.model.ProductDetailModel;
 import com.pbtd.mobile.model.ProductModel;
-import com.pbtd.mobile.network.RetrofitUtil;
+import com.pbtd.mobile.presenter.BasePresenter;
+import com.pbtd.mobile.volley.VolleyController;
 
-import java.util.List;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import java.util.Arrays;
 
 /**
  * Created by xuqinchao on 17/5/4.
  */
 
-public class PlayPresenter implements PlayContract.Presenter {
-
-    private final PlayContract.View mView;
-    private final Context mContext;
+public class PlayPresenter extends BasePresenter<PlayContract.View> implements PlayContract.Presenter {
 
     public PlayPresenter(Context context, PlayContract.View view) {
-        mContext = context;
-        mView = view;
+        super(context, view);
     }
 
     @Override
-    public void getProductDetail(@NonNull String productCode) {
-        RetrofitUtil.getInstance(Constants.BASE_SERVER).getRequestApi().getProductDetail(productCode)
-                .enqueue(new Callback<BaseModel<List<ProductDetailModel>>>() {
-                    @Override
-                    public void onResponse(Call<BaseModel<List<ProductDetailModel>>> call, Response<BaseModel<List<ProductDetailModel>>> response) {
-                        BaseModel<List<ProductDetailModel>> body = response.body();
-                        if (body.success == true) {
-                            mView.showProductDetail(body.result);
-                        } else {
-                            mView.showError(body.message+"");
-                        }
-                    }
+    public void getProductDetail(@NonNull final String productCode) {
+        mVolley.requestGetAction(Constants.BASE_SERVER + "getAlbumsList.action" +
+                "?seriesCode=" + productCode, new VolleyController.VolleyCallback() {
+            @Override
+            public void onResponse(String response) {
+                BaseModel baseModel = mGson.fromJson(response, BaseModel.class);
 
-                    @Override
-                    public void onFailure(Call<BaseModel<List<ProductDetailModel>>> call, Throwable t) {
-
+                if (baseModel.success == true) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(response);
+                        JSONArray result = jsonObject.getJSONArray("result");
+                        ProductDetailModel[] productDetailModels = mGson.fromJson(result.toString(), ProductDetailModel[].class);
+                        mView.showProductDetail(Arrays.asList(productDetailModels));
+                    } catch (JSONException e) {
+                        Logger.e(Constants.LOGGER_TAG, e.getMessage());
+                        mView.showError("数据异常");
                     }
-                });
+                } else {
+                    mView.showError(baseModel.message+"");
+                }
+
+                getRelativeProductList(productCode);
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mView.showError(error.getMessage() + "");
+                getRelativeProductList(productCode);
+            }
+        });
     }
 
     @Override
     public void getRelativeProductList(@NonNull String productCode) {
-        RetrofitUtil.getInstance(Constants.BASE_SERVER).getRequestApi().getRelativeProduct(productCode)
-                .enqueue(new Callback<BaseModel<List<ProductModel>>>() {
+        mVolley.requestGetAction(Constants.BASE_SERVER + "getRelateList.action?seriesCode="
+                + productCode,
+                new VolleyController.VolleyCallback() {
                     @Override
-                    public void onResponse(Call<BaseModel<List<ProductModel>>> call, Response<BaseModel<List<ProductModel>>> response) {
-                        BaseModel<List<ProductModel>> body = response.body();
-                        if (body.success == true) {
-                            mView.showRelativeProductInfo(body.result);
+                    public void onResponse(String response) {
+                        BaseModel baseModel = mGson.fromJson(response, BaseModel.class);
+
+                        if (baseModel.success == true) {
+                            try {
+                                JSONObject jsonObject = new JSONObject(response);
+                                JSONArray result = jsonObject.getJSONArray("result");
+                                ProductModel[] productModels = mGson.fromJson(result.toString(), ProductModel[].class);
+                                mView.showRelativeProductInfo(Arrays.asList(productModels));
+                            } catch (JSONException e) {
+                                Logger.e(Constants.LOGGER_TAG, e.getMessage());
+                                mView.showError("数据异常");
+                            }
                         } else {
-                            mView.showError(body.message + "");
+                            mView.showError(baseModel.message + "");
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<BaseModel<List<ProductModel>>> call, Throwable t) {
-
+                    public void onErrorResponse(VolleyError error) {
+                        mView.showError(error.getMessage() + "");
                     }
                 });
     }

@@ -3,11 +3,11 @@ package com.pbtd.mobile.presenter.live;
 import android.content.Context;
 
 import com.android.volley.VolleyError;
-import com.google.gson.Gson;
 import com.pbtd.mobile.Constants;
 import com.pbtd.mobile.model.live.CategoryInnerModel;
 import com.pbtd.mobile.model.live.ProgramTimeModel;
 import com.pbtd.mobile.model.live.WeekProgramModel;
+import com.pbtd.mobile.presenter.BasePresenter;
 import com.pbtd.mobile.utils.StringUtil;
 import com.pbtd.mobile.volley.VolleyController;
 
@@ -22,22 +22,18 @@ import java.util.List;
  * Created by xuqinchao on 17/5/4.
  */
 
-public class LivePresenter implements LiveContract.Presenter {
+public class LivePresenter extends BasePresenter<LiveContract.View> implements LiveContract.Presenter {
 
-    private final LiveContract.View mView;
-    private final Context mContext;
-    private final Gson mGson;
     private List<CategoryInnerModel> mCategoryInnerModel;
 
-    public LivePresenter(Context context, LiveContract.View view) {
-        mContext = context;
-        mView = view;
-        mGson = new Gson();
+    public LivePresenter(Context ctx, LiveContract.View view) {
+        super(ctx, view);
     }
 
     @Override
     public void getCategoryList() {
-        VolleyController volleyController = new VolleyController(mContext, new VolleyController.VolleyCallback() {
+        mVolley.requestGetAction("https://api.starschina.com/api/tab/michannellist?" +
+                "appKey=ZjNmMjc2ODViOTgy&appOs=Android&osVer=4.4.4&appVer=1.0", new VolleyController.VolleyCallback() {
             @Override
             public void onResponse(String response) {
                 try {
@@ -60,13 +56,16 @@ public class LivePresenter implements LiveContract.Presenter {
 
             }
         });
-        volleyController.requestGetAction("https://api.starschina.com/api/tab/michannellist?" +
-                "appKey=ZjNmMjc2ODViOTgy&appOs=Android&osVer=4.4.4&appVer=1.0");
     }
 
     @Override
     public void getProgramOfWeek(String videoId) {
-        VolleyController volleyController = new VolleyController(mContext, new VolleyController.VolleyCallback() {
+        String startDate = StringUtil.getCurrentDate(-5);
+        String endDate = StringUtil.getCurrentDate(1);
+
+        mVolley.requestGetAction("https://e.starschina.com/api/channels/" + videoId +
+                "/epgs?appOs=Android&appVer=6.3&appKey=" + Constants.KEY +
+                "&page=1&pageSize=120&startDate=" + startDate + "&endDate=" + endDate, new VolleyController.VolleyCallback() {
             @Override
             public void onResponse(String response) {
                 try {
@@ -86,17 +85,11 @@ public class LivePresenter implements LiveContract.Presenter {
 
             }
         });
-
-        String startDate = StringUtil.getCurrentDate(-5);
-        String endDate = StringUtil.getCurrentDate(1);
-
-        volleyController.requestGetAction("https://e.starschina.com/api/channels/" + videoId +
-                "/epgs?appOs=Android&appVer=6.3&appKey=" + Constants.KEY+
-                "&page=1&pageSize=120&startDate=" + startDate + "&endDate=" + endDate);
     }
 
     public void getCurrentTimeProgram() {
-        VolleyController volleyController = new VolleyController(mContext, new VolleyController.VolleyCallback() {
+        mVolley.requestGetAction("https://e.starschina.com/api/currentepgs?appKey="
+                + Constants.KEY + "&appOs=Android&osVer=4.3&appVer=1.0", new VolleyController.VolleyCallback() {
             @Override
             public void onResponse(String response) {
                 try {
@@ -146,8 +139,6 @@ public class LivePresenter implements LiveContract.Presenter {
 
             }
         });
-        volleyController.requestGetAction("https://e.starschina.com/api/currentepgs?appKey="
-                + Constants.KEY+ "&appOs=Android&osVer=4.3&appVer=1.0");
     }
 
 

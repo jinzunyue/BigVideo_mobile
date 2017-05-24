@@ -160,7 +160,6 @@ public class PlayLandActivity extends BaseActivity {
         mVideoView.setOnInfoListener(new MediaPlayer.OnInfoListener() {
             @Override
             public boolean onInfo(MediaPlayer mp, int what, int extra) {
-                System.out.println(mp);
                 return false;
             }
         });

@@ -1,50 +1,66 @@
 package com.pbtd.mobile.presenter.tab;
 
 import android.content.Context;
+import android.text.TextUtils;
 
+import com.android.volley.VolleyError;
+import com.orhanobut.logger.Logger;
 import com.pbtd.mobile.Constants;
 import com.pbtd.mobile.model.BaseModel;
 import com.pbtd.mobile.model.ProductModel;
-import com.pbtd.mobile.network.RetrofitUtil;
+import com.pbtd.mobile.presenter.BasePresenter;
+import com.pbtd.mobile.volley.VolleyController;
 
-import java.util.List;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import java.util.Arrays;
 
 /**
  * Created by xuqinchao on 17/5/4.
  */
 
-public class TabPresenter implements TabContract.Presenter {
-
-    private final TabContract.View mView;
-    private final Context mContext;
+public class TabPresenter extends BasePresenter<TabContract.View> implements TabContract.Presenter {
 
     public TabPresenter(Context context, TabContract.View view) {
-        mContext = context;
-        mView = view;
+        super(context, view);
     }
 
     @Override
     public void getProductList(String categoryCode, String start, String limit) {
-        RetrofitUtil.getInstance(Constants.BASE_SERVER).getRequestApi().getProductList(categoryCode, start, limit)
-                .enqueue(new Callback<BaseModel<List<ProductModel>>>() {
-                    @Override
-                    public void onResponse(Call<BaseModel<List<ProductModel>>> call, Response<BaseModel<List<ProductModel>>> response) {
-                        BaseModel<List<ProductModel>> body = response.body();
-                        if (body.success == true) {
-                            mView.showProductList(body.result);
-                        } else {
-                            mView.showError(body.message);
-                        }
-                    }
+        String url = "";
+        if (TextUtils.isEmpty(categoryCode) || TextUtils.isEmpty(start) || TextUtils.isEmpty(limit)) {
+            url = Constants.BASE_SERVER + "getRecommendList.action";
+        } else {
+            url = Constants.BASE_SERVER +
+                    "getRecommendList.action?type_id=" + categoryCode
+                    + "&start=" + start + "&limit=" + limit;
+        }
+        mVolley.requestGetAction(url, new VolleyController.VolleyCallback() {
+            @Override
+            public void onResponse(String response) {
+                BaseModel baseModel = mGson.fromJson(response, BaseModel.class);
 
-                    @Override
-                    public void onFailure(Call<BaseModel<List<ProductModel>>> call, Throwable t) {
-                        mView.showError(t.getMessage());
+                if (baseModel.success == true) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(response);
+                        JSONArray result = jsonObject.getJSONArray("result");
+                        ProductModel[] productModels = mGson.fromJson(result.toString(), ProductModel[].class);
+                        mView.showProductList(Arrays.asList(productModels));
+                    } catch (JSONException e) {
+                        Logger.e(Constants.LOGGER_TAG, e.getMessage());
+                        mView.showError("数据异常");
                     }
-                });
+                } else {
+                    mView.showError(baseModel.message);
+                }
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mView.showError(error.getMessage() + "");
+            }
+        });
     }
 }

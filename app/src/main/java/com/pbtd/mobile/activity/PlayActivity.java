@@ -33,8 +33,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class PlayActivity extends BaseActivity implements PlayContract.View {
 
@@ -76,7 +74,7 @@ public class PlayActivity extends BaseActivity implements PlayContract.View {
 
         mPresenter = new PlayPresenter(this, this);
         mPresenter.getProductDetail(mProduct_code);
-        mPresenter.getRelativeProductList(mProduct_code);
+//        mPresenter.getRelativeProductList(mProduct_code);
     }
 
     @Override
@@ -119,7 +117,11 @@ public class PlayActivity extends BaseActivity implements PlayContract.View {
                 Intent intent = new Intent(PlayActivity.this, PlayLandActivity.class);
                 intent.putExtra(PlayLandActivity.PROGRESS_POSITION, mCurrentPosition);
                 intent.putExtra(PlayLandActivity.CURRENT_ITEM, mCurrentSelectPosition);
-                intent.putParcelableArrayListExtra(PlayLandActivity .PRODUCT_DETAIL, (ArrayList) mModelList);
+                ArrayList<ProductDetailModel> result = new ArrayList<ProductDetailModel>();
+                for (ProductDetailModel model : mModelList) {
+                    result.add(model);
+                }
+                intent.putParcelableArrayListExtra(PlayLandActivity.PRODUCT_DETAIL, result);
                 startActivityForResult(intent, 1);
             }
         });
@@ -181,7 +183,7 @@ public class PlayActivity extends BaseActivity implements PlayContract.View {
     protected void onNewIntent(Intent intent) {
         mProduct_code = intent.getStringExtra(PRODUCT_CODE);
         mPresenter.getProductDetail(mProduct_code);
-        mPresenter.getRelativeProductList(mProduct_code);
+//        mPresenter.getRelativeProductList(mProduct_code);
         super.onNewIntent(intent);
     }
 
@@ -230,18 +232,14 @@ public class PlayActivity extends BaseActivity implements PlayContract.View {
         ProductDetailModel productDetailModel = model.get(0);
         String movieList = model.get(0).getMovieList();
         try {
-//            JSONArray jsonArray = new JSONArray(movieList);
-//            JSONObject jsonObject = jsonArray.getJSONObject(0);
-//            mCurrentUrl = jsonObject.getString("movieurl");
+//            String re = "http(.*)BreakPoint=0";
+//            Pattern p = Pattern.compile(re);
+//            Matcher m = p.matcher(movieList);
+//            if (m.find()) {
+//                mCurrentUrl = m.group();
+//            }
 //            mVideoView.setVideoPath(mCurrentUrl);
-            String re = "http(.*)BreakPoint=0";
-            Pattern p = Pattern.compile(re);
-            Matcher m = p.matcher(movieList);
-            if (m.find()) {
-                mCurrentUrl = m.group();
-            }
-//            mVideoView.setVideoPath(Constants.TEMP_PLAY_URL);
-            mVideoView.setVideoPath(mCurrentUrl);
+            mVideoView.setVideoPath(Constants.TEMP_PLAY_URL);
             mNameView.setText(productDetailModel.getSeriesName());
             mTypeView.setText(productDetailModel.getProgramType2());
             mActorView.setText(productDetailModel.getWriterDisplay());

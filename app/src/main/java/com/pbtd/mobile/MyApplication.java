@@ -16,6 +16,5 @@ public class MyApplication extends Application{
         Fresco.initialize(this);
 
         Logger.init(Constants.LOGGER_TAG);
-
     }
 }
