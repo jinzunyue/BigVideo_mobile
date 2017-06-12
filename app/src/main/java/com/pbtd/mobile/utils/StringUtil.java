@@ -1,5 +1,8 @@
 package com.pbtd.mobile.utils;
 
+import com.pbtd.mobile.Constants;
+
+import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -43,4 +46,21 @@ public class StringUtil {
         return simpleDateFormat.format(date);
     }
 
+    /**
+     *
+     * @param m3u8Url
+     * @param begin_time
+     * @param duration  秒
+     * @return
+     */
+    public static String getLiveBackUrl(String m3u8Url, long begin_time, long duration) {
+        String resutl = "";
+        String encode_m3u8 = URLEncoder.encode(m3u8Url);
+        resutl = Constants.BASE_LIVE_SERVER + "/v1.0/stream/playurl?"
+                + "app_key=" + Constants.LIVE_KEY + "&version=1.0&" +
+                "m3u8_url=" + encode_m3u8 + "&begin_time=" + begin_time;
+
+        if (duration != 0) resutl += "&duration=" + duration;
+        return resutl;
+    }
 }

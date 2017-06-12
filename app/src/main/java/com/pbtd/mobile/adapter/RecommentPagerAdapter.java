@@ -30,7 +30,7 @@ public class RecommentPagerAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return mDatas==null?0:Integer.MAX_VALUE;
+        return mDatas==null?0:1000;
     }
 
     @Override

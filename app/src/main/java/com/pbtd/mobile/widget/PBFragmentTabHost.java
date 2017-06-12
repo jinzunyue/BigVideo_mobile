@@ -322,7 +322,9 @@ public class PBFragmentTabHost extends TabHost
                 if (mLastTab.fragment != null) {
                     // 将detach替换为hide，隐藏Fragment
                     // ft.detach(mLastTab.fragment);
-                    ft.hide(mLastTab.fragment);
+                    // TODO: 17/6/12 自定义
+                    ft.detach(mLastTab.fragment);
+//                    ft.hide(mLastTab.fragment);
                 }
             }
             if (newTab != null) {
@@ -333,7 +335,9 @@ public class PBFragmentTabHost extends TabHost
                 } else {
                     // 将attach替换为show，显示Fragment
                     // ft.attach(newTab.fragment);
-                    ft.show(newTab.fragment);
+                    // TODO: 17/6/12 自定义
+                    ft.attach(newTab.fragment);
+//                    ft.show(newTab.fragment);
                 }
             }
 

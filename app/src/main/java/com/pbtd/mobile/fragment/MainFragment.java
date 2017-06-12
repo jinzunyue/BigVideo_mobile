@@ -33,7 +33,8 @@ public class MainFragment extends BaseFragment implements MainContract.View{
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, null);
         initView(view);
         return view;
@@ -111,4 +112,5 @@ public class MainFragment extends BaseFragment implements MainContract.View{
         mAdapter.setData(tabs);
         mIndicator.setViewPager(mViewPager);
     }
+
 }

@@ -111,7 +111,6 @@ public class FragmentProgram extends BaseFragment{
         }
 
         if(list ==null || list.size()==0) return;
-        mRightAdapter.setDatas(list);
 
         for (int i = 0; i < list.size(); i++) {
             WeekProgramModel weekProgramModel = list.get(i);
@@ -137,8 +136,21 @@ public class FragmentProgram extends BaseFragment{
             });
         }
         mRightAdapter.setDatas(mDataMap.get("今天"));
-        mRightAdapter.setCurrentSelectPosition(0);
         mLeftAdapter.setCurrentSelctPosition(1);
+        List<WeekProgramModel> datas = mRightAdapter.getDatas();
+        for (int i = 0; i < datas.size(); i++) {
+            WeekProgramModel weekProgramModel = datas.get(i);
+            if (weekProgramModel.getStartTime()*1000 > System.currentTimeMillis())
+                mRightCurrentPosition = i==(datas.size()-1)?(datas.size()-1):(i+1);
+        }
+        mRightAdapter.setCurrentSelectPosition(mRightCurrentPosition);
+        mRightGridView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mRightGridView.smoothScrollToPosition(mRightCurrentPosition);
+            }
+        }, 300);
+
     }
 
     public interface Listener {

@@ -3,42 +3,14 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="7.5dp"
-        android:background="@color/divide_line"
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="11dp"
+        android:textSize="15sp"
+        android:textColor="@color/black"
         />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="47dp"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:paddingLeft="10dp"
-        >
-        <ImageView
-            android:id="@+id/iv_icon"
-            android:layout_width="21dp"
-            android:layout_height="21dp"
-            android:visibility="gone"
-            />
-
-        <ImageView
-            android:id="@+id/iv_icon_line"
-            android:layout_width="21dp"
-            android:layout_height="4dp"
-            android:background="@drawable/shape_icon_line"
-            />
-
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="11dp"
-            android:textSize="15sp"
-            android:textColor="@color/black"
-            />
-    </LinearLayout>
 
     <com.pbtd.mobile.widget.FixGridView
         android:id="@+id/grid_view"
@@ -57,27 +29,73 @@
         />
 
     <LinearLayout
-        android:id="@+id/ll_bottom_tip"
         android:layout_width="match_parent"
         android:layout_height="52dp"
         android:orientation="horizontal"
-        android:gravity="center"
         >
-        <TextView
-            android:id="@+id/tv_bottom_tip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="13sp"
-            android:textColor="@color/bule_text"
-            android:text="更多精彩内容"
+
+        <LinearLayout
+            android:id="@+id/ll_bottom_more"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="52dp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            >
+
+            <ImageView
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+
+                android:src="@mipmap/more"
+                />
+
+            <TextView
+                android:id="@+id/tv_bottom_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="14dp"
+                android:textSize="13sp"
+                android:textColor="@color/bule_text"
+                android:text="更多精彩内容"
+                />
+
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/view_bottom_divider"
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:background="@color/divide_line"
             />
-        
-        <ImageView
-            android:id="@+id/iv_bottom_tip"
-            android:layout_width="14dp"
-            android:layout_height="14dp"
-            android:layout_marginLeft="14dp"
-            android:src="@mipmap/more"
-            />
+
+        <LinearLayout
+            android:id="@+id/ll_bottom_change"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="52dp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            >
+
+            <ImageView
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:src="@mipmap/more"
+                />
+
+            <TextView
+                android:id="@+id/tv_bottom_change"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="14dp"
+                android:textSize="13sp"
+                android:textColor="@color/bule_text"
+                android:text="换一批看看"
+                />
+
+        </LinearLayout>
     </LinearLayout>
+
 </LinearLayout>

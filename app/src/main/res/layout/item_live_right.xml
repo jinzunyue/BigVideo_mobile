@@ -66,11 +66,23 @@
         />
 
     <ImageView
-        android:id="@+id/iv_collect"
-        android:layout_width="16dp"
-        android:layout_height="16dp"
+        android:id="@+id/iv_arrow"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:src="@mipmap/ic_launcher_round"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_marginRight="24dp"
-        android:src="@mipmap/collection" />
+        />
+
+    <ImageView
+        android:id="@+id/iv_collect"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:padding="8dp"
+        android:layout_centerVertical="true"
+        android:src="@mipmap/collection"
+        android:layout_toLeftOf="@id/iv_arrow"
+        android:layout_marginRight="20dp"
+        />
+
 </RelativeLayout>

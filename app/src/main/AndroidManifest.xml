@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.pbtd.mobile">
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -34,7 +35,14 @@
             android:name=".activity.PlayLandActivity"
             android:launchMode="singleTask"
             android:screenOrientation="landscape" />
-        <activity android:name=".activity.HistoryAndCollectionActivity"></activity>
+        <activity android:name=".activity.HistoryAndCollectionActivity" />
+
+        <!-- 调整二维码扫描界面为竖屏 -->
+        <activity
+            android:name="com.journeyapps.barcodescanner.CaptureActivity"
+            android:screenOrientation="portrait"
+            tools:replace="screenOrientation" />
+        <activity android:name=".activity.SubjectDetailActivity"></activity>
     </application>
 
 </manifest>

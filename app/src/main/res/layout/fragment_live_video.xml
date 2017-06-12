@@ -1,35 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/white"
-    >
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="44dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="直播"
-            android:textColor="@color/bule_text"
-            android:textSize="18sp"
-            android:gravity="center"
-            android:layout_centerHorizontal="true"
-            />
-        
-        <ImageView
-            android:id="@+id/iv_share"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
-            android:src="@mipmap/share"
-            android:layout_alignParentRight="true"
-            android:paddingRight="19dp"
-            android:layout_centerVertical="true"
-            />
-    </RelativeLayout>
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -44,90 +18,69 @@
             android:id="@+id/iv_full_screen"
             android:layout_width="19dp"
             android:layout_height="19dp"
-            android:src="@mipmap/full_screen"
-            android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
             android:layout_marginBottom="17dp"
             android:layout_marginRight="17dp"
-            />
+            android:src="@mipmap/full_screen" />
 
         <ProgressBar
             android:id="@+id/pb"
             android:layout_width="51dp"
             android:layout_height="51dp"
             android:layout_centerInParent="true"
-            android:indeterminateDrawable="@drawable/progress"
             android:indeterminateBehavior="repeat"
-            />
+            android:indeterminateDrawable="@drawable/progress" />
 
     </RelativeLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="39dp"
-        android:orientation="horizontal"
-        >
+        android:layout_height="40dp">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/gray_text" />
 
         <LinearLayout
-            android:id="@+id/ll_channel"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             >
-            <TextView
-                android:id="@+id/tv_channel"
-                android:layout_width="match_parent"
-                android:layout_height="38dp"
-                android:textSize="15sp"
-                android:textColor="@color/live_indicator_text"
-                android:text="电视台"
-                android:gravity="center"
-                />
 
-            <View
-                android:id="@+id/view_channel"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@drawable/select_live_indicator_line"
+            <com.pbtd.mobile.widget.PagerSlidingTabStrip
+                android:id="@+id/indicator"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                app:pstsDividerColor="@android:color/transparent"
+                app:pstsIndicatorColor="@color/bule_text"
+                app:pstsIndicatorHeight="2dp"
+                app:pstsIndicatorPaddingLeft="0dp"
+                app:pstsIndicatorPaddingRight="0dp"
+                app:pstsSelectTextColor="@color/bule_text"
+                app:pstsUnderlineColor="@android:color/transparent" />
+
+            <TextView
+                android:id="@+id/tv_collection"
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:text="我的收藏"
+                android:gravity="center"
+                android:textSize="13sp"
+                android:textColor="@color/black"
                 />
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/ll_program"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            >
-            <TextView
-                android:id="@+id/tv_program"
-                android:layout_width="match_parent"
-                android:layout_height="38dp"
-                android:textSize="15sp"
-                android:textColor="@color/live_indicator_text"
-                android:text="节目单"
-                android:gravity="center"
-                />
-
-            <View
-                android:id="@+id/view_program"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@drawable/select_live_indicator_line"
-                />
-        </LinearLayout>
-    </LinearLayout>
-
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/gray_text" />
+    </RelativeLayout>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
 </LinearLayout>

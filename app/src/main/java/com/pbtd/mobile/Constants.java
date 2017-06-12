@@ -6,6 +6,7 @@ package com.pbtd.mobile;
 
 public class Constants {
     public static final String BASE_SERVER = "http://220.191.161.221:8080/CIBN_APP/albumsAction!";
+    public static final String BASE_LIVE_SERVER = "http://47.93.118.250:5200";
     public static final String SHAREDPREFERENCES_NAME = "pbtd";
     public static final String LOGGER_TAG = "大视频";
     public static final int TAB_MORE_LIMIT = 6;//必须是6的倍数
@@ -26,7 +27,7 @@ public class Constants {
     public static final String TEMP_PLAY_URL = "http://hls01.ott.disp.guttv.cibntv.net/2017/03/05/93b8c7d962e1473da79cd60156b1f4f5/b6d57016088499cba0b7295be25c156c.m3u8";
 
     //国广 直播
-    public static final String KEY = "ZjNmMjc2ODViOTgy";
+    public static final String LIVE_KEY = "ZjNmMjc2ODViOTgy";
     public static final String APPOs = "Android";
     public static final String osVer = "4.3";
     public static final String appVer = "1.0";

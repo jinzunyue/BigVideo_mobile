@@ -1,10 +1,16 @@
 package com.pbtd.mobile.activity;
 
+import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.PermissionChecker;
+import android.support.v7.app.AlertDialog;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -259,7 +265,30 @@ public class PlayLandActivity extends BaseActivity {
             public void onClick(View v) {
                 hideAll();
                 mRoot.removeCallbacks(mFadeOut);
-                screenshot();
+
+                int i = PermissionChecker.checkSelfPermission(PlayLandActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                if (i == PermissionChecker.PERMISSION_DENIED) {
+                    boolean b = ActivityCompat.shouldShowRequestPermissionRationale(PlayLandActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                    if (b) {
+                        AlertDialog dialog = new AlertDialog.Builder(PlayLandActivity.this)
+                                .setTitle("权限说明")
+                                .setMessage("请允许权限，否则某些功能可能无法正常使用！！！")
+                                .setNegativeButton(android.R.string.cancel, null)
+                                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        ActivityCompat.requestPermissions(PlayLandActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
+                                    }
+                                })
+                                .create();
+                        dialog.setCanceledOnTouchOutside(false);
+                        dialog.show();
+                    } else {
+                        ActivityCompat.requestPermissions(PlayLandActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
+                    }
+                } else {
+//                    screenshot();
+                }
             }
         });
         mControl.getRootView().setOnTouchListener(new View.OnTouchListener() {
@@ -347,4 +376,17 @@ public class PlayLandActivity extends BaseActivity {
         }
         return super.onKeyDown(keyCode, event);
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 0) {
+            if (grantResults[0] == PermissionChecker.PERMISSION_GRANTED) {
+//                screenshot();
+            } else {
+                UIUtil.showToast(this, "权限拒绝");
+            }
+        }
+    }
+
 }

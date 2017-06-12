@@ -60,11 +60,11 @@ public class LivePresenter extends BasePresenter<LiveContract.View> implements L
 
     @Override
     public void getProgramOfWeek(String videoId) {
-        String startDate = StringUtil.getCurrentDate(-5);
+        String startDate = StringUtil.getCurrentDate(-4);
         String endDate = StringUtil.getCurrentDate(1);
 
         mVolley.requestGetAction("https://e.starschina.com/api/channels/" + videoId +
-                "/epgs?appOs=Android&appVer=6.3&appKey=" + Constants.KEY +
+                "/epgs?appOs=Android&appVer=6.3&appKey=" + Constants.LIVE_KEY +
                 "&page=1&pageSize=120&startDate=" + startDate + "&endDate=" + endDate, new VolleyController.VolleyCallback() {
             @Override
             public void onResponse(String response) {
@@ -89,7 +89,7 @@ public class LivePresenter extends BasePresenter<LiveContract.View> implements L
 
     public void getCurrentTimeProgram() {
         mVolley.requestGetAction("https://e.starschina.com/api/currentepgs?appKey="
-                + Constants.KEY + "&appOs=Android&osVer=4.3&appVer=1.0", new VolleyController.VolleyCallback() {
+                + Constants.LIVE_KEY + "&appOs=Android&osVer=4.3&appVer=1.0", new VolleyController.VolleyCallback() {
             @Override
             public void onResponse(String response) {
                 try {

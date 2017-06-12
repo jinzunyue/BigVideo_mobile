@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="150dp">
@@ -25,119 +27,159 @@
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:textColor="@color/white"
             android:layout_alignParentBottom="true"
-            android:layout_marginLeft="16dp"
             android:layout_marginBottom="10dp"
-            />
+            android:layout_marginLeft="16dp"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
     </RelativeLayout>
 
-    <LinearLayout
+    <View
         android:layout_width="match_parent"
-        android:layout_height="86dp"
-        android:orientation="horizontal">
+        android:layout_height="10dp"
+        android:background="@color/google_red" />
 
-        <LinearLayout
-            android:id="@+id/left_4g"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
+    <RelativeLayout
+        android:id="@+id/rl_hot"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        >
 
-            <ImageView
-                android:layout_width="43dp"
-                android:layout_height="43dp"
-                android:layout_marginTop="13dp"
-                android:src="@mipmap/left_4g" />
+        <ImageView
+            android:id="@+id/iv_hot"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="20dp"
+            android:src="@mipmap/ic_launcher"
+            android:layout_centerVertical="true"
+            />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:text="剩余流量"
-                android:textColor="@color/gray_text"
-                android:textSize="11sp" />
-        </LinearLayout>
+        <TextView
+            android:id="@+id/tv_hot_text"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/iv_hot"
+            android:text="赵丽颖开挂了"
+            android:textColor="@color/google_red"
+            android:textSize="13sp"
+            />
 
-        <LinearLayout
-            android:id="@+id/sign_in"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center_horizontal"
-            >
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@mipmap/ic_launcher_round"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            />
 
-            <ImageView
-                android:layout_width="43dp"
-                android:layout_height="43dp"
-                android:src="@mipmap/sign_in"
-                android:layout_marginTop="13dp"
-                />
+    </RelativeLayout>
+    <!--<LinearLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="86dp"-->
+    <!--android:orientation="horizontal">-->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="每日签到"
-                android:textColor="@color/gray_text"
-                android:textSize="11sp"
-                android:layout_marginTop="12dp"
-                />
-        </LinearLayout>
+    <!--<LinearLayout-->
+    <!--android:id="@+id/left_4g"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_weight="1"-->
+    <!--android:gravity="center_horizontal"-->
+    <!--android:orientation="vertical">-->
 
-        <LinearLayout
-            android:id="@+id/recomment"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center_horizontal"
-            >
+    <!--<ImageView-->
+    <!--android:layout_width="43dp"-->
+    <!--android:layout_height="43dp"-->
+    <!--android:layout_marginTop="13dp"-->
+    <!--android:src="@mipmap/left_4g" />-->
 
-            <ImageView
-                android:layout_width="43dp"
-                android:layout_height="43dp"
-                android:src="@mipmap/recomment"
-                android:layout_marginTop="13dp"
-                />
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginTop="12dp"-->
+    <!--android:text="剩余流量"-->
+    <!--android:textColor="@color/gray_text"-->
+    <!--android:textSize="11sp" />-->
+    <!--</LinearLayout>-->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="推荐有礼"
-                android:textColor="@color/gray_text"
-                android:textSize="11sp"
-                android:layout_marginTop="12dp"
-                />
-        </LinearLayout>
+    <!--<LinearLayout-->
+    <!--android:id="@+id/sign_in"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_weight="1"-->
+    <!--android:orientation="vertical"-->
+    <!--android:gravity="center_horizontal"-->
+    <!--&gt;-->
 
-        <LinearLayout
-            android:id="@+id/subject"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center_horizontal"
-            >
+    <!--<ImageView-->
+    <!--android:layout_width="43dp"-->
+    <!--android:layout_height="43dp"-->
+    <!--android:src="@mipmap/sign_in"-->
+    <!--android:layout_marginTop="13dp"-->
+    <!--/>-->
 
-            <ImageView
-                android:layout_width="43dp"
-                android:layout_height="43dp"
-                android:src="@mipmap/subject"
-                android:layout_marginTop="13dp"
-                />
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="每日签到"-->
+    <!--android:textColor="@color/gray_text"-->
+    <!--android:textSize="11sp"-->
+    <!--android:layout_marginTop="12dp"-->
+    <!--/>-->
+    <!--</LinearLayout>-->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="精选专题"
-                android:textColor="@color/gray_text"
-                android:textSize="11sp"
-                android:layout_marginTop="12dp"
-                />
-        </LinearLayout>
-    </LinearLayout>
+    <!--<LinearLayout-->
+    <!--android:id="@+id/recomment"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_weight="1"-->
+    <!--android:orientation="vertical"-->
+    <!--android:gravity="center_horizontal"-->
+    <!--&gt;-->
+
+    <!--<ImageView-->
+    <!--android:layout_width="43dp"-->
+    <!--android:layout_height="43dp"-->
+    <!--android:src="@mipmap/recomment"-->
+    <!--android:layout_marginTop="13dp"-->
+    <!--/>-->
+
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="推荐有礼"-->
+    <!--android:textColor="@color/gray_text"-->
+    <!--android:textSize="11sp"-->
+    <!--android:layout_marginTop="12dp"-->
+    <!--/>-->
+    <!--</LinearLayout>-->
+
+    <!--<LinearLayout-->
+    <!--android:id="@+id/subject"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_weight="1"-->
+    <!--android:orientation="vertical"-->
+    <!--android:gravity="center_horizontal"-->
+    <!--&gt;-->
+
+    <!--<ImageView-->
+    <!--android:layout_width="43dp"-->
+    <!--android:layout_height="43dp"-->
+    <!--android:src="@mipmap/subject"-->
+    <!--android:layout_marginTop="13dp"-->
+    <!--/>-->
+
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="精选专题"-->
+    <!--android:textColor="@color/gray_text"-->
+    <!--android:textSize="11sp"-->
+    <!--android:layout_marginTop="12dp"-->
+    <!--/>-->
+    <!--</LinearLayout>-->
+    <!--</LinearLayout>-->
 
 </LinearLayout>

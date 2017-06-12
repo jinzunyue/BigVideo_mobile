@@ -26,7 +26,7 @@ public class FullScreenPoP extends PopupWindow {
 
     public FullScreenPoP(BaseActivity context, int count) {
         mContext = context;
-        conentView = View.inflate(context, R.layout.item_popwindow, null);
+        conentView = View.inflate(context, R.layout.item_episodes_popwindow, null);
         int h = context.getWindowManager().getDefaultDisplay().getHeight();
         // 设置SelectPicPopupWindow的View
         this.setContentView(conentView);

@@ -15,7 +15,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by xuqinchao on 17/5/4.
@@ -47,7 +49,8 @@ public class TabPresenter extends BasePresenter<TabContract.View> implements Tab
                         JSONObject jsonObject = new JSONObject(response);
                         JSONArray result = jsonObject.getJSONArray("result");
                         ProductModel[] productModels = mGson.fromJson(result.toString(), ProductModel[].class);
-                        mView.showProductList(Arrays.asList(productModels));
+                        List<ProductModel> resultList = new ArrayList<ProductModel>(Arrays.asList(productModels));
+                        mView.showProductList(resultList);
                     } catch (JSONException e) {
                         Logger.e(Constants.LOGGER_TAG, e.getMessage());
                         mView.showError("数据异常");
@@ -55,6 +58,7 @@ public class TabPresenter extends BasePresenter<TabContract.View> implements Tab
                 } else {
                     mView.showError(baseModel.message);
                 }
+
             }
 
             @Override

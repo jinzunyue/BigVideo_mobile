@@ -25,6 +25,7 @@ public class MainTabAdapter extends FragmentPagerAdapter {
         return mDatas.get(position);
     }
 
+
     @Override
     public int getCount() {
         return mDatas==null?0:mDatas.size();
@@ -32,8 +33,7 @@ public class MainTabAdapter extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        BaseFragment fragment = mDatas.get(position);
-        return fragment.getTitle();
+        return mDatas.get(position).getTitle();
     }
 
     public void setData(List<BaseFragment> datas) {

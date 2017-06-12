@@ -11,4 +11,6 @@
     <color name="gray_text">#9e9e9e</color>
     <color name="bule_text">#0085d0</color>
     <color name="second_black">#484848</color>
+
+    <color name="top_bar">#3F51B5</color>
 </resources>

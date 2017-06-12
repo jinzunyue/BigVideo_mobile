@@ -1,16 +1,22 @@
 package com.pbtd.mobile.fragment;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.canyinghao.canrefresh.CanRefreshLayout;
+import com.orhanobut.logger.Logger;
 import com.pbtd.mobile.R;
 import com.pbtd.mobile.adapter.PageItemAdapter;
 import com.pbtd.mobile.adapter.RecommentPagerAdapter;
@@ -19,8 +25,6 @@ import com.pbtd.mobile.model.temp.RecommendModel;
 import com.pbtd.mobile.presenter.tab.TabContract;
 import com.pbtd.mobile.presenter.tab.TabPresenter;
 import com.pbtd.mobile.utils.UIUtil;
-import com.pbtd.mobile.widget.refresh.PullToRefreshLayout;
-import com.pbtd.mobile.widget.refresh.PullableListView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,26 +40,54 @@ public class RecommendFragment extends BaseFragment implements TabContract.View 
     private RecommentPagerAdapter mViewPagerAdapter;
     private LinearLayout mIndicator;
     private TextView mTitleView;
-    private PullableListView mContentView;
+    private ListView mContentView;
     private PageItemAdapter mPageItemAdapter;
     private ViewPager mViewPager;
     private TabContract.Presenter mPresenter;
     private List<RecommendModel> mRecommendModelList;
     private List<String> mRecommendTitleList;
     public static HashMap<String, Integer> mRecommendIcon = new HashMap<>();
-    private PullToRefreshLayout mRefresh;
+    private CanRefreshLayout mRefresh;
     public static final long AUTO_SWITCH = 3000;
+    public static final int MSG_AUTO_SWITH = 0;
+    public static final int MSG_REFRESH_PAGE_ITEM = 1;
+    public static final int MSG_REFRESH_HEADER = 2;
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case MSG_AUTO_SWITH:
+                    Logger.d("msg  轮播收到");
+                    int currentItem = mViewPager.getCurrentItem();
+                    mViewPager.setCurrentItem(currentItem + 1);
+                    mHandler.sendEmptyMessageDelayed(MSG_AUTO_SWITH, AUTO_SWITCH);
+                    Logger.d("msg  轮播开始");
+                    break;
+                case MSG_REFRESH_PAGE_ITEM:
+                    Logger.d("MSG_REFRESH_PAGE_ITEM");
+                    mPageItemAdapter.setDatas(mRecommendModelList);
+                    break;
+                case MSG_REFRESH_HEADER:
+                    Logger.d("MSG_REFRESH_HEADER");
+                    List<ProductModel> obj = (List<ProductModel>) msg.obj;
+                    Logger.d("完成  强转");
+                    mViewPagerAdapter.setData(obj);
+                    Logger.d("完成  setData");
+                    mViewPager.setCurrentItem(500);
+                    Logger.d("完成  currentItem");
 
-//    private Handler mHandler = new Handler() {
-//        @Override
-//        public void handleMessage(Message msg) {
-//            if (msg.what == 0) {
-//                int currentItem = mViewPager.getCurrentItem();
-//                mViewPager.setCurrentItem(currentItem + 1);
-//                mHandler.sendEmptyMessageDelayed(0, AUTO_SWITCH);
-//            }
-//        }
-//    };
+                    initIndicator(mViewPagerAdapter.getDataSize());
+                    if (mIsRefreshIng) {
+                        mIsRefreshIng = false;
+                        mRefresh.refreshComplete();
+                    }
+                    mHandler.sendEmptyMessageDelayed(MSG_AUTO_SWITH, AUTO_SWITCH);
+
+                    break;
+            }
+
+        }
+    };
     private boolean mIsRefreshIng;
 
     @Override
@@ -76,10 +108,8 @@ public class RecommendFragment extends BaseFragment implements TabContract.View 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_recomment, null);
-        View header_view = inflater.inflate(R.layout.header_page_item, null);
-        View footer_view = inflater.inflate(R.layout.footer_view, null);
 
-        initView(view, header_view, footer_view);
+        initView(view);
         return view;
     }
 
@@ -90,32 +120,24 @@ public class RecommendFragment extends BaseFragment implements TabContract.View 
         mPresenter.getProductList(null, null, null);
     }
 
-    private void initView(View view, View header_view, View footer_view) {
+    private void initView(View view) {
+        mViewPager = (ViewPager) view.findViewById(R.id.view_pager);
+        mIndicator = (LinearLayout) view.findViewById(R.id.ll_indicator);
+        mTitleView = (TextView) view.findViewById(R.id.tv_title);
 
-        LinearLayout left_4g = (LinearLayout) header_view.findViewById(R.id.left_4g);
-        LinearLayout recomment = (LinearLayout) header_view.findViewById(R.id.recomment);
-        LinearLayout sign_in = (LinearLayout) header_view.findViewById(R.id.sign_in);
-        LinearLayout subject = (LinearLayout) header_view.findViewById(R.id.subject);
-        mViewPager = (ViewPager) header_view.findViewById(R.id.view_pager);
-        mIndicator = (LinearLayout) header_view.findViewById(R.id.ll_indicator);
-        mTitleView = (TextView) header_view.findViewById(R.id.tv_title);
-        mRefresh = (PullToRefreshLayout) view.findViewById(R.id.refresh);
-        mRefresh.setEnableLoadMore(false);
-        mRefresh.setOnRefreshListener(new PullToRefreshLayout.OnRefreshListener() {
+        mRefresh = (CanRefreshLayout) view.findViewById(R.id.refresh);
+        mRefresh.setOnRefreshListener(new CanRefreshLayout.OnRefreshListener() {
             @Override
-            public void onRefresh(PullToRefreshLayout pullToRefreshLayout) {
-                mIsRefreshIng = true;
-                mPresenter.getProductList(null, null, null);
-            }
-
-            @Override
-            public void onLoadMore(PullToRefreshLayout pullToRefreshLayout) {
-
+            public void onRefresh() {
+                if (mPresenter != null) {
+                    mPresenter.getProductList(null, null, null);
+                    mIsRefreshIng = true;
+                    mHandler.removeMessages(MSG_AUTO_SWITH);
+                }
             }
         });
-
-        Button adjustView = (Button) footer_view.findViewById(R.id.btn_adjust);
-        mContentView = (PullableListView) view.findViewById(R.id.lv);
+        Button adjustView = (Button) view.findViewById(R.id.btn_adjust);
+        mContentView = (ListView) view.findViewById(R.id.lv);
 
         mViewPagerAdapter = new RecommentPagerAdapter(getActivity());
         mViewPager.setAdapter(mViewPagerAdapter);
@@ -137,35 +159,8 @@ public class RecommendFragment extends BaseFragment implements TabContract.View 
             }
         });
 
-        mPageItemAdapter = new PageItemAdapter(getActivity(), true);
-        mContentView.addHeaderView(header_view);
-        mContentView.addFooterView(footer_view);
+        mPageItemAdapter = new PageItemAdapter(getActivity());
         mContentView.setAdapter(mPageItemAdapter);
-
-        left_4g.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                UIUtil.showToast(getActivity(), "剩余流量");
-            }
-        });
-        recomment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                UIUtil.showToast(getActivity(), "推荐有礼");
-            }
-        });
-        sign_in.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                UIUtil.showToast(getActivity(), "每日签到");
-            }
-        });
-        subject.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                UIUtil.showToast(getActivity(), "精选专题");
-            }
-        });
 
         adjustView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -174,8 +169,29 @@ public class RecommendFragment extends BaseFragment implements TabContract.View 
             }
         });
 
+        mViewPager.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        System.out.println("Refresh : down");
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        System.out.println("Refresh : move");
+                        mHandler.removeMessages(MSG_AUTO_SWITH);
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        System.out.println("Refresh : up");
+                        mHandler.sendEmptyMessageDelayed(MSG_AUTO_SWITH, AUTO_SWITCH);
+                        break;
+                    case MotionEvent.ACTION_CANCEL:
+                        System.out.println("Refresh : cancel");
+                        break;
+                }
+                return false;
+            }
+        });
     }
-
 
     private void initIndicator(int size) {
         mIndicator.removeAllViews();
@@ -197,6 +213,12 @@ public class RecommendFragment extends BaseFragment implements TabContract.View 
     }
 
     @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        Logger.d("徐勤超" + hidden);
+    }
+
+    @Override
     public void setTitle(String title) {
         mTitle = title;
     }
@@ -207,40 +229,47 @@ public class RecommendFragment extends BaseFragment implements TabContract.View 
     }
 
     @Override
-    public void showProductList(List<ProductModel> list) {
-        if (mIsRefreshIng) {
-            mIsRefreshIng = false;
-            mRefresh.refreshFinish(PullToRefreshLayout.SUCCEED);
-        }
-
+    public void showProductList(final List<ProductModel> list) {
         mRecommendModelList = new ArrayList<>();
-        for (String name : mRecommendTitleList) {
-            RecommendModel r = new RecommendModel();
-            r.setName(name);
-            for (ProductModel model : list) {
-                if (model.getProgramtype().equals(name))
-                    r.getList().add(model);
-            }
-            mRecommendModelList.add(r);
-        }
-
-        mPageItemAdapter.setData(mRecommendModelList);
-
-        for (int i = 0; i < mRecommendModelList.size(); i++) {
-            RecommendModel recommendModel = mRecommendModelList.get(i);
-            if (recommendModel.getName().equals("推荐")) {
-                List<ProductModel> list1 = recommendModel.getList();
-                List<ProductModel> list2 = new ArrayList<>();
-                list2.addAll(list1);
-                if (list2.size() > 4) {
-                    mViewPagerAdapter.setData(list2.subList(4, list1.size() - 1));
-                } else {
-                    mViewPagerAdapter.setData(list2);
+        mRefresh.post(new Runnable() {
+            @Override
+            public void run() {
+                for (String name : mRecommendTitleList) {
+                    RecommendModel r = new RecommendModel();
+                    r.setName(name);
+                    for (ProductModel model : list) {
+                        if (model.getProgramtype().equals(name))
+                            r.getList().add(model);
+                    }
+                    if (!r.getName().equals("特色") && !r.getName().equals("精品影视"))
+                        mRecommendModelList.add(r);
                 }
-                mViewPager.setCurrentItem(5000);
-                initIndicator(mViewPagerAdapter.getDataSize());
 
+                mHandler.sendEmptyMessage(MSG_REFRESH_PAGE_ITEM);
             }
-        }
+        });
+
+        mViewPager.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < mRecommendModelList.size(); i++) {
+                    RecommendModel recommendModel = mRecommendModelList.get(i);
+                    if (recommendModel.getName().equals("推荐")) {
+                        List<ProductModel> list1 = recommendModel.getList();
+                        List<ProductModel> list2 = new ArrayList<>();
+                        list2.addAll(list1);
+                        if (list2.size() > 4) {
+                            list2 = list2.subList(4, list1.size() - 1);
+                        }
+
+                        Message message = mHandler.obtainMessage();
+                        message.what = MSG_REFRESH_HEADER;
+                        message.obj = list2;
+                        mHandler.sendMessage(message);
+                        break;
+                    }
+                }
+            }
+        }, 300);
     }
 }

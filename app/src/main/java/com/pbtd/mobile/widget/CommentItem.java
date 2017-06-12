@@ -4,12 +4,10 @@ import android.content.Context;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.pbtd.mobile.R;
 import com.pbtd.mobile.model.ProductModel;
-import com.pbtd.mobile.utils.UIUtil;
 
 import java.util.List;
 
@@ -45,11 +43,8 @@ public class CommentItem {
     private void initView() {
         mRootView = View.inflate(mContext, R.layout.item_page, null);
         ImageView mIconView = (ImageView) mRootView.findViewById(R.id.iv_icon);
-        ImageView mIconLineView = (ImageView) mRootView.findViewById(R.id.iv_icon_line);
         TextView mTitleView = (TextView) mRootView.findViewById(R.id.tv_title);
         GridView mGridView = (GridView) mRootView.findViewById(R.id.grid_view);
-        LinearLayout mBottomTip = (LinearLayout) mRootView.findViewById(R.id.ll_bottom_tip);
-        TextView mTipView = (TextView) mRootView.findViewById(R.id.tv_bottom_tip);
 
         switch (mType_id) {
             case 3206://点播
@@ -70,13 +65,6 @@ public class CommentItem {
         }
 
         mIconView.setVisibility(mIsRecomment?View.VISIBLE:View.GONE);
-        mIconLineView.setVisibility(mIsRecomment?View.GONE:View.VISIBLE);
-        mBottomTip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                UIUtil.showToast(mContext, "更多精彩内容");
-            }
-        });
     }
 
     public View getRootView() {

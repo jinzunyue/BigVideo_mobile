@@ -11,6 +11,7 @@ import com.pbtd.mobile.R;
 import com.pbtd.mobile.model.live.CategoryInnerModel;
 import com.pbtd.mobile.model.live.ProgramTimeModel;
 import com.pbtd.mobile.utils.StringUtil;
+import com.pbtd.mobile.utils.UIUtil;
 
 /**
  * Created by xuqinchao on 17/5/2.
@@ -45,6 +46,14 @@ public class LiveRightAdapter extends BaseListAdapter<CategoryInnerModel> {
         String time = StringUtil.formatTime(next.getStartTime());
         viewHolder.mNext.setText(time + "  " + next.getEpgName());
         viewHolder.mSd.setImageURI(categoryInnerModel.getVideoImage());
+        viewHolder.mCollect.setTag(categoryInnerModel.getVideoName());
+        viewHolder.mCollect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String name = (String) v.getTag();
+                UIUtil.showToast(mContext, "收藏成功" + name);
+            }
+        });
 
         return convertView;
     }
